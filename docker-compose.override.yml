@@ -1,0 +1,5 @@
+# Local development
+version: '3'
+services:
+  web:
+    command: /usr/bin/gunicorn --no-sendfile --reload config.wsgi:application -w 2 --timeout 6000 -b :8000
