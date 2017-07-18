@@ -16,3 +16,16 @@ Data storage, authentication, geocoding, and recommendation system.
     docker-compose up -d
 
     Go to http://localhost:8000/
+
+## API usage
+
+[Details about authentication endpoints](http://django-rest-auth.readthedocs.io/en/latest/api_endpoints.html)
+
+    # Signup
+    POST http://localhost:8000/api/auth/signup/ email=... password1=... password2=...
+    
+    # Login
+    POST http://localhost:8000/api/auth/login/ email=abc@abc.com password=xxx
+
+    # Request url that needs authentication
+    GET url "Authorization:Token <insert key obtained from signup or login>"
