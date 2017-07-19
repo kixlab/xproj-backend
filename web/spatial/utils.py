@@ -11,3 +11,4 @@ def reverse_geocode_closest(lat, lon, max_distance=2500):
     pnt = GEOSGeometry('POINT({0} {1})'.format(lon, lat), srid=4326)
     qs = Area.objects.annotate(distance=Distance('mpoly', pnt))
     return qs.filter(mpoly__distance_lte=(pnt, D(m=max_distance))).order_by('distance')
+

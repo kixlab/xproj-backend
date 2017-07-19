@@ -18,8 +18,7 @@ urlpatterns += [
     url(r'^login/', allauth_views.login, name="account_login"),
     url(r'^logout/', allauth_views.logout, name="account_logout"),
     url(r'^api/auth/', include('rest_auth.urls')),
-    url(r'^api/auth/signup/', include('rest_auth.registration.urls')),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^api/auth/signup/', include('rest_auth.registration.urls'))
 ]
 
 # Apps
