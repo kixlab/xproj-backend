@@ -5,6 +5,12 @@ class VotingDistrict(models.Model):
     name = models.CharField(max_length=254)
     mpoly = models.MultiPolygonField(srid=3857)
 
+    def current_mop(self):
+        try:
+            return self.mop.all()[0]
+        except IndexError:
+            return None
+
     def __str__(self):
         return self.name
 
@@ -20,7 +26,7 @@ class Area(models.Model):
     precinct = models.CharField(max_length=254)
     province = models.CharField(max_length=254)
     voting_district_name = models.CharField(max_length=254)
-    voting_distict_id = models.ForeignKey(VotingDistrict,
+    voting_district = models.ForeignKey(VotingDistrict,
                                           on_delete=models.SET_NULL,
                                           blank=True,
                                           null=True,

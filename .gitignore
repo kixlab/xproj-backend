@@ -1,4 +1,11 @@
 __pycache__
 node_modules
 *.pyc
-data
+data/*/*.cpg
+data/*/*.dbf
+data/*/*.prj
+data/*/*.sbn
+data/*/*.sbx
+data/*/*.shp.xml
+data/*/*.shp
+data/*/*.shx

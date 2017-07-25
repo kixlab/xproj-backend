@@ -1,21 +1,25 @@
-# xproj-backend
+<p align="center">
+  <img src="./web/static/logo.svg" width="100"/>
+</p>
 
-A Django application that serves as the API for our web app.
-Data storage, authentication, geocoding, and recommendation system.
+<h1 align="center">xproj-backend</h1>
+
+A Django application that serves as the API for our client app.
+Data storage, authentication, geocoding, news aggregator, and recommendation system.
 
 ## Setup
 
 - You need [Docker](https://www.docker.com/get-docker) to run locally. It's very easy to set up on all platforms.
-- Download the shapefiles from [here](http://snugis.tistory.com/127), extract and put into a folder `data/voting-districts/`
-- `docker-compose up -d` for setting up the containers
+- `docker-compose up -d` for setting up the containers. This will take a few minutes.
 - `docker-compose run web python3 manage.py migrate` for database setup
+- Download the shapefiles from [here](http://snugis.tistory.com/127), extract and put into a folder `data/voting-districts/`
 - `docker-compose run web python3 manage.py load_data` to import spatial data
 
 ## How to run
 
     docker-compose up -d
 
-    Go to http://localhost:8000/
+Go to [http://localhost:8000/](http://localhost:8000/)
 
 ## API usage
 

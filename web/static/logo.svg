@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="578px" height="578px" viewBox="0 0 578 578" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>Slice</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M282.996996,83.3252029 C288.521503,73.7567576 297.478726,73.757153 303.003004,83.3252029 L532.996996,481.674797 C538.521503,491.243242 534.042549,499 522.993992,499 L63.006008,499 C51.9569949,499 47.4787257,491.242847 53.003004,481.674797 L282.996996,83.3252029 Z" id="Triangle-Copy" stroke="#000000" stroke-width="10"></path>
+        <path d="M293,78.5 L293,498.5" id="Line" stroke="#000000" stroke-width="10" stroke-linecap="square"></path>
+        <path d="M413,277 L55,492.861019" id="Line-Copy" stroke="#000000" stroke-width="10" stroke-linecap="square"></path>
+        <path d="M172,279 L532.1802,492.566091" id="Line-Copy-2" stroke="#000000" stroke-width="10" stroke-linecap="square"></path>
+    </g>
+</svg>

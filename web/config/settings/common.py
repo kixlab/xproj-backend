@@ -57,7 +57,8 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    'spatial'
+    'spatial',
+    'promises'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS_PRIORITY + THIRD_PARTY_APPS + LOCAL_APPS

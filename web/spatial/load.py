@@ -2,6 +2,7 @@ import os
 from django.contrib.gis.utils import LayerMapping
 from django.db.models import Count
 from .models import Area, VotingDistrict
+from promises.models import Person
 from django.contrib.gis import geos
 
 mapping = {
@@ -25,6 +26,7 @@ def run(verbose=True):
     lm.save(strict=True, verbose=verbose)
 
     voting_districts()
+    elected_members()
 
 def voting_districts():
     voting_districts = Area.objects.values('voting_district_name').annotate(count=Count("id"))
@@ -43,3 +45,14 @@ def voting_districts():
         v.areas = areas
         v.save()
         print("Imported %s with %d areas" % (name, district['count']))
+
+def elected_members():
+    f = open("/data/voting-districts/results.txt")
+    results = dict([line.split() for line in f])
+    for v in VotingDistrict.objects.all():
+        if v.name not in results:
+            print("Missing result for %s" % v.name)
+            continue
+        member_name = results.get(v.name)
+        member = Person(name=member_name, mop_for_district=v)
+        member.save()
