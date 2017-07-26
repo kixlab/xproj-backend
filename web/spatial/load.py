@@ -14,9 +14,7 @@ mapping = {
     'mpoly' : 'MULTIPOLYGON',
 }
 
-shp_file = '/data/voting-districts/제20대국회의원선거구_속성_통계청행정동.shp'
-
-def run(verbose=True):
+def run(shp_file, verbose=True):
     Area.objects.all().delete()
     lm = LayerMapping(
         Area, shp_file, mapping,

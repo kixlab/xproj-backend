@@ -1,0 +1,6 @@
+# extends docker-compose.production.yml, use with
+# `docker-compose -f docker-compose.yml -f docker-compose.staging.yml up`
+
+web:
+  environment:
+    - DJANGO_SETTINGS_MODULE=config.settings.staging
