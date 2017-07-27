@@ -4,11 +4,12 @@ from spatial.utils import reverse_geocode, reverse_geocode_closest
 from django.contrib.auth.models import User
 from rest_framework import serializers, viewsets, mixins, generics, filters
 from rest_framework.views import APIView
+from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django.utils.datastructures import MultiValueDictKeyError
 from .models import Area, VotingDistrict
-from promises.models import Person
+from promises.models import Person, Promise
 
 class LatLonForm(forms.Form):
     lat = forms.CharField(label="Latitude", initial='36.372306')
@@ -29,10 +30,17 @@ class ReverseGeocodeView(FormView):
 API views
 """
 class PersonSerializer(serializers.HyperlinkedModelSerializer):
+    promises_url = serializers.HyperlinkedIdentityField(view_name='person-promises')
+
     class Meta:
         model = Person
-        fields = ('url', 'name', 'mop_for_district')
-        
+        fields = ('url', 'name', 'mop_for_district', 'promises_url')
+
+class PromiseSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Promise
+        fields = ('url', 'title', 'categories', 'target_groups',)
+
 class VotingDistrictSerializer(serializers.HyperlinkedModelSerializer):
     #current_mop = serializers.HyperlinkedRelatedField(many=False, view_name='person-detail', read_only=True)
     current_mop = PersonSerializer()
@@ -86,9 +94,29 @@ class VotingDistrictViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
 
+class PromiseViewSet(viewsets.ModelViewSet):
+    queryset = Promise.objects.all()
+    serializer_class = PromiseSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('title',)
+
 class PersonViewSet(viewsets.ModelViewSet):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
+
+    @detail_route()
+    def promises(self, request, pk=None):
+        """
+        Returns a list of all the person's promises
+        """
+        person = self.get_object()
+        promises = person.promises.all()
+        context = {
+            'request': request
+        }
+        promise_serializer = PromiseSerializer(promises, many=True, context=context)
+        return Response(promise_serializer.data)

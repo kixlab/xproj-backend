@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from spatial.load import run
+from promises.load import run
 
 
 class Command(BaseCommand):
@@ -8,8 +8,6 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument(
             '--shapefile',
-            action='store_const',
-            dest='shapefile',
             default='/data/voting-districts/areas.shp',
             help='Path to shapefile (on the Docker container)',
         )

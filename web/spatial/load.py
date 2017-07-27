@@ -1,8 +1,7 @@
 import os
 from django.contrib.gis.utils import LayerMapping
 from django.db.models import Count
-from .models import Area, VotingDistrict
-from promises.models import Person
+from spatial.models import Area, VotingDistrict
 from django.contrib.gis import geos
 
 mapping = {
@@ -16,15 +15,18 @@ mapping = {
 
 def run(shp_file, verbose=True):
     Area.objects.all().delete()
+    VotingDistrict.objects.all().delete()
+
+    spatial_data(shp_file, verbose)
+    voting_districts()
+
+def spatial_data(shp_file, verbose=True):
     lm = LayerMapping(
         Area, shp_file, mapping,
         encoding='utf-8',
         transform=False,
     )
     lm.save(strict=True, verbose=verbose)
-
-    voting_districts()
-    elected_members()
 
 def voting_districts():
     voting_districts = Area.objects.values('voting_district_name').annotate(count=Count("id"))
@@ -38,19 +40,10 @@ def voting_districts():
         if union and isinstance(union, geos.Polygon):
             union = geos.MultiPolygon(union)
         # Save district
-        v = VotingDistrict(name=name, mpoly=union)
-        v.save()
+        v, created = VotingDistrict.objects.update_or_create(
+            name=name, 
+            defaults={'mpoly': union},
+        )
         v.areas = areas
         v.save()
         print("Imported %s with %d areas" % (name, district['count']))
-
-def elected_members():
-    f = open("/data/voting-districts/results.txt")
-    results = dict([line.split() for line in f])
-    for v in VotingDistrict.objects.all():
-        if v.name not in results:
-            print("Missing result for %s" % v.name)
-            continue
-        member_name = results.get(v.name)
-        member = Person(name=member_name, mop_for_district=v)
-        member.save()
