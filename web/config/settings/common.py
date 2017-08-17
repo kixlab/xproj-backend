@@ -51,6 +51,7 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_swagger',
     'django_filters',
     'rest_auth',
     'rest_auth.registration'
@@ -58,7 +59,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     'spatial',
-    'promises'
+    'promises',
+    'api'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS_PRIORITY + THIRD_PARTY_APPS + LOCAL_APPS
@@ -197,6 +199,11 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 50
+    'PAGE_SIZE': 50,
+    'VIEW_NAME_FUNCTION': 'api.router.get_view_name'
+}
+
+SWAGGER_SETTINGS = {
+    'DOC_EXPANSION': 'list'
 }
 

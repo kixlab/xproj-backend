@@ -1,12 +1,12 @@
 from django.contrib import admin
 from .models import Person, Promise
 
+admin.site.register(Person, admin.ModelAdmin)
+
 class PromiseAdmin(admin.ModelAdmin):
     model = Promise
     list_display = ('title', 'categories',)
 admin.site.register(Promise, PromiseAdmin)
-
-admin.site.register(Person, admin.ModelAdmin)
 
 class PersonInline(admin.TabularInline):
     model = Person

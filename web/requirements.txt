@@ -1,15 +1,19 @@
+# base
 Django==1.11
-# psycopg2 installed through distro package
 gunicorn==19.7.1
+## psycopg2 is installed through distro package in Dockerfile
 
+# django utils, config, templating
 django-environ==0.4.0
 
+# docs
+coreapi==2.3.1
+pygments==2.2.0
+markdown==2.6.8
+
+# api, authentication
 django-allauth==0.24.1
 django-rest-auth==0.9.1
 djangorestframework==3.6.3
 django-filter==1.0.4
-
-#django-braces==1.8.1
-#django-autoslug==1.9.3
-#django-randomslugfield==0.3.0
-#django-tables2==1.10.0
+django-rest-swagger==2.1.2

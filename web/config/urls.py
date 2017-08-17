@@ -7,6 +7,7 @@ from rest_framework.authtoken import views as rest_views
 urlpatterns = []
 
 # For local dev, serve static files directly from Django
+# In deployment, these should be served from a real server
 if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
     urlpatterns += staticfiles_urlpatterns()
@@ -17,11 +18,9 @@ urlpatterns += [
     url(r'^accounts/', include('allauth.urls')),
     url(r'^login/', allauth_views.login, name="account_login"),
     url(r'^logout/', allauth_views.logout, name="account_logout"),
-    url(r'^api/auth/', include('rest_auth.urls')),
-    url(r'^api/auth/signup/', include('rest_auth.registration.urls'))
 ]
 
 # Apps
 urlpatterns += [
-    url(r'', include('spatial.urls')),
+    url(r'', include('api.urls')),
 ]

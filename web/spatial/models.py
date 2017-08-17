@@ -1,6 +1,5 @@
 from django.contrib.gis.db import models
 
-
 class VotingDistrict(models.Model):
     name = models.CharField(max_length=254)
     mpoly = models.MultiPolygonField(srid=3857)

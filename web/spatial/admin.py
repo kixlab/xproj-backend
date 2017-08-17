@@ -14,5 +14,4 @@ class AreaInline(admin.TabularInline):
 
 class VotingDistrictAdmin(admin.OSMGeoAdmin):
     inlines = (PersonInline, AreaInline, )
-
 admin.site.register(VotingDistrict, VotingDistrictAdmin)
