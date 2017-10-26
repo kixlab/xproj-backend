@@ -49,12 +49,14 @@ THIRD_PARTY_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'oauth2_provider',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_swagger',
     'django_filters',
     'rest_auth',
-    'rest_auth.registration'
+    'rest_auth.registration',
+    'corsheaders'
 ]
 
 LOCAL_APPS = [
@@ -71,7 +73,9 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'oauth2_provider.middleware.OAuth2TokenMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -170,12 +174,15 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
+    # OAuth token based authentication
+    'oauth2_provider.backends.OAuth2Backend',
 )
 
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+#ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+#ACCOUNT_USERNAME_REQUIRED = False
+
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
 #ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignUpForm'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_LOGOUT_ON_GET = True
@@ -185,6 +192,10 @@ ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "/login/"
 
+# only for development
+CORS_ORIGIN_ALLOW_ALL = True
+
+
 """
 API
 """
@@ -192,7 +203,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication'
+        'rest_framework.authentication.TokenAuthentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
@@ -202,6 +214,12 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 50,
     'VIEW_NAME_FUNCTION': 'api.router.get_view_name'
 }
+
+"""
+OAUTH2_PROVIDER = {
+    'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore'
+}
+"""
 
 SWAGGER_SETTINGS = {
     'DOC_EXPANSION': 'list'
