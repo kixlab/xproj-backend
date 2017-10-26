@@ -42,7 +42,7 @@ DJANGO_APPS = [
 ]
 
 LOCAL_APPS_PRIORITY = [
-
+    'frontend'
 ]
 
 THIRD_PARTY_APPS = [
@@ -161,7 +161,7 @@ LANGUAGES = (
 LOCALE_PATHS = ['locale']
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.abspath(os.path.dirname(__name__)) + '/collected_static/'
+STATIC_ROOT = os.path.abspath(os.path.dirname(__name__)) + '/static/'
 
 """
 Authentication

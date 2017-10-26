@@ -6,12 +6,6 @@ from rest_framework.authtoken import views as rest_views
 
 urlpatterns = []
 
-# For local dev, serve static files directly from Django
-# In deployment, these should be served from a real server
-if settings.DEBUG:
-    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-    urlpatterns += staticfiles_urlpatterns()
-
 # System views
 urlpatterns += [
     url(r'^admin/', admin.site.urls),
@@ -24,3 +18,9 @@ urlpatterns += [
 urlpatterns += [
     url(r'', include('api.urls')),
 ]
+
+# For local dev, serve static files directly from Django
+# In deployment, these should be served from a real server
+if settings.DEBUG:
+    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+    urlpatterns += staticfiles_urlpatterns()
