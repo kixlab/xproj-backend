@@ -2,6 +2,7 @@ from django.conf.urls import url, include
 from django.views.generic.base import RedirectView
 from spatial.viewsets import *
 from promises.viewsets import *
+from news.viewsets import *
 from .router import Router
 from . import views
 
@@ -10,6 +11,7 @@ router.register(r'areas', AreaViewSet)
 router.register(r'people', PersonViewSet)
 router.register(r'voting-districts', VotingDistrictViewSet)
 router.register(r'promises', PromiseViewSet)
+router.register(r'news', ArticleViewSet)
 
 urlpatterns = [
     url(r'^api/', include(router.urls)),

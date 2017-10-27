@@ -1,0 +1,7 @@
+# base
+Django==1.11.6
+gunicorn==19.7.1
+## psycopg2 is installed through distro package in Dockerfile
+
+# django utils, config, templating
+django-environ==0.4.0

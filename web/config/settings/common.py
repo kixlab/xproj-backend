@@ -62,6 +62,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'spatial',
     'promises',
+    'news',
     'api'
 ]
 
@@ -220,6 +221,13 @@ OAUTH2_PROVIDER = {
     'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore'
 }
 """
+
+OAUTH2_PROVIDER = {
+    'SCOPES': {
+        'basic': 'User information',
+        'write': 'Write scope',
+    },
+}
 
 SWAGGER_SETTINGS = {
     'DOC_EXPANSION': 'list'

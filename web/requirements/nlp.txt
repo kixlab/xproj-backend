@@ -1,0 +1,3 @@
+# nlp
+numpy==1.13.3
+konlpy==0.4.4

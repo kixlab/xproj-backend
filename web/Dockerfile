@@ -4,7 +4,22 @@ FROM frolvlad/alpine-python3
 
 RUN adduser -D -g '' app
 
-# Install binary dependencies
+# Install binary dependencies (MAIN alpine versions)
+ENV PACKAGES_NUMPY="\
+  gcc \
+  gfortran \
+  build-base \
+  wget \
+  freetype-dev \
+  libpng-dev \
+  openblas-dev \
+"
+RUN apk add --no-cache --update-cache $PACKAGES_NUMPY
+RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
+
+RUN apk add python3-dev
+
+# Install binary dependencies (EDGE alpine versions)
 ENV PACKAGES="\
   postgresql-client \
   postgresql-dev \
@@ -14,7 +29,6 @@ ENV PACKAGES="\
   geos \
   proj4 \
 "
-
 RUN echo \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
@@ -25,10 +39,16 @@ RUN echo \
 # Setup app dir
 RUN mkdir -p /usr/src/app
 
-# Install pip packages
+# Install pip packages, split into multiple requirements files for better Docker caching
 WORKDIR /usr/src/app/
-ADD requirements.txt /usr/src/app/requirements.txt
-RUN pip3 install --no-cache-dir --disable-pip-version-check -r requirements.txt
+ADD requirements/nlp.txt /usr/src/app/requirements/nlp.txt
+RUN pip3 install --no-cache-dir --disable-pip-version-check -r requirements/nlp.txt
+ADD requirements/base.txt /usr/src/app/requirements/base.txt
+RUN pip3 install --no-cache-dir --disable-pip-version-check -r requirements/base.txt
+ADD requirements/api.txt /usr/src/app/requirements/api.txt
+RUN pip3 install --no-cache-dir --disable-pip-version-check -r requirements/api.txt
+ADD requirements/extras.txt /usr/src/app/requirements/extras.txt
+RUN pip3 install --no-cache-dir --disable-pip-version-check -r requirements/extras.txt
 
 # Copy rest of source code. Doing this in the end improves Docker caching
 COPY . /usr/src/app
