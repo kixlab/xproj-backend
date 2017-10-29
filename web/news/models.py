@@ -6,6 +6,7 @@ from .parser import load_article_soup, analyze_article, title2list
 
 class Article(models.Model):
     title = models.CharField(max_length=254)
+    title_keywords = ArrayField(models.CharField(max_length=50), blank=True, default=list)
     url = models.CharField(max_length=254, unique=True)
     source = models.CharField(max_length=50)
     text = models.TextField(default="", blank=True)
@@ -31,6 +32,7 @@ class Article(models.Model):
         analyze_article()
     
     def analyze_article(self):
+        self.title_keywords = title2list(self.title)
         self.categories = analyze_article(self.text)
         self.promises = Promise.objects.filter(categories__overlap=self.categories,
                                                person__mop_for_district__areas__province="서울특별시")[:10]

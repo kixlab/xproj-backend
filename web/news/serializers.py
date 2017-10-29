@@ -10,11 +10,11 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
     
     class Meta:
         model = Article
-        fields = ('url', 'original_url', 'source', 'title', 'categories', )
+        fields = ('url', 'original_url', 'source', 'title', 'title_keywords', 'categories', )
 
 class ArticlePromisesSerializer(ArticleSerializer):
     promises = PromiseSerializer(many=True) 
 
     class Meta:
         model = Article
-        fields = ('url', 'original_url', 'source', 'title', 'categories', 'promises', 'text',)
+        fields = ('url', 'original_url', 'source', 'title', 'title_keywords', 'categories', 'promises', 'text',)
