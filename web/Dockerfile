@@ -1,4 +1,4 @@
-# Linux Alpine + Python3 + PostgreSQL + PostGIS 
+# Linux Alpine + Python3 + PostgreSQL + PostGIS + Numpy
 
 FROM frolvlad/alpine-python3
 
@@ -13,11 +13,13 @@ ENV PACKAGES_NUMPY="\
   freetype-dev \
   libpng-dev \
   openblas-dev \
+  python3-dev \
 "
 RUN apk add --no-cache --update-cache $PACKAGES_NUMPY
 RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
 
-RUN apk add python3-dev
+# For KONLPY
+RUN apk add --no-cache --update-cache openjdk7
 
 # Install binary dependencies (EDGE alpine versions)
 ENV PACKAGES="\

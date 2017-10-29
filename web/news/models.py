@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from promises.models import Promise
 from urllib.parse import urlparse
-from .parser import load_article_soup
+from .parser import load_article_soup, analyze_article, title2list
 
 class Article(models.Model):
     title = models.CharField(max_length=254)
@@ -26,7 +26,14 @@ class Article(models.Model):
             br.replace_with("\n")
         self.text = str(html.get_text().strip())
         if not self.text:
-            self.text = "Not found"
+            self.text = "Text not found"
+            return
+        analyze_article()
+    
+    def analyze_article(self):
+        self.categories = analyze_article(self.text)
+        self.promises = Promise.objects.filter(categories__overlap=self.categories,
+                                               person__mop_for_district__areas__province="서울특별시")[:10]
     
     def save(self, *args, **kwargs):
         if not self.text:
