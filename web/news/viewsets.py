@@ -17,8 +17,13 @@ class ArticleViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title',)
 
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return ArticlePromisesSerializer
+        return ArticleSerializer 
+
     @list_route()
-    def promises_for_url(self, request, pk=None):
+    def get_by_url(self, request, pk=None):
         """
         Returns a list of promises related to the article found at a URL passed via query parameter
         """

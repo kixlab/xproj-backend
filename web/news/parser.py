@@ -6,6 +6,8 @@ import numpy as np
 from konlpy.tag import Kkma, Hannanum, Twitter
 from konlpy.utils import pprint
 import string
+from django.utils.dateparse import parse_datetime
+from pytz import timezone
 
 def load_article_soup(url):
     with urllib.request.urlopen(url) as response:
@@ -13,6 +15,30 @@ def load_article_soup(url):
         soup = BeautifulSoup(html, "html.parser")
     
     return soup
+
+def load_article_naver(article):
+    # Load article text when article is requested for the first time
+    soup = load_article_soup(article.url)
+
+    # Title
+    article.title = soup.title.string
+    
+    # Date
+    try:
+        date_string = soup.select(".sponsor .t11")[0].string
+        date_string = date_string.strip().replace(' ', 'T') + ':00'
+        kst = timezone('Asia/Seoul')
+        article.original_post_date = kst.localize(parse_datetime(date_string))
+    except IndexError:
+        pass
+
+    # Text
+    html = soup.find(id="articleBodyContents")
+    for script in html("script"):
+        script.decompose()
+    for br in html.find_all("br"):
+        br.replace_with("\n")
+    article.text = str(html.get_text().strip())
 
 kkma = Kkma()
 hannanum = Hannanum()
@@ -91,9 +117,9 @@ for acat in tagkeys:
     catwords = acat["keywords"]
     trainlist.append(catwords)
 
-def analyze_article(text):
-    nounList = kkma.nouns(text)
-
+def guess_category(text):
+    #nounList = kkma.nouns(text)
+    nounList = text.translate(remove_punct_map).translate(remove_quotes_map).split()
     tfidf_mat = tfidf(nounList, trainlist)
     tfidf_score = np.dot(tfidf_mat, np.ones(shape=(len(nounList), 1)))
     catguess = int(np.argmax(tfidf_score))
