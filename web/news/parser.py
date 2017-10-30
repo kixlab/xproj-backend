@@ -61,7 +61,7 @@ def tfidf(ttlist, trainlist):
             if term in cdoc:
                 dfcount = dfcount+1
         idf_mat[t] = dfcount/clen
-    tfidf_mat = np.dot(tf_mat,np.diag(idf_mat))
+    tfidf_mat = np.dot(tf_mat, np.diag(idf_mat))
     return tfidf_mat
 
 def title2list(title):
@@ -107,7 +107,7 @@ def title2list(title):
     entities = filter(lambda word: word not in badwords, entities)
     return list(set(list(entities)))
 
-# Load trainin data
+# Load training data
 tagged = open('/data/nlp/train.json', 'r', encoding='utf-8')
 tagkeys = json.load(tagged)
 categories = ['안전/환경', '일자리', '문화체육', '보건복지', '교통/건설', '정치행정', '경제', '과학기술', '외교안보', '교육', '농축수산', '인권', '기타']

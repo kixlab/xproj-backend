@@ -10,12 +10,9 @@ Data storage, authentication, geocoding, news aggregator, and recommendation sys
 ## Setup
 
 - You need [Docker](https://www.docker.com/get-docker) to run locally. It's very easy to set up on all platforms.
-- `docker-compose up -d` for setting up the containers. This will take a few minutes.
+- `docker-compose up -d` for setting up the containers. This will take a while.
 - `docker-compose run web python3 manage.py migrate` for database setup
-- Download the shapefiles from [here](http://snugis.tistory.com/127), extract and put into a folder `data/voting-districts/`
-- `docker-compose run web python3 manage.py load_spatial_data` to import spatial data
-- Unzip the file `data/promises.zip` into a folder `promises`
-- `docker-compose run web python3 manage.py load_promise_data` to import promise data
+- Run `./scripts/initial_load.sh` to load spatial and promise data. This will take a while.
 
 ## How to run
 

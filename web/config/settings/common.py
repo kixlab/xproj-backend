@@ -240,7 +240,10 @@ SWAGGER_SETTINGS = {
 """
 Debugging
 """
-DEBUG_TOOLBAR_CONFIG = {'SHOW_TOOLBAR_CALLBACK': (lambda request: True)}
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': (lambda request: True),
+    'SHOW_COLLAPSED': True
+}
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',
     'debug_toolbar.panels.timer.TimerPanel',

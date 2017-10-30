@@ -13,7 +13,7 @@ mapping = {
     'mpoly' : 'MULTIPOLYGON',
 }
 
-def run(shp_file, verbose=True):
+def run(shp_file, verbose=False):
     Area.objects.all().delete()
     VotingDistrict.objects.all().delete()
 
@@ -26,7 +26,8 @@ def spatial_data(shp_file, verbose=True):
         encoding='utf-8',
         transform=False,
     )
-    lm.save(strict=True, verbose=verbose)
+    lm.save(strict=False, verbose=verbose)
+    print("Imported %d areas" % Area.objects.all().count())
 
 def voting_districts():
     voting_districts = Area.objects.values('voting_district_name').annotate(count=Count("id"))
