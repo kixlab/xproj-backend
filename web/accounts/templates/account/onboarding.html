@@ -1,0 +1,53 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Welcome" %}{% endblock %}
+
+{% block content %}
+<h1>{% trans "Welcome to <span>PromiseWiser</span>." %}</h1>
+
+<p>{% blocktrans %}Please tell us a bit more about yourself.
+    All information will be handled confidentially and not disclosed to third parties.{% endblocktrans %}</p>
+
+<form class="signup" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <p><label>Location:</label>
+      <input type="text" name="location_search" placeholder="Type address to search..." value="{{object.location.display_name}}">
+      <div id="location_options"></div>
+  </p>
+
+  <div style="margin-bottom:1em">
+    <!--<a href="javascript:getLocation()" class="button secondaryAction" disabled>{% trans "Search for location" %}</a>-->
+    <a href="javascript:getLocation()" class="button secondaryAction" id="getLocationButton">{% trans "Automatically get location" %}</a>
+  </div>
+  
+  <button type="submit">{% trans "Continue" %} &raquo;</button>
+</form>
+<script>
+    function getLocation() {
+        if ("geolocation" in navigator) {
+          document.getElementById('location_options').innerHTML = 'Loading...';
+            navigator.geolocation.getCurrentPosition(function(position) {
+                fetch('/api/areas/?lat='+position.coords.latitude+'&lon='+position.coords.longitude).then(resp => resp.json()).then(
+                    data => {
+                        console.log(data);
+                        var html = data.results.map(area => 
+                          '<li><a href="#" onClick="selectLocation(' + area.pk + ',\'' + area.display_name + '\')">' + area.display_name + '</a></li>'
+                        ).join('');
+                        var msg = 'Please select your location';
+                        document.getElementById('location_options').innerHTML = msg + '<ul>' + html + '</ul>';
+                    }
+                );
+            });
+        }
+    }
+    function selectLocation(key, label) {
+      document.forms[0].location_search.value = label;
+      document.forms[0].location.value = key;
+      document.getElementById('location_options').innerHTML = '';
+    }
+</script>
+
+{% endblock %}

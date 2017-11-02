@@ -10,6 +10,7 @@ urlpatterns = []
 # System views
 urlpatterns += [
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/', include('accounts.urls', namespace='accounts')),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^login/', allauth_views.login, name="account_login"),
     url(r'^logout/', allauth_views.logout, name="account_logout"),

@@ -8,6 +8,7 @@
 <div>
   <ul class="nav">
   {% if user.is_authenticated %}
+  <li>Logged in as {{user.get_short_name|default:user.username}}</li>
   <li><a href="{% url 'account_logout' %}">{% blocktrans %}Logout{% endblocktrans %}</a></li>
   {% else %}
   <li><a href="{% url 'account_login' %}">{% blocktrans %}Login{% endblocktrans %}</a></li>

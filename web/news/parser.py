@@ -92,7 +92,7 @@ def title2list(title):
         nouns = nouns + ilist
 
         # Add all nouns from Twitter corpus that are long enough
-        nouns = nouns + filter(lambda word: len(word) > 1, thlist)
+        nouns = nouns + list(filter(lambda word: len(word) > 1, thlist))
 
         # Add nouns from Hannanum corpus that are non divisible (root noun)
         for htword in htlist:

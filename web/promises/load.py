@@ -6,7 +6,7 @@ import re
 
 def run(verbose=True):
     mayors()
-    #elected_members()
+    elected_members()
     promises()
 
 def elected_members():
@@ -83,8 +83,6 @@ def promises():
                 promise = Promise(title=p['title'], categories=p['category'], target_groups=p['target'])
                 promise.person = person
                 promise.save()
-
-    return
 
     with open('/data/promises/cong_tagged.json') as data_file:    
         data = json.load(data_file)

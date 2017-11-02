@@ -60,3 +60,7 @@ For OAuth consumers (doing the OAuth dance), use these settings:
 ## Other views
 
 * [/accounts/signup/](http://localhost:8000/accounts/signup/) for a signup frontend view
+
+## Other tasks
+
+- Delete database volume and start from scratch: `docker-compose down`, `docker volume rm xprojbackend_data-volume`.
