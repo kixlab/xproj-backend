@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,700|Roboto:100,300,500,700');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    color: #1a1a1a;
+    margin: 0;
+    padding: 2em;
+}
+
+a, a:link, a:visited {
+    color: inherit;
+}
+
+body {
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    flex: 1;
+    max-width: 650px;
+    margin: 0 auto;
+    background-color: #222;
+    padding: 2em;
+    border-radius: 8px;
+}
+
+h1 {
+    font-size: 2.5em;
+    font-weight: 100;
+    margin: 0 0 1rem;
+    line-height: 1;
+}
+
+h1 span {
+    font-weight: 300;
+}
+
+.nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.nav li {
+    display: inline-block;
+    padding-right: .5em;
+}
+
+form p {
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    margin: 0 .5em .5em 0;
+}
+form input {
+    max-width: 400px;
+    font-size: inherit;
+    padding: .5em;
+    border: 0;
+    background-color: rgba(255,255,255,0.1);
+}
+form button, .button {
+    border: 0;
+    text-align: center;
+    display: inline-block;
+    line-height: 1;
+    text-decoration: none;
+    font-weight: inherit;
+    font-size: inherit;
+    color: inherit;
+    background-color: rgb(40, 160, 208);
+    padding: .5em 1em;
+    cursor: pointer;
+}
+.secondaryAction {
+    background-color: rgb(150, 154, 130);
+}

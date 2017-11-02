@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+<h1>{% trans "PromiseWiser" %}</h1>
+
+<div>
+  <ul class="nav">
+  {% if user.is_authenticated %}
+  <li><a href="{% url 'account_logout' %}">{% blocktrans %}Logout{% endblocktrans %}</a></li>
+  {% else %}
+  <li><a href="{% url 'account_login' %}">{% blocktrans %}Login{% endblocktrans %}</a></li>
+  <li><a href="{% url 'account_signup' %}">{% blocktrans %}Signup{% endblocktrans %}</a></li>
+  {% endif %}
+  <li><a href="{% url 'api-root' %}">{% blocktrans %}API{% endblocktrans %}</a></li>
+  </ul>
+</div>
+
+
+{% endblock %}

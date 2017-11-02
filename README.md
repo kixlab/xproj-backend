@@ -12,7 +12,17 @@ Data storage, authentication, geocoding, news aggregator, and recommendation sys
 - You need [Docker](https://www.docker.com/get-docker) to run locally. It's very easy to set up on all platforms.
 - `docker-compose up -d` for setting up the containers. This will take a while.
 - `docker-compose run web python3 manage.py migrate` for database setup
+- `docker-compose run web python3 manage.py createsuperuser` to make a new admin account
 - Run `./scripts/initial_load.sh` to load spatial and promise data. This will take a while.
+
+## Update
+
+If you're update a previous installation, run
+
+- `docker-compose build`
+- `docker-compose run web python3 manage.py migrate`
+
+and then restart the containers.
 
 ## How to run
 

@@ -65,57 +65,54 @@ def tfidf(ttlist, trainlist):
     return tfidf_mat
 
 def title2list(title):
+    """Gather important nouns from a Korean text"""
     # Remove punctuation
     title = title.replace("…", " ")
     title = title.translate(remove_punct_map)
     title = title.translate(remove_quotes_map)
     titlewords = title.strip().split()
 
-    entities = []
+    nouns = []
     
     # Add special words
     if any(word != "대로" and word.endswith("대로") for word in titlewords):
-        entities.append("대로")
+        nouns.append("대로")
     if any(word != "도로" and word.endswith("도로") for word in titlewords):
-        entities.append("도로")
+        nouns.append("도로")
 
-    # Gather relevant words from twitter and hannanum corpus
+    # Gather relevant nouns from twitter and hannanum corpus
     for aword in titlewords:
-        awordlist = []
         tlist = twitter.nouns(aword)
         hlist = hannanum.nouns(aword)
-        htlist = list(set(hlist) - set(tlist))
-        thlist = list(set(tlist) - set(hlist))
-        ilist = list(set(hlist) & set(tlist))
-        awordlist = ilist
-        if len(htlist)>0:
-            for htword in htlist:
+        htlist = list(set(hlist) - set(tlist))  # only in Hannanum
+        thlist = list(set(tlist) - set(hlist))  # only in Twitter
+        ilist = list(set(hlist) & set(tlist))   # in both
+        
+        # Add nouns that occur in both corpus
+        nouns = nouns + ilist
+
+        # Add all nouns from Twitter corpus that are long enough
+        nouns = nouns + filter(lambda word: len(word) > 1, thlist)
+
+        # Add nouns from Hannanum corpus that are non divisible (root noun)
+        for htword in htlist:
+            if len(htword) > 2:
                 newlist = twitter.nouns(htword)
                 if len(newlist) < 2:
-                    awordlist.append(htword)
-        if len(thlist) > 0:
-            for thword in thlist:
-                if len(thword) > 1:
-                    awordlist.append(thword)
-        
-        entities = entities + awordlist
-    
+                    nouns.append(htword)
+
     # Remove words with digits
-    entities = filter(lambda word: not any(char.isdigit() for char in word), entities)
-    # Blacklist
+    nouns = filter(lambda word: not any(char.isdigit() for char in word), nouns)
+    # Remove blacklisted words
     badwords = ["수", "년", "등", "몇", '네이버', '뉴스']
-    entities = filter(lambda word: word not in badwords, entities)
-    return list(set(list(entities)))
+    nouns = filter(lambda word: word not in badwords, nouns)
+    return list(set(list(nouns)))
 
 # Load training data
 tagged = open('/data/nlp/train.json', 'r', encoding='utf-8')
 tagkeys = json.load(tagged)
 categories = ['안전/환경', '일자리', '문화체육', '보건복지', '교통/건설', '정치행정', '경제', '과학기술', '외교안보', '교육', '농축수산', '인권', '기타']
-
-trainlist = []
-for acat in tagkeys:
-    catwords = acat["keywords"]
-    trainlist.append(catwords)
+trainlist = [acat["keywords"] for acat in tagkeys]
 
 def guess_category(text):
     #nounList = kkma.nouns(text)

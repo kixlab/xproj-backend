@@ -8,7 +8,7 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Person
-        fields = ('url', 'name', 'mop_for_district', 'promises_url', )
+        fields = ('url', 'name', 'mop_for_district', 'promises_url', 'mayor_for_province', 'mayor_for_district',)
 
 class PromiseSerializer(serializers.HyperlinkedModelSerializer):
     person = PersonSerializer()

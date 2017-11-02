@@ -4,7 +4,9 @@ from django.contrib.postgres.fields import ArrayField
 
 class Person(models.Model):
     name = models.CharField(max_length=100)
-    mop_for_district = models.ForeignKey(VotingDistrict, related_name='mop')
+    mop_for_district = models.ForeignKey(VotingDistrict, related_name='mop', null=True)
+    mayor_for_province = models.CharField(max_length=50, blank=True, null=True)
+    mayor_for_district = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return self.name

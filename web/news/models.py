@@ -51,7 +51,7 @@ class Article(models.Model):
         if self.categories:
             # Dummy
             self.promises = Promise.objects.filter(categories__overlap=self.categories,
-                                                   person__mop_for_district__areas__province="서울특별시")[:10]
+                                                   person__mayor_for_province="서울특별시")[:10]
 
     @classmethod
     def get_or_create_by_url(cls, url):

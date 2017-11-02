@@ -42,7 +42,8 @@ DJANGO_APPS = [
 ]
 
 LOCAL_APPS_PRIORITY = [
-    'frontend'
+    'frontend',
+    'accounts'
 ]
 
 THIRD_PARTY_APPS = [
@@ -58,6 +59,7 @@ THIRD_PARTY_APPS = [
     'rest_auth.registration',
     'corsheaders',
     'debug_toolbar',
+    'djgeojson',
 ]
 
 LOCAL_APPS = [

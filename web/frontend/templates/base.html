@@ -1,1 +1,31 @@
-{% extends 'oauth2_provider/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block head_title %}PromiseWiser{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static "style.css" %}" />
+    {% block extra_head %}
+    {% endblock %}
+  </head>
+  <body>
+    {% block body %}
+
+    {% if messages %}
+    <div class="messages">
+      <ul>
+      {% for message in messages %}
+      <li>{{message}}</li>
+      {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <div class="content">
+      {% block content %}{% endblock %}
+    </div>
+
+    {% endblock %}
+
+    {% block extra_body %}{% endblock %}
+  </body>
+</html>

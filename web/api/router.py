@@ -15,7 +15,6 @@ class KoreaDataAPI(routers.APIRootView):
 
 class Router(routers.DefaultRouter):
     include_format_suffixes = False
-    root_view_name = 'api_root'
     APIRootView = KoreaDataAPI
 
 def get_view_name(cls, suffix=None):

@@ -1,8 +1,9 @@
 from rest_framework import viewsets, filters
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
 from promises.serializers import *
 from promises.models import Person, Promise
+from django.db.models import Q
 
 class PromiseViewSet(viewsets.ReadOnlyModelViewSet):
     """This endpoint provides promises made by people.
@@ -20,6 +21,15 @@ class PersonViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PersonSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
+
+    @list_route()
+    def mayors(self, request):
+        qs = Person.objects.filter(Q(mayor_for_province__isnull=False) | Q(mayor_for_district__isnull=False))
+        context = {
+            'request': request
+        }
+        serializer = PersonSerializer(qs, many=True, context=context)
+        return Response(serializer.data)
 
     @detail_route()
     def promises(self, request, pk=None):

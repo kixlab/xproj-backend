@@ -9,3 +9,8 @@ data/*/*.sbx
 data/*/*.shp.xml
 data/*/*.shp
 data/*/*.shx
+data/*/*.zip
+data/*/*.z01
+data/*/*.z02
+data/*/*.z03
+data/promises

@@ -3,6 +3,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from allauth.account import views as allauth_views
 from rest_framework.authtoken import views as rest_views
+from frontend.views import IndexView
 
 urlpatterns = []
 
@@ -17,6 +18,7 @@ urlpatterns += [
 # Apps
 urlpatterns += [
     url(r'', include('api.urls')),
+    url(r'^$', IndexView.as_view(), name='home')
 ]
 
 # For local dev, serve static files directly from Django

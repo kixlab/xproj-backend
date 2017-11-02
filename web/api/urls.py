@@ -20,5 +20,5 @@ urlpatterns = [
     url(r'^oauth/token/', views.TokenView.as_view()),
     url(r'^oauth/success/', views.OAuthSuccessView.as_view()),
     url(r'^oauth/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    url(r'^$', RedirectView.as_view(pattern_name='api_root', permanent=False)),
+#    url(r'^$', RedirectView.as_view(pattern_name='api_root', permanent=False)),
 ]
