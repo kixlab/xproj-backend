@@ -58,8 +58,7 @@ THIRD_PARTY_APPS = [
     'rest_auth',
     'rest_auth.registration',
     'corsheaders',
-    'debug_toolbar',
-    'djgeojson',
+    'debug_toolbar'
 ]
 
 LOCAL_APPS = [
