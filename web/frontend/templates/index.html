@@ -3,19 +3,14 @@
 {% load i18n %}
 
 {% block content %}
-<h1>{% trans "PromiseWiser" %}</h1>
+<h1><span>{% trans "PromiseWiser" %}</span></h1>
 
-<div>
-  <ul class="nav">
-  {% if user.is_authenticated %}
-  <li>Logged in as {{user.get_short_name|default:user.username}}</li>
-  <li><a href="{% url 'account_logout' %}">{% blocktrans %}Logout{% endblocktrans %}</a></li>
-  {% else %}
-  <li><a href="{% url 'account_login' %}">{% blocktrans %}Login{% endblocktrans %}</a></li>
-  <li><a href="{% url 'account_signup' %}">{% blocktrans %}Signup{% endblocktrans %}</a></li>
-  {% endif %}
-  <li><a href="{% url 'api-root' %}">{% blocktrans %}API{% endblocktrans %}</a></li>
-  </ul>
+<p>Welcome to PromiseWiser. Be part of a growing community of citizens who care about politics. Your participation can help change your country for the better.</p>
+
+<div class="apps">
+    <div class="app"><h2>PromiseBook</h2><p>Interact with foo and monitor bla.</p></div>
+    <div class="app"><h2>News Reader</h2><p>Enhance your news reading experience.</p></div>
+    <div class="app"><h2>?</h2><p>Coming soon.</p></div>
 </div>
 
 

@@ -1,43 +1,91 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,700|Roboto:100,300,500,700');
 
+html {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    height: 100%;
+}
+
 body {
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
     color: #1a1a1a;
     margin: 0;
-    padding: 2em;
 }
 
 a, a:link, a:visited {
     color: inherit;
 }
 
-body {
-    background-color: #333;
-    color: #fff;
+/* sticky footer */
+.site {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 100%;
+    flex-direction: column;
+}
+.header, .footer {
+    flex: none;
+}
+.main {
+    flex: 1 0 auto;
+    width: 100%;
+}
+.main::after {
+    content: '\00a0'; /* &nbsp; */
+    display: block;
+    margin-top: var(--space);
+    height: 0px;
+    visibility: hidden;
+}
+
+p { 
+    max-width: 700px;
+    line-height: 1.5;
 }
 
 .content {
     flex: 1;
-    max-width: 650px;
-    margin: 0 auto;
-    background-color: #222;
-    padding: 2em;
+    padding: 4rem;
     border-radius: 8px;
+}
+.footer {
+    padding: 2rem 4rem;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+}
+.footer > div {
+    margin-right: 1rem;
+}
+.footer > div:last-of-type {
+    justify-self: flex-end;
+    margin-right: 0;
+}
+
+@media (max-width: 900px) {
+    .content, .footer {
+        padding: 1rem;
+    }
 }
 
 h1 {
     font-size: 2.5em;
-    font-weight: 100;
-    margin: 0 0 1rem;
+    font-weight: 300;
+    margin: 0 0 2rem;
     line-height: 1;
+    color: #000;
+}
+
+@media (max-width: 450px) {
+    h1 {
+        font-size: 2em;
+    }
 }
 
 h1 span {
-    font-weight: 300;
+    font-weight: 100;
+    background-color: #eaffee;
+    padding: 0 .15em;
 }
 
 .nav {
@@ -48,6 +96,9 @@ h1 span {
 .nav li {
     display: inline-block;
     padding-right: .5em;
+}
+.nav li:last-of-type {
+    padding-right: 0;
 }
 
 form p {
@@ -62,11 +113,12 @@ form input {
     max-width: 400px;
     font-size: inherit;
     padding: .5em;
-    border: 0;
+    border: 1px solid #ddd;;
     background-color: rgba(255,255,255,0.1);
     color: inherit;
+    font-weight: inherit;
 }
-form button, .button {
+form button, a.button {
     border: 0;
     text-align: center;
     display: inline-block;
@@ -74,12 +126,12 @@ form button, .button {
     text-decoration: none;
     font-weight: inherit;
     font-size: inherit;
-    color: inherit;
     background-color: rgb(40, 160, 208);
     padding: .5em 1em;
     cursor: pointer;
+    color: #fff;
 }
-.secondaryAction {
+.secondaryAction, a.secondaryAction {
     background-color: rgb(150, 154, 130);
 }
 
@@ -100,4 +152,36 @@ form button, .button {
 
 .errorlist {
     color: red;
+}
+
+.apps {
+    display: flex;
+    margin: 2rem 0;
+    max-width: 1000px;
+}
+.apps .app {
+    flex: 1;
+    background-color: #333;
+    color: #fff;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 10rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    margin-right: 2rem;
+    font-size: .9em;
+    cursor: pointer;
+}
+.apps .app:hover {
+    background-color: #343;
+}
+.apps .app h2 {
+    font-size: 1.5em;
+    font-weight: 300;
+}
+.apps .app:last-of-type {
+    margin-right: 0;
 }

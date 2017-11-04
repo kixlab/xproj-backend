@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -7,7 +8,7 @@
     {% block extra_head %}
     {% endblock %}
   </head>
-  <body>
+  <body class="site">
     {% block body %}
 
     {% if messages %}
@@ -25,6 +26,22 @@
     </div>
 
     {% endblock %}
+
+    <div class="footer">
+      <div>&copy; 2017 <a href="http://kixlab.org">KIXLAB</a>. Research project founded by the NRF.</div>
+      <div>
+          <ul class="nav">
+          {% if user.is_authenticated %}
+          <li>Logged in as {{user.get_short_name|default:user.username}}</li>
+          <li><a href="{% url 'account_logout' %}">{% blocktrans %}Logout{% endblocktrans %}</a></li>
+          {% else %}
+          <li><a href="{% url 'account_login' %}">{% blocktrans %}Login{% endblocktrans %}</a></li>
+          <li><a href="{% url 'account_signup' %}">{% blocktrans %}Signup{% endblocktrans %}</a></li>
+          {% endif %}
+          <li><a href="{% url 'api-root' %}">{% blocktrans %}API{% endblocktrans %}</a></li>
+          </ul>
+        </div>
+    </div>
 
     {% block extra_body %}{% endblock %}
   </body>
