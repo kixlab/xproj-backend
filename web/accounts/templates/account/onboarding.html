@@ -31,16 +31,20 @@
             {{ field.label_tag }}
             {{ field }}
             
-            <span style="margin-bottom:1em">
+            <span style="display: flex;">
                 <!--<a href="javascript:getLocation()" class="button secondaryAction" disabled>{% trans "Search for location" %}</a>-->
-                <a href="javascript:getLocation()" class="button secondaryAction" id="getLocationButton">{% trans "Automatically get location" %}</a>
+                <a href="javascript:getLocation()" class="button secondaryAction" id="getLocationButton">{% trans "Find current location" %}</a>
+            
+                <input style="flex: 1" type="text" onkeyup="search(this.value)" name="location_search" placeholder="Type address to search..." value="{{object.location.display_name}}">
+                
+             </span>
+
+            <span  id="location_options">
+
             </span>
 
-            <span id="location_options"></span>
-
-            or type to search
             
-            <input type="text" name="location_search" placeholder="Type address to search..." value="{{object.location.display_name}}">
+            
             
         {% else %}
             {{ field.label_tag }}
@@ -59,27 +63,49 @@
 </form>
 
 <script>
+    function debounce(a,b,c){var d;return function(){var e=this,f=arguments;clearTimeout(d),d=setTimeout(function(){d=null,c||a.apply(e,f)},b),c&&!d&&a.apply(e,f)}}
+
+    function showResults(data) {
+      if (data.results.length == 0) {
+        document.getElementById('location_options').innerHTML = '<ul class="location-options"><li>No results</li></ul>';
+        return;
+      }
+      var html = data.results.map(area => 
+                    '<li><a href="javascript:selectLocation(' + area.pk + ',\'' + area.display_name + '\')">' + area.display_name + '</a></li>'
+                  ).join('');
+      document.getElementById('location_options').innerHTML = '<ul class="location-options">' + html + '</ul>';
+    }
     function getLocation() {
         if ("geolocation" in navigator) {
           document.getElementById('location_options').innerHTML = 'Loading...';
-            navigator.geolocation.getCurrentPosition(function(position) {
-                fetch('/api/areas/?lat='+position.coords.latitude+'&lon='+position.coords.longitude).then(resp => resp.json()).then(
-                    data => {
-                        console.log(data);
-                        var html = data.results.map(area => 
-                          '<li><a href="javascript:selectLocation(' + area.pk + ',\'' + area.display_name + '\')">' + area.display_name + '</a></li>'
-                        ).join('');
-                        var msg = 'Please select your location';
-                        document.getElementById('location_options').innerHTML = msg + '<ul>' + html + '</ul>';
-                    }
-                );
-            });
+          navigator.geolocation.getCurrentPosition(function(position) {
+            fetch('/api/areas/?lat='+position.coords.latitude+'&lon='+position.coords.longitude).then(resp => resp.json()).then(
+                data => {
+                    console.log(data);
+                    showResults(data);
+                }
+            );
+          });
         }
     }
     function selectLocation(key, label) {
       document.forms[0].location_search.value = label;
       document.forms[0].location.value = key;
       document.getElementById('location_options').innerHTML = '';
+    }
+    var last_query = "";
+    function search(query) {
+      if (!query || query.length < 2 || last_query == query) return;
+      last_query = query;
+      debounce(function() {
+        document.getElementById('location_options').innerHTML = 'Loading...';
+        fetch('/api/areas/?search='+query).then(resp => resp.json()).then(
+            data => {
+              console.log(data);
+              showResults(data);
+            }
+        );
+      }, 800)();
     }
 </script>
 
