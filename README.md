@@ -32,7 +32,7 @@ Go to [http://localhost:8000/](http://localhost:8000/)
 
 ## Setup OAuth
 
-Go to [/oauth/applications/](http://localhost:8000/oauth/applications/) and follow the steps to setup a client (e.g. webapp, chromeextension). For browser based web-apps, set client type to "public" and grant type to "Authorization code". For apps that can send username and password directly, use "Resource owner password-based". You can specify a client id, e.g. 'chromeextension'. Since our apps are public, we don't need the client secret.
+Go to [/oauth/applications/](http://localhost:8000/oauth/applications/) and follow the steps to setup a client (e.g. webapp, chromeextension). For browser based web-apps, set client type to "public" and grant type to "Authorization code". For apps that can send username and password directly, use "Resource owner password-based". You can specify a client id, e.g. 'chromeextension'. Since our apps are public, we don't need the client secret. For a redierct URI you can use `http://localhost:8000/oauth/success/`.
 
 ## API usage
 

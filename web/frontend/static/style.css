@@ -119,17 +119,20 @@ form input {
     color: inherit;
     font-weight: inherit;
 }
+form input[type=submit],
 form button, a.button {
-    border: 0;
+    border: 1px solid #ccc;
     text-align: center;
     display: inline-block;
     line-height: 1;
     text-decoration: none;
     font-weight: inherit;
     font-size: inherit;
-    background-color: #6cb5f4;
     padding: .5em 1em;
     cursor: pointer;
+}
+form button, a.button, .btn-primary {
+    background-color: #6cb5f4;
     color: #fff;
 }
 .secondaryAction, a.secondaryAction {

@@ -235,6 +235,7 @@ OAUTH2_PROVIDER = {
         'basic': 'User information',
         'write': 'Write scope',
     },
+    'REQUEST_APPROVAL_PROMPT': 'auto'
 }
 
 SWAGGER_SETTINGS = {
