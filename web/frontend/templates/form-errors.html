@@ -1,0 +1,12 @@
+{% if form.errors %}
+<ul class="messages errorlist">
+    {% for key, errors in form.errors.items %}
+        {% for error in errors %}
+            <li class="alert alert-error">
+                {% if key != '__all__' %}{{ key }} {% endif %}
+                {{error}}
+            </li>
+        {% endfor %}
+    {% endfor %}
+</ul>
+{% endif %}

@@ -1,0 +1,23 @@
+{% load form_utils %}
+
+{% for hidden in form.hidden_fields %}
+{{ hidden }}
+{% endfor %}
+
+{% for field in form.visible_fields %}
+    <p{{ field.row_attrs }}>
+        
+        {% if field|is_checkbox %}
+            <span class="field-checkbox">
+                {{ field }}
+                {{ field.label_tag }}
+            </span>
+        {% else %}
+            {{ field.label_tag }}
+            {{ field }}
+        {% endif %}
+
+        {% if field.help_text %}<span class="help">{{ field.help_text }}</span>{% endif %}
+    </p>
+    {{ field.errors }}
+{% endfor %}

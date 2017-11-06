@@ -1,30 +1,63 @@
 {% extends "account/base.html" %}
 
 {% load i18n %}
+{% load form_utils %}
 
 {% block head_title %}{% trans "Welcome" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "<span>PromiseWiser</span> Welcome" %}</h1>
+<h1>{% trans "<span>Welcome</span>" %}</h1>
 
-<p>{% blocktrans %}Please tell us a bit more about yourself.
-    All information will be handled confidentially and not disclosed to third parties.{% endblocktrans %}</p>
+<p>{% blocktrans %}Please tell us a bit more about yourself, so we can provide you with a personal experience. All your information will be kept private and secure.{% endblocktrans %}</p>
 
-<form class="signup" method="post">
+
+<form class="signup step-form" method="post">
   {% csrf_token %}
-  {{ form.as_p }}
-  <p><label>Location:</label>
-      <input type="text" name="location_search" placeholder="Type address to search..." value="{{object.location.display_name}}">
-      <div id="location_options"></div>
-  </p>
 
-  <div style="margin-bottom:1em">
-    <!--<a href="javascript:getLocation()" class="button secondaryAction" disabled>{% trans "Search for location" %}</a>-->
-    <a href="javascript:getLocation()" class="button secondaryAction" id="getLocationButton">{% trans "Automatically get location" %}</a>
+  <div class="steps">
+      Step {{form_step}}/{{form_total_steps}}
+  </div>
+  <div class="inside">
+
+  {% for field in form %} 
+    <p{{ field.row_attrs }}>
+        
+        {% if field|is_checkbox %}
+            <span class="field-checkbox">
+                {{ field }}
+                {{ field.label_tag }}
+            </span>
+        {% elif field.name == 'location' %}
+            {{ field.label_tag }}
+            {{ field }}
+            
+            <span style="margin-bottom:1em">
+                <!--<a href="javascript:getLocation()" class="button secondaryAction" disabled>{% trans "Search for location" %}</a>-->
+                <a href="javascript:getLocation()" class="button secondaryAction" id="getLocationButton">{% trans "Automatically get location" %}</a>
+            </span>
+
+            <span id="location_options"></span>
+
+            or type to search
+            
+            <input type="text" name="location_search" placeholder="Type address to search..." value="{{object.location.display_name}}">
+            
+        {% else %}
+            {{ field.label_tag }}
+            {{ field }}
+        {% endif %}
+
+        {% if field.help_text %}<span class="help">{{ field.help_text }}</span>{% endif %}
+    </p>
+    {{ field.errors }}
+  {% endfor %}
+
+  <button type="submit">{% trans "Continue" %} &raquo;</button>
+
   </div>
   
-  <button type="submit">{% trans "Continue" %} &raquo;</button>
 </form>
+
 <script>
     function getLocation() {
         if ("geolocation" in navigator) {
@@ -34,7 +67,7 @@
                     data => {
                         console.log(data);
                         var html = data.results.map(area => 
-                          '<li><a href="#" onClick="selectLocation(' + area.pk + ',\'' + area.display_name + '\')">' + area.display_name + '</a></li>'
+                          '<li><a href="javascript:selectLocation(' + area.pk + ',\'' + area.display_name + '\')">' + area.display_name + '</a></li>'
                         ).join('');
                         var msg = 'Please select your location';
                         document.getElementById('location_options').innerHTML = msg + '<ul>' + html + '</ul>';

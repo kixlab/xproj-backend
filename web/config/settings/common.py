@@ -58,7 +58,8 @@ THIRD_PARTY_APPS = [
     'rest_auth',
     'rest_auth.registration',
     'corsheaders',
-    'debug_toolbar'
+    'debug_toolbar',
+    'form_utils',
 ]
 
 LOCAL_APPS = [
@@ -195,6 +196,7 @@ ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 #ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 #ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_SESSION_REMEMBER = True
 
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "/login/"

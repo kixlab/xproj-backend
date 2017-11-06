@@ -108,6 +108,7 @@ form p {
 
 form label {
     margin: 0 .5em .5em 0;
+    font-weight: 500;
 }
 form input {
     max-width: 400px;
@@ -126,13 +127,33 @@ form button, a.button {
     text-decoration: none;
     font-weight: inherit;
     font-size: inherit;
-    background-color: rgb(40, 160, 208);
+    background-color: #6cb5f4;
     padding: .5em 1em;
     cursor: pointer;
     color: #fff;
 }
 .secondaryAction, a.secondaryAction {
     background-color: rgb(150, 154, 130);
+}
+
+.step-form {
+    
+    border-radius: 6px 6px 0 0;
+    overflow: hidden;
+    max-width: 700px;
+}
+.step-form .steps {
+    background-color:  #373942;
+    color: #fff;
+    font-size: .85em;
+    padding: 0 1em;
+    line-height: 2.5;
+    text-align: center;
+}
+.step-form .inside {
+    padding: 0 1em 1em 1em;
+    border: 1px solid  #eaeaea;
+    border-radius: 0 0 6px 6px;
 }
 
 .messages {
