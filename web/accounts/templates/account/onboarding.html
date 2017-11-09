@@ -4,7 +4,7 @@
 {% load form_utils %}
 
 {% block head_title %}{% trans "Welcome" %}{% endblock %}
-{% block title %}{% trans "Welcome" %}{% endblock %}
+{% block title %}{% trans "Welcome" %}, {{user.username}}!{% endblock %}
 
 {% block content %}
 
