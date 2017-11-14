@@ -23,8 +23,14 @@ docker-compose run web python3 manage.py load_spatial_data --shapefile /data/vot
 echo "Unzipping promise data ..."
 cd data/
 unzip promises.zip -d promises
+unzip linkscores_name.csv.zip
 cd ../
 echo "Loading data into database ..."
 echo docker-compose run web python3 manage.py load_promise_data
 docker-compose run web python3 manage.py load_promise_data
+)
+
+(
+echo "Setting up additional data ..."
+docker-compose run web python3 manage.py setup_data
 )

@@ -17,7 +17,14 @@ class Promise(models.Model):
     target_groups = ArrayField(models.CharField(max_length=50), blank=True)
     person = models.ForeignKey(Person, related_name='promises',
         on_delete=models.SET_NULL, blank=True, null=True)
+    budget_programs = models.ManyToManyField('BudgetProgram', related_name='promises')
 
     def __str__(self):
         return self.title
- 
+
+class BudgetProgram(models.Model):
+    title = models.CharField(max_length=254)
+    amount = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.title
