@@ -8,7 +8,7 @@ def run(verbose=True):
     mayors()
     elected_members()
     promises()
-    links()
+    # links()
 
 def elected_members():
     f = open("/data/voting-districts/results.txt")

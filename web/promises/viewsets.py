@@ -4,6 +4,23 @@ from rest_framework.response import Response
 from promises.serializers import *
 from promises.models import Person, Promise
 from django.db.models import Q
+from rest_framework.pagination import LimitOffsetPagination
+
+class LargeResultsSetPagination(LimitOffsetPagination):
+    default_limit = 100
+    max_limit = 1000
+
+class BudgetProgramViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = BudgetProgram.objects.all()
+    serializer_class = BudgetProgramSerializer
+    filter_backends = (filters.SearchFilter,)
+    pagination_class = LargeResultsSetPagination
+    search_fields = ('name',)
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return BudgetProgramDetailSerializer
+        return BudgetProgramSerializer 
 
 class PromiseViewSet(viewsets.ReadOnlyModelViewSet):
     """This endpoint provides promises made by people.

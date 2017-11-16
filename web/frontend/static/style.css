@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,700|Roboto:100,300,500,700');
+@import url('https://fonts.googleapis.com/css?family=Barlow:100,300,500,700');
+
+
 
 html {
     box-sizing: border-box;
@@ -7,7 +9,7 @@ html {
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Barlow', sans-serif;
     font-weight: 300;
     color: #1a1a1a;
     margin: 0;
@@ -69,7 +71,7 @@ p {
 }
 
 h1 {
-    font-size: 2.5em;
+    font-size: 3em;
     font-weight: 300;
     margin: 0 0 2rem;
     line-height: 1;

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Person, Promise
+from .models import Person, Promise, BudgetProgram
 
 admin.site.register(Person, admin.ModelAdmin)
 
@@ -14,4 +14,5 @@ class PersonInline(admin.TabularInline):
     readonly_fields = ('name',)
     can_delete = False
     show_change_link = True
-    
+
+admin.site.register(BudgetProgram, admin.ModelAdmin)

@@ -60,6 +60,7 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     'debug_toolbar',
     'form_utils',
+    'prompt_responses'
 ]
 
 LOCAL_APPS = [
@@ -264,4 +265,9 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.logging.LoggingPanel',
     'debug_toolbar.panels.redirects.RedirectsPanel',
 ]
+
+"""
+App specific
+"""
+XPROJ_SEOUL_API_KEY = env('XPROJ_SEOUL_API_KEY', default=None)
 

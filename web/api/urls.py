@@ -12,6 +12,7 @@ router.register(r'people', PersonViewSet)
 router.register(r'voting-districts', VotingDistrictViewSet)
 router.register(r'promises', PromiseViewSet)
 router.register(r'news', ArticleViewSet)
+router.register(r'budget-programs', BudgetProgramViewSet)
 
 urlpatterns = [
     url(r'^api/', include(router.urls)),

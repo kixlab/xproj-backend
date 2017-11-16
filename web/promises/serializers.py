@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from promises.models import Person, Promise
+from promises.models import Person, Promise, BudgetProgram
 
 class PersonSerializer(serializers.HyperlinkedModelSerializer):
     promises_url = serializers.HyperlinkedIdentityField(view_name='person-promises')
@@ -16,3 +16,18 @@ class PromiseSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Promise
         fields = ('url', 'title', 'categories', 'target_groups', 'person')
+
+class BudgetProgramSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = BudgetProgram
+        fields = ('url', 'name', 'fiscal_year', 'category', 'sub_category', 'department', 'total_amount', )
+
+class BudgetProgramDetailSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = BudgetProgram
+        fields = (
+            'url', 'name', 'fiscal_year', 'category', 'sub_category', 'department', 'total_amount',
+            'original_id', 'fiscal_category', 'expenditure_amount', 'etc_amount', 'change_amount',
+            'forward_amount', 'allocated_amount', 'national_amount', 'province_amount', 'precinct_amount',
+            'balance_amount' 
+        )
