@@ -5,6 +5,7 @@ from promises.viewsets import *
 from news.viewsets import *
 from .router import Router
 from . import views
+from prompt_responses.viewsets import PromptViewSet
 
 router = Router()
 router.register(r'areas', AreaViewSet)
@@ -13,6 +14,9 @@ router.register(r'voting-districts', VotingDistrictViewSet)
 router.register(r'promises', PromiseViewSet)
 router.register(r'news', ArticleViewSet)
 router.register(r'budget-programs', BudgetProgramViewSet)
+
+# External packages
+router.register(r'prompts', PromptViewSet)
 
 urlpatterns = [
     url(r'^api/', include(router.urls)),

@@ -13,9 +13,10 @@ class LargeResultsSetPagination(LimitOffsetPagination):
 class BudgetProgramViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = BudgetProgram.objects.all()
     serializer_class = BudgetProgramSerializer
-    filter_backends = (filters.SearchFilter,)
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = LargeResultsSetPagination
     search_fields = ('name',)
+    ordering_fields = ('total_amount', 'name')
 
     def get_serializer_class(self):
         if self.action == 'retrieve':

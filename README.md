@@ -15,9 +15,16 @@ Data storage, authentication, geocoding, news aggregator, and recommendation sys
 - `docker-compose run web python3 manage.py createsuperuser` to make a new admin account
 - Run `./scripts/initial_load.sh` to load spatial and promise data. This will take a while.
 
+### Additional data
+
+Some of these might need API keys. Set them via environment variables like `export XPROJ_SEOUL_API_KEY='...'`
+
+- `docker-compose run web python3 manage.py crawl_budget_data` to crawl the current year's budget programs from Seoul's open API
+- `docker-compose run web python3 manage.py crawl_budget_data --year 2016` to crawl another year's budget programs from Seoul's open API
+
 ## Update
 
-If you're update a previous installation, run
+If you're updating a previous installation, run
 
 - `docker-compose build`
 - `docker-compose run web python3 manage.py migrate`
