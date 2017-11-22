@@ -4,4 +4,4 @@ django-debug-toolbar==1.9.1
 django-form-utils==1.0.3
 
 
-https://github.com/graup/django-prompt-responses/archive/0ff0dc3.zip
+https://github.com/graup/django-prompt-responses/archive/83a9e61.zip
