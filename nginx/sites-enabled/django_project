@@ -54,8 +54,8 @@ server {
 # Staging
 # Static files are collected and served by nginx
 server {
-    listen 80;
-    server_name api.budgetwiser.org;
+    listen 80 default_server;
+    # server_name api.budgetwiser.org;
     charset utf-8;
 
     # letsencrypt challenge
@@ -70,7 +70,7 @@ server {
 
     location /static {
         include /etc/nginx/mime.types;
-        alias /usr/src/app/collected_static;
+        alias /usr/src/collected_static;
     }
 
     location / {
@@ -101,7 +101,7 @@ server {
 
     location /static {
         include /etc/nginx/mime.types;
-        alias /usr/src/app/collected_static;
+        alias /usr/src/collected_static;
     }
 
     location / {
@@ -119,8 +119,8 @@ server {
 }
 
 # Catch-all invalid hosts
-server {
-    listen 80 default_server;
-    return 444;
-}
+#server {
+#    listen 80 default_server;
+#    return 444;
+#}
 

@@ -24,7 +24,7 @@ urlpatterns += [
 
 # For local dev, serve static files directly from Django
 # In deployment, these should be served from a real server
-if settings.DEBUG:
+if settings.DEPLOYMENT == 'local':
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
     urlpatterns += staticfiles_urlpatterns()
 

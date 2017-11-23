@@ -169,7 +169,7 @@ LANGUAGES = (
 LOCALE_PATHS = ['locale']
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.abspath(os.path.dirname(__name__)) + '/static/'
+STATIC_ROOT = os.path.abspath(os.path.join(os.path.dirname(__name__), os.pardir)) + '/collected_static/'
 
 """
 Authentication
