@@ -3,13 +3,8 @@ version: '3'
 services:
   web:
     build: ./web/
-    ports:  # c.f. expose
-      - "8000:8000"
     links:
       - db:db
-    volumes:
-      - ./web:/usr/src/app/
-      - ./data:/data
     environment:
       - XPROJ_SEOUL_API_KEY
 
@@ -22,5 +17,11 @@ services:
     environment:
       - POSTGRES_USER=postgres
 
+  nginx:
+    build: ./nginx/
+    links:
+      - web:web
+
 volumes:
   data-volume:
+  static-volume:

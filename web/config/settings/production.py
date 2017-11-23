@@ -6,4 +6,3 @@ DEBUG = env.bool('DJANGO_DEBUG', default=False)
 
 DEPLOYMENT = "production"
 
-ALLOWED_HOSTS = ['*']  # unsafe for production

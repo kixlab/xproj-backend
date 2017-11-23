@@ -1,6 +1,22 @@
-# extends docker-compose.production.yml, use with
+# extends docker-compose.yml, use with
 # `docker-compose -f docker-compose.yml -f docker-compose.staging.yml up`
+version: '3'
+services:
+  web:
+    command: ./docker-entrypoint.sh
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.staging
+    volumes:
+      - /usr/src/app/
+      - static-volume:/usr/src/app/collected_static
+      - ./data:/data
 
-web:
-  environment:
-    - DJANGO_SETTINGS_MODULE=config.settings.staging
+  nginx:
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - static-volume:/usr/src/app/collected_static
+      - ./nginx/dummycerts:/etc/letsencrypt/live/api.budgetwiser.org/
+    #command: /bin/sh -c "certbot -n certonly --webroot -w /var/www/api.budgetwiser.org/ -d api.budgetwiser.org --agree-tos --email grau@kaist.ac.kr && nginx -g 'daemon off;'"
+

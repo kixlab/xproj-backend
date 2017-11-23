@@ -23,7 +23,7 @@ SECRET_KEY = '2+q@b%p6s6asdfgh67552341sdfsdfa2sy1ame@h'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DJANGO_DEBUG", False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']  # ok because hostname is verified by proxy server
 
 TESTING = False
 

@@ -71,3 +71,7 @@ For OAuth consumers (doing the OAuth dance), use these settings:
 ## Other tasks
 
 - Delete database volume and start from scratch: `docker-compose down`, `docker volume rm xprojbackend_data-volume`.
+
+## Deployment
+
+`docker-compose -f docker-compose.yml -f docker-compose.staging.yml up`

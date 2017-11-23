@@ -3,3 +3,14 @@ version: '3'
 services:
   web:
     command: /usr/bin/gunicorn --no-sendfile --reload config.wsgi:application -b :8000
+    volumes:
+        - ./web:/usr/src/app/
+        - ./data:/data
+
+  nginx:
+    ports:
+      - "8080:80"
+      - "443:443"
+    volumes:
+      - ./web:/usr/src/app/
+      - ./nginx/dummycerts:/etc/letsencrypt/live/api.budgetwiser.org/
