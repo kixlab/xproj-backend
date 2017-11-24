@@ -19,6 +19,7 @@ services:
 
   nginx:
     build: ./nginx/
+    image: xproject_nginx
     links:
       - web:web
 

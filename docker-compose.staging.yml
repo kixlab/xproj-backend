@@ -17,6 +17,3 @@ services:
       - "443:443"
     volumes:
       - static-volume:/usr/src/collected_static
-      - ./nginx/dummycerts:/etc/letsencrypt/live/api.budgetwiser.org/
-    command: /bin/sh -c "certbot -n certonly --webroot -w /var/www/api.budgetwiser.org/ -d api.budgetwiser.org --agree-tos --email grau@kaist.ac.kr && nginx -g 'daemon off;'"
-
