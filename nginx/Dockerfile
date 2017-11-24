@@ -17,3 +17,5 @@ RUN ln -sf /dev/stderr /var/log/nginx/error.log
 RUN mkdir -p /var/www/acme-challenge/
 
 # RUN echo '0  7  1,15  *  *    certbot renew --pre-hook "service nginx stop" --post-hook "service nginx start"' > /etc/crontabs/root
+
+CMD ["/docker-entrypoint.sh"]
