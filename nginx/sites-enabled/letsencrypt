@@ -1,0 +1,10 @@
+server {
+    listen 80;
+    server_name api.budgetwiser.org;
+    charset utf-8;
+
+    # letsencrypt challenge
+    location /.well-known/ {
+        root /var/www/api.budgetwiser.org/;
+    }
+}
