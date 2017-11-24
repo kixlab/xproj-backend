@@ -10,6 +10,6 @@ server {
     }
 
     location / {
-        return 444;
+        return 400 'Nothing here.';
     }
 }

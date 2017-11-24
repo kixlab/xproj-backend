@@ -6,6 +6,7 @@ RUN mkdir -p /var/www/api.budgetwiser.org/
 
 ADD nginx.conf /etc/nginx/conf.d/nginx.conf
 ADD sites-enabled/ /etc/nginx/sites-enabled
+ADD sites-available/ /etc/nginx/sites-available
 
 ADD ./init_letsencrypt.sh /init_letsencrypt.sh
 RUN chmod +x /init_letsencrypt.sh

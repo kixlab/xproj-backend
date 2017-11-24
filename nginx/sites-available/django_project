@@ -1,3 +1,9 @@
+# This config is initially in sites-available
+# and only later added to sites-enabled, because it needs 
+# letsencrypt certificates
+
+
+
 # Dev (local) servers
 # Static files are served by Django
 server {
