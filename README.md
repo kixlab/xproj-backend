@@ -76,6 +76,9 @@ For OAuth consumers (doing the OAuth dance), use these settings:
 
 `docker-compose -f docker-compose.yml -f docker-compose.staging.yml build`
 
-`docker-compose -f docker-compose.yml -f docker-compose.staging.yml up`
+`docker-compose -f docker-compose.yml -f docker-compose.staging.yml stop`
 
-`docker-compose -f docker-compose.yml -f docker-compose.staging.yml run nginx /init_letsencrypt.sh`
+`docker-compose -f docker-compose.yml -f docker-compose.staging.yml run --service-ports nginx /init_letsencrypt.sh`
+
+`docker-compose -f docker-compose.yml -f docker-compose.staging.yml up -d`
+

@@ -14,4 +14,6 @@ RUN chmod +x /init_django.sh
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
+RUN mkdir /var/www/api.budgetwiser.org/
+
 # RUN echo '0  7  1,15  *  *    certbot renew --pre-hook "service nginx stop" --post-hook "service nginx start"' > /etc/crontabs/root
