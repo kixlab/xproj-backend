@@ -1,10 +1,15 @@
+# Catch-all invalid hosts
 server {
-    listen 80;
-    server_name api.budgetwiser.org;
+    listen 80 default_server;
+
     charset utf-8;
 
     # letsencrypt challenge
     location /.well-known/ {
         root /var/www/api.budgetwiser.org/;
+    }
+
+    location / {
+        return 444;
     }
 }

@@ -100,9 +100,4 @@ server {
     }
 }
 
-# Catch-all invalid hosts
-server {
-    listen 80 default_server;
-    return 444;
-}
 
