@@ -1,4 +1,4 @@
-# Catch-all invalid hosts
+# Catch-all invalid hosts and ACME challenge
 server {
     listen 80 default_server;
 
@@ -6,7 +6,7 @@ server {
 
     # letsencrypt challenge
     location /.well-known/ {
-        root /var/www/api.budgetwiser.org/;
+        root /var/www/acme-challenge/;
     }
 
     location / {

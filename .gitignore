@@ -15,3 +15,5 @@ data/*/*.z02
 data/*/*.z03
 data/promises
 data/linkscores_name.csv
+certificates
+.vscode

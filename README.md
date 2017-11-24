@@ -74,11 +74,7 @@ For OAuth consumers (doing the OAuth dance), use these settings:
 
 ## Deployment
 
-`docker-compose -f docker-compose.yml -f docker-compose.staging.yml build`
+Run this script on the remote server. Docker should be installed there.
 
-`docker-compose -f docker-compose.yml -f docker-compose.staging.yml stop`
-
-`docker-compose -f docker-compose.yml -f docker-compose.staging.yml run --service-ports nginx /init_letsencrypt.sh`
-
-`docker-compose -f docker-compose.yml -f docker-compose.staging.yml up -d`
+`./deploy.sh`
 
