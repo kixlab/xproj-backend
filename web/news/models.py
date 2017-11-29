@@ -3,7 +3,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.utils.timezone import now
 from promises.models import Promise
 from urllib.parse import urlparse
-from .parser import guess_category, title2list, load_article_naver
+from .parser import guess_category, title2list, load_article_naver, load_article_daum
 
 class Article(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
@@ -31,6 +31,8 @@ class Article(models.Model):
         
         if self.source == 'news.naver.com':
             load_article_naver(self)
+        elif self.source == 'v.media.daum.net':
+            load_article_daum(self)
         else:
             # Unkown source
             self.text = "Unknown source"

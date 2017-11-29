@@ -40,6 +40,31 @@ def load_article_naver(article):
         br.replace_with("\n")
     article.text = str(html.get_text().strip())
 
+def load_article_daum(article):
+    # Load article text when article is requested for the first time
+    soup = load_article_soup(article.url)
+
+    # Title
+    article.title = soup.title.string
+    
+    # Date
+    try:
+        date_string = soup.select(".info_view .txt_info")[1].string[3:] # timestamp starts from 3rd character
+        date_string = date_string.strip().replace('.', '-').replace('- ', 'T') + ':00'
+        kst = timezone('Asia/Seoul')
+        article.original_post_date = kst.localize(parse_datetime(date_string))
+    except IndexError:
+        pass
+
+    # Text
+    # html = soup.find(id="articleBodyContents")
+    html = soup.section
+    for script in html("script"):
+        script.decompose()
+    for br in html.find_all("br"):
+        br.replace_with("\n")
+    article.text = str(html.get_text().strip())
+
 kkma = Kkma()
 hannanum = Hannanum()
 twitter = Twitter()
@@ -111,7 +136,7 @@ def title2list(title):
 # Load training data
 tagged = open('/data/nlp/train.json', 'r', encoding='utf-8')
 tagkeys = json.load(tagged)
-categories=['행정', '공공질서/안전','교육','문화/관광','환경','복지','보건','농축수산','산업/중소기업','교통/건설','과학기술','인권','경제','기타']
+categories = ['안전/환경', '일자리', '문화체육', '보건복지', '교통/건설', '정치행정', '경제', '과학기술', '외교안보', '교육', '농축수산', '인권', '기타']
 trainlist = [acat["keywords"] for acat in tagkeys]
 
 def guess_category(text):
