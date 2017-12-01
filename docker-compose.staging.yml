@@ -9,12 +9,16 @@ services:
     volumes:
       - /usr/src/app/
       - static-volume:/usr/src/collected_static
-      - ./data:/data
+      - remote-data:/data
 
   nginx:
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./certificates:/etc/letsencrypt/live/
+      - letsencrypt:/etc/letsencrypt
       - static-volume:/usr/src/collected_static
+
+volumes:
+  letsencrypt:
+  remote-data:

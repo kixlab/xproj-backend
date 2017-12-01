@@ -76,5 +76,7 @@ For OAuth consumers (doing the OAuth dance), use these settings:
 
 Run this script on the remote server. Docker should be installed there.
 
-`./deploy.sh`
+`./scripts/deploy.sh`
+
+To run some commands on the server, use `docker-compose -f docker-compose.yml -f docker-compose.staging.yml run ....`
 

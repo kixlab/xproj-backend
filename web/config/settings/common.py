@@ -60,7 +60,8 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     'debug_toolbar',
     'form_utils',
-    'prompt_responses'
+    'prompt_responses',
+    'sortedm2m'
 ]
 
 LOCAL_APPS = [
