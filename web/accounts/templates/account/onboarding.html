@@ -10,7 +10,6 @@
 
 <p>{% blocktrans %}Please tell us a bit more about yourself, so we can provide you with a personal experience. All your information will be kept private and secure.{% endblocktrans %}</p>
 
-
 <form class="signup step-form" method="post">
   {% csrf_token %}
 
@@ -59,6 +58,10 @@
   <button type="submit">{% trans "Continue" %} &raquo;</button>
 
   </div>
+
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
   
 </form>
 
