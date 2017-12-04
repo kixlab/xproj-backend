@@ -136,7 +136,7 @@ def title2list(title):
 # Load training data
 tagged = open('/data/nlp/train.json', 'r', encoding='utf-8')
 tagkeys = json.load(tagged)
-categories = ['안전/환경', '일자리', '문화체육', '보건복지', '교통/건설', '정치행정', '경제', '과학기술', '외교안보', '교육', '농축수산', '인권', '기타']
+categories=['행정', '공공질서/안전','교육','문화/관광','환경','복지','보건','농축수산','산업/중소기업','교통/건설','과학기술','인권','경제','기타']
 trainlist = [acat["keywords"] for acat in tagkeys]
 
 def guess_category(text):
