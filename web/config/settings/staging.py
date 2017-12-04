@@ -2,6 +2,6 @@
 
 from .production import *  # noqa
 
-DEBUG = True
+DEBUG = False
 
 DEPLOYMENT = "staging"

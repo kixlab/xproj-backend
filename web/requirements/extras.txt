@@ -2,5 +2,6 @@ beautifulsoup4==4.6.0
 pytz==2017.2
 django-debug-toolbar==1.9.1
 django-form-utils==1.0.3
-django-prompt-responses==0.1b3
+#django-prompt-responses==0.1.1
+https://github.com/graup/django-prompt-responses/archive/850fb8e.zip
 django-model-utils>=2.0

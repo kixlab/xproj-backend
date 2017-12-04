@@ -1,0 +1,36 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load form_utils %}
+
+{% block head_title %}{% trans "Welcome" %}{% endblock %}
+{% block title %}{% trans "You're almost ready" %}{% endblock %}
+
+{% block content %}
+
+<form class="signup step-form" method="post">
+  {% csrf_token %}
+
+  <div class="steps">
+        {% include "account/_steps.html" %}
+  </div>
+  <div class="inside">
+
+        <p>{% blocktrans %}What are your interests? <strong>This UI is work in progress.</strong>{% endblocktrans %}</p>
+
+        {{form.as_p}}
+
+    <div class="form-actions">
+      <button type="submit">{% trans "Continue" %} &raquo;</button>
+    </div>
+
+  </div>
+
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  
+</form>
+
+
+{% endblock %}
