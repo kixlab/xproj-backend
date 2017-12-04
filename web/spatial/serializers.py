@@ -13,7 +13,7 @@ class VotingDistrictSerializer(serializers.HyperlinkedModelSerializer):
 class AreaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Area
-        fields = ('url', 'name', 'display_name', 'precinct', 'province', 'voting_district_name', 'voting_district', )
+        fields = ('pk', 'url', 'name', 'display_name', 'precinct', 'province', 'voting_district_name', 'voting_district', )
 
 class AreaDistanceSerializer(serializers.HyperlinkedModelSerializer):
     distance = serializers.CharField()

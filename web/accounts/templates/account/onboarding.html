@@ -8,54 +8,39 @@
 
 {% block content %}
 
-<p>{% blocktrans %}Please tell us a bit more about yourself, so we can provide you with a personal experience. All your information will be kept private and secure.{% endblocktrans %}</p>
 
 <form class="signup step-form" method="post">
   {% csrf_token %}
 
+
   <div class="steps">
-      Step {{form_step}}/{{form_total_steps}}
+    {% include "account/_steps.html" %}
   </div>
   <div class="inside">
 
-  {% for field in form %} 
-    <p{{ field.row_attrs }}>
-        
-        {% if field|is_checkbox %}
+      <p>{% blocktrans %}Please tell us a bit more about yourself, so we can provide you with a personal experience. All your information will be kept private and secure.{% endblocktrans %}</p>
+      
+      {% for field in form %} 
+        <div{{ field.row_attrs }}>
+            
+          {% if field|is_checkbox %}
             <span class="field-checkbox">
-                {{ field }}
-                {{ field.label_tag }}
+              {{ field }}
+              {{ field.label_tag }}
             </span>
-        {% elif field.name == 'location' %}
+          {% else %}
             {{ field.label_tag }}
             {{ field }}
-            
-            <span style="display: flex;">
-                <!--<a href="javascript:getLocation()" class="button secondaryAction" disabled>{% trans "Search for location" %}</a>-->
-                <a href="javascript:getLocation()" class="button secondaryAction" id="getLocationButton">{% trans "Find current location" %}</a>
-            
-                <input style="flex: 1" type="text" onkeyup="search(this.value)" name="location_search" placeholder="Type address to search..." value="{{object.location.display_name}}">
-                
-             </span>
+          {% endif %}
 
-            <span  id="location_options">
+          {% if field.help_text %}<span class="help">{{ field.help_text }}</span>{% endif %}
+          </div>
+        {{ field.errors }}
+      {% endfor %}
 
-            </span>
-
-            
-            
-            
-        {% else %}
-            {{ field.label_tag }}
-            {{ field }}
-        {% endif %}
-
-        {% if field.help_text %}<span class="help">{{ field.help_text }}</span>{% endif %}
-    </p>
-    {{ field.errors }}
-  {% endfor %}
-
-  <button type="submit">{% trans "Continue" %} &raquo;</button>
+    <div class="form-actions">
+      <button type="submit">{% trans "Continue" %} &raquo;</button>
+    </div>
 
   </div>
 
@@ -64,52 +49,5 @@
   {% endif %}
   
 </form>
-
-<script>
-    function debounce(a,b,c){var d;return function(){var e=this,f=arguments;clearTimeout(d),d=setTimeout(function(){d=null,c||a.apply(e,f)},b),c&&!d&&a.apply(e,f)}}
-
-    function showResults(data) {
-      if (data.results.length == 0) {
-        document.getElementById('location_options').innerHTML = '<ul class="location-options"><li>No results</li></ul>';
-        return;
-      }
-      var html = data.results.map(area => 
-                    '<li><a href="javascript:selectLocation(' + area.pk + ',\'' + area.display_name + '\')">' + area.display_name + '</a></li>'
-                  ).join('');
-      document.getElementById('location_options').innerHTML = '<ul class="location-options">' + html + '</ul>';
-    }
-    function getLocation() {
-        if ("geolocation" in navigator) {
-          document.getElementById('location_options').innerHTML = 'Loading...';
-          navigator.geolocation.getCurrentPosition(function(position) {
-            fetch('/api/areas/?lat='+position.coords.latitude+'&lon='+position.coords.longitude).then(resp => resp.json()).then(
-                data => {
-                    console.log(data);
-                    showResults(data);
-                }
-            );
-          });
-        }
-    }
-    function selectLocation(key, label) {
-      document.forms[0].location_search.value = label;
-      document.forms[0].location.value = key;
-      document.getElementById('location_options').innerHTML = '';
-    }
-    var last_query = "";
-    function search(query) {
-      if (!query || query.length < 2 || last_query == query) return;
-      last_query = query;
-      debounce(function() {
-        document.getElementById('location_options').innerHTML = 'Loading...';
-        fetch('/api/areas/?search='+query).then(resp => resp.json()).then(
-            data => {
-              console.log(data);
-              showResults(data);
-            }
-        );
-      }, 800)();
-    }
-</script>
 
 {% endblock %}

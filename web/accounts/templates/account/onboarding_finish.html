@@ -8,8 +8,20 @@
 
 {% block content %}
 
-<p>{% blocktrans %}Thank you. Your data helps us to personalize your experience.{% endblocktrans %}</p>
+<div class="step-form">
 
-<p><a href="{{redirect_field_value}}" class="button btn-primary">Continue to application</a></p>
+  <div class="steps">
+    {% include "account/_steps.html" %}
+  </div>
+  <div class="inside">
+
+    <p>{% blocktrans %}Thank you. Your data helps us to personalize your experience.{% endblocktrans %}</p>
+
+    <div class="form-actions">
+        <a href="{{redirect_field_value}}" class="button btn-primary big-button">Continue to application</a>
+    </div>
+  </div>
+</div>
+
 
 {% endblock %}

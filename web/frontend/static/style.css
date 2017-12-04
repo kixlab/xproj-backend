@@ -111,6 +111,18 @@ form p {
 form label {
     margin: 0 .5em .5em 0;
     font-weight: 500;
+    display: block;
+}
+form ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+form ul label {
+    font-weight: 300;
+}
+form p + ul {
+    margin-top: -1em;
 }
 form input {
     max-width: 400px;
@@ -141,26 +153,12 @@ form button, a.button, .btn-primary {
 .secondaryAction, a.secondaryAction {
     background-color: rgb(150, 154, 130);
 }
+.big-button, a.big-button {
+    font-size: 1.1em;
+    padding: .8em 1.6em;
+}
 
-.step-form {
-    
-    border-radius: 6px 6px 0 0;
-    overflow: hidden;
-    max-width: 700px;
-}
-.step-form .steps {
-    background-color:  #373942;
-    color: #fff;
-    font-size: .85em;
-    padding: 0 1em;
-    line-height: 2.5;
-    text-align: center;
-}
-.step-form .inside {
-    padding: 0 1em 1em 1em;
-    border: 1px solid  #eaeaea;
-    border-radius: 0 0 6px 6px;
-}
+
 
 .messages {
     position: absolute;
@@ -213,15 +211,136 @@ form button, a.button, .btn-primary {
     margin-right: 0;
 }
 
+
+
+.form-actions {
+    text-align: center;
+    margin-top: 1.5em;
+}
+
+.step-form {
+    
+    border-radius: 6px 6px 0 0;
+    overflow: hidden;
+    max-width: 700px;
+}
+.step-form .inside {
+    padding: 0 1em 1em 1em;
+    border: 1px solid  #eaeaea;
+    border-radius: 0 0 6px 6px;
+}
+.step-form .inside > div {
+    margin-bottom: 1.5em;
+}
+
+.step-form .steps {
+    background-color:  #373942;
+    color: #fff;
+    font-size: .85em;
+    padding: 0 1em;
+    line-height: 2.5;
+    text-align: center;
+    overflow: hidden;
+}
+
+.current-step {
+    float: left;
+}
+
+.step-display {
+    position: relative;
+    display: inline-block;
+    float: right;
+}
+.step-display:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    z-index: 0;
+    width: 100%;
+    height: 1px;
+    margin-top: -1px;
+    background-color: #999;
+}
+.step-display .step {
+    text-indent: -100px;
+    overflow: hidden;
+    width: 9px;
+    height: 9px;
+    border-radius: 100%;
+    border: 1px solid #999;
+    background-color: #373942;
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    margin-right: 8px;
+    box-shadow: inset 0 0 0 1px #373942
+}
+.step-display .step:last-of-type {
+    margin-right: 0;
+}
+.step-display .step.step-current {
+    background-color: #fff;
+}
+.step-display .step.step-done {
+    background-color: #1a8a2f;
+}
+
+.action-options {
+    border: 1px solid #eaeaea;
+    text-align: center;
+    padding: 1em;
+}
+.step-form .inside > div.action-options {
+    margin-bottom: 0;
+}
+.action-options .option {
+    padding: 1em;
+}
+.action-options .option input {
+    width: 100%;
+}
+.action-options .line {
+    display: inline-block;
+    vertical-align: middle;
+    width: 33%;
+    min-width: 50px;
+    border: 1px solid #aaa;
+    border-width: 1px 0 0 0;
+    background: none;
+    height: 1px;
+    position: relative;
+    line-height: 1;
+}
+.action-options .line:after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background-color: #fff;
+    padding: 0 4px;
+    text-transform: uppercase;
+    font-size: .7em;
+}
+
+.location-options-status {
+    border: 1px solid #f0f0f0;
+    line-height: 2.5;
+    padding: 0 .5em;
+    text-align: center;
+    font-size: .9em;
+    background-color: #f0f0f0;
+}
 .location-options {
     margin: 0;
     padding: 0;
     list-style: none;
-    border: 1px solid #aaa;
-    margin: 1em 0;
+    border: 1px solid #f0f0f0;
+    margin: 0 0 1em 0;
 }
 .location-options li {
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid #f0f0f0;
     line-height: 2.5;
 }
 .location-options a {
@@ -230,7 +349,7 @@ form button, a.button, .btn-primary {
     padding: 0 .5em;
 }
 .location-options a:hover {
-    background-color: #f0f0f0;
+    background-color: #f3ffef;
 }
 .location-options li:last-of-type {
     border-bottom: 0;

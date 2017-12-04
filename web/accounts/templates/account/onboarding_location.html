@@ -1,0 +1,114 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load form_utils %}
+
+{% block head_title %}{% trans "Welcome" %}{% endblock %}
+{% block title %}{% trans "You're almost ready" %}{% endblock %}
+
+{% block content %}
+
+<form class="signup step-form" method="post">
+  {% csrf_token %}
+
+  <div class="steps">
+        {% include "account/_steps.html" %}
+  </div>
+  <div class="inside">
+
+        <p>{% blocktrans %}We would like to know your approximate place of residence to provide you with locally relevant information. Please do not enter your exact address.{% endblocktrans %}</p>
+  
+        <div class="action-options">
+            <div class="option">
+                <a href="javascript:getLocation()" class="button btn-primary" id="getLocationButton">{% trans "Find current location" %}</a>
+            </div>
+            <div class="line" data-text="or"></div>
+            <div class="option">
+                <input style="flex: 1" type="text" onkeyup="search(this.value)" name="location_search" placeholder="{% trans "Type city or district to search..." %}" value="{{object.location.display_name}}">    
+            </div>
+        </div>
+
+        <span  id="location_options"></span>
+
+        {% for field in form %} 
+          {% if field.name == 'location' %}
+            {{ field }}
+            {{ field.errors }}
+          {% else %}
+          <p{{ field.row_attrs }}>
+              {% if field|is_checkbox %}
+                  <span class="field-checkbox">
+                      {{ field }}
+                      {{ field.label_tag }}
+                  </span>
+              {% else %}
+                  {{ field.label_tag }}
+                  {{ field }}
+              {% endif %}
+
+              {% if field.help_text %}<span class="help">{{ field.help_text }}</span>{% endif %}
+            </p>
+            {{ field.errors }}
+          {% endif %}
+        {% endfor %}
+
+    <div class="form-actions">
+      <button type="submit">{% trans "Continue" %} &raquo;</button>
+    </div>
+
+  </div>
+
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  
+</form>
+
+<script>
+    function debounce(a,b,c){var d;return function(){var e=this,f=arguments;clearTimeout(d),d=setTimeout(function(){d=null,c||a.apply(e,f)},b),c&&!d&&a.apply(e,f)}}
+
+    function showResults(data) {
+      if (data.results.length == 0) {
+        document.getElementById('location_options').innerHTML = '<div class="location-options-status">No results, please refine your search.</div>';
+        return;
+      }
+      var html = data.results.map(area => 
+        '<li><a href="javascript:selectLocation(' + area.pk + ',\'' + area.display_name + '\')">' + area.display_name + '</a></li>'
+      ).join('');
+      document.getElementById('location_options').innerHTML = '<div class="location-options-status">Please pick your residence or refine the search.</div><ul class="location-options">' + html + '</ul>';
+    }
+    function getLocation() {
+        if ("geolocation" in navigator) {
+          document.getElementById('location_options').innerHTML = '<div class="location-options-status">Searching for location...</div>';
+          navigator.geolocation.getCurrentPosition(function(position) {
+            fetch('/api/areas/?lat='+position.coords.latitude+'&lon='+position.coords.longitude).then(resp => resp.json()).then(
+                data => {
+                    console.log(data);
+                    showResults(data);
+                }
+            );
+          });
+        }
+    }
+    function selectLocation(key, label) {
+      document.forms[0].location_search.value = label;
+      document.forms[0].location.value = key;
+      document.getElementById('location_options').innerHTML = '';
+    }
+    var last_query = "";
+    function search(query) {
+      if (!query || query.length < 2 || last_query == query) return;
+      last_query = query;
+      debounce(function() {
+        document.getElementById('location_options').innerHTML = '<div class="location-options-status">Searching for location, please wait...</div>';
+        fetch('/api/areas/?search='+query).then(resp => resp.json()).then(
+            data => {
+              console.log(data);
+              showResults(data);
+            }
+        );
+      }, 800)();
+    }
+</script>
+
+{% endblock %}

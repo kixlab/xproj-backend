@@ -1,0 +1,6 @@
+<span class="current-step">Step {{form_step}}</span>
+<div class="step-display">
+  {% for step in steps %}
+    <span class="step {% if step < form_step %}step-done{% endif %} {% if step == form_step %}step-current{% endif %}">Step {{step}}</span>
+  {% endfor %}
+</div>

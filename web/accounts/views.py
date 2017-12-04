@@ -30,7 +30,9 @@ class OnboardingView(LoginRequiredMixin, SuccessURLAllowedHostsMixin, UpdateView
             allowed_hosts=self.get_success_url_allowed_hosts(),
             require_https=self.request.is_secure(),
         )
-        return redirect_to if url_is_safe else ''
+        if not redirect_to or not url_is_safe:
+            redirect_to = '/'
+        return redirect_to if url_is_safe else '/'
 
     def form_valid(self, form):
         self.object = form.save()
@@ -45,12 +47,13 @@ class OnboardingView(LoginRequiredMixin, SuccessURLAllowedHostsMixin, UpdateView
             'redirect_field_value': self.get_redirect_url(),
             'form_step': self.form_step,
             'form_total_steps': self.form_total_steps,
+            'steps': range(1, self.form_total_steps+2)
         })
         return context
 
 
 class Onboarding2View(OnboardingView):
-    template_name = "account/onboarding.html"
+    template_name = "account/onboarding_location.html"
     form_class = UserOnboarding2Form
     form_step = 2
 
