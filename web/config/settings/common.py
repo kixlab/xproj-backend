@@ -81,7 +81,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'oauth2_provider.middleware.OAuth2TokenMiddleware',
     'accounts.middleware.ForceOnboardingMiddleware',
-    
+
     'django.middleware.locale.LocaleMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -192,7 +192,7 @@ AUTHENTICATION_BACKENDS = (
 AUTH_USER_MODEL = 'accounts.User'
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
-ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_EMAIL_REQUIRED = True
 #ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignUpForm'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_LOGOUT_ON_GET = True
