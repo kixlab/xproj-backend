@@ -3,15 +3,16 @@
 version: '3'
 services:
   web:
+    restart: always
     command: ./docker-entrypoint.sh
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings.staging
     volumes:
-      - /usr/src/app/
       - static-volume:/usr/src/collected_static
       - remote-data:/data
 
   nginx:
+    restart: always
     ports:
       - "80:80"
       - "443:443"

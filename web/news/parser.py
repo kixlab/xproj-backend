@@ -10,7 +10,7 @@ from django.utils.dateparse import parse_datetime
 from pytz import timezone
 
 def load_article_soup(url):
-    with urllib.request.urlopen(url) as response:
+    with urllib.request.urlopen(url, timeout=10) as response:
         html = response.read()
         soup = BeautifulSoup(html, "html.parser")
     
