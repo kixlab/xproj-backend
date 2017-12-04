@@ -33,6 +33,7 @@ class OnboardingView(LoginRequiredMixin, SuccessURLAllowedHostsMixin, UpdateView
         return redirect_to if url_is_safe else ''
 
     def form_valid(self, form):
+        self.object = form.save()
         next_step = self.form_step + 1
         url = reverse_lazy('accounts:onboarding_step_%d' % next_step)
         return redirect_to_login(self.get_redirect_url(), url)
