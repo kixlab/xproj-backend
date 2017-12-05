@@ -8,6 +8,7 @@ from konlpy.utils import pprint
 import string
 from django.utils.dateparse import parse_datetime
 from pytz import timezone
+from news import categories
 
 def load_article_soup(url):
     with urllib.request.urlopen(url, timeout=10) as response:
@@ -136,7 +137,6 @@ def title2list(title):
 # Load training data
 tagged = open('/data/nlp/train.json', 'r', encoding='utf-8')
 tagkeys = json.load(tagged)
-categories=['행정', '공공질서/안전','교육','문화/관광','환경','복지','보건','농축수산','산업/중소기업','교통/건설','과학기술','인권','경제','기타']
 trainlist = [acat["keywords"] for acat in tagkeys]
 
 def guess_category(text):

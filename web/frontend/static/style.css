@@ -354,3 +354,25 @@ form button, a.button, .btn-primary {
 .location-options li:last-of-type {
     border-bottom: 0;
 }
+
+.interest-selection {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.interest-selection li {
+    display: inline-block;
+    margin: 0 1em 1em 0;
+    background-color: #f0f0f0;
+    border-radius: 2em;
+    font-size: 1.3em;
+    padding: 0 1em;
+    line-height: 3;
+    cursor: pointer;
+}
+.interest-selection li:hover {
+    background-color: #f3ffef;
+}
+.interest-selection li.active {
+    background-color: #b9f7a4;
+}

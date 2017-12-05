@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Person, Promise, BudgetProgram
+from .models import Category, Person, Promise, BudgetProgram
+
+admin.site.register(Category, admin.ModelAdmin)
 
 admin.site.register(Person, admin.ModelAdmin)
 

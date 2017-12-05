@@ -2,6 +2,13 @@ from django.contrib.gis.db import models
 from spatial.models import VotingDistrict
 from django.contrib.postgres.fields import ArrayField
 
+
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
 class Person(models.Model):
     name = models.CharField(max_length=100)
     mop_for_district = models.ForeignKey(VotingDistrict, related_name='mop', null=True)

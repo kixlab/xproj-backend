@@ -12,6 +12,8 @@ from prompt_responses.views import CreateResponseView
 from prompt_responses.models import Prompt
 from django.db import transaction
 
+from news import categories_real
+
 
 class OnboardingViewMixin(LoginRequiredMixin, SuccessURLAllowedHostsMixin):
     form_step = 1
@@ -70,14 +72,23 @@ class Onboarding3View(OnboardingViewMixin, CreateResponseView):
         settings = {
             'type': 'openended',
             'text': 'User interests at onboarding',
+            'prompt_object_type': None,
+            'response_object_type': None,
         }
-        prompt, _ = Prompt.objects.get_or_create(name='user-interests', defaults=settings)
+        prompt, _ = Prompt.objects.update_or_create(name='user-interests', defaults=settings)
         return prompt
 
     def form_valid(self, form):
         form.instance.user = self.get_user()
         self.object = form.save()
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(OnboardingViewMixin, self).get_context_data(**kwargs)
+        context.update({
+            'categories': categories_real
+        })
+        return context
 
 
 class Onboarding4View(OnboardingViewMixin, TemplateView):

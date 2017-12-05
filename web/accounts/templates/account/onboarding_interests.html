@@ -16,9 +16,16 @@
   </div>
   <div class="inside">
 
-        <p>{% blocktrans %}What are your interests? <strong>This UI is work in progress.</strong>{% endblocktrans %}</p>
+        <p>{% blocktrans %}Please select one or more topics you are interested in.{% endblocktrans %}</p>
 
-        {{form.as_p}}
+        <ul class="interest-selection">
+        {% for cat in categories %}
+            <li class="interest" onClick="markInterest(this, '{{cat}}')">{{cat}}</li>
+        {% endfor %}
+        </ul>
+        
+        {{form.prompt}}
+        {{form.text}}
 
     <div class="form-actions">
       <button type="submit">{% trans "Continue" %} &raquo;</button>
@@ -31,6 +38,22 @@
   {% endif %}
   
 </form>
+
+<script>
+document.getElementById('id_text').style.display = 'none';
+var interests = [];
+function markInterest(elem, cat) {
+    if (interests.indexOf(cat) !== -1) {
+        var index = interests.indexOf(cat);
+        interests.splice(index, 1);
+        elem.className = 'interest';
+    } else {
+        interests.push(cat);
+        elem.className = 'interest active';
+    }
+    document.getElementById('id_text').value = JSON.stringify(interests);
+}
+</script>
 
 
 {% endblock %}
