@@ -1,5 +1,6 @@
 from django.views.generic.edit import UpdateView
 from django.views.generic.base import TemplateView
+from django.contrib.auth.views import LoginView
 from .forms import UserOnboardingForm, UserOnboarding2Form
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -16,22 +17,6 @@ class OnboardingViewMixin(LoginRequiredMixin, SuccessURLAllowedHostsMixin):
     form_step = 1
     form_total_steps = 3
     redirect_field_name = REDIRECT_FIELD_NAME
-
-    def get_redirect_url(self):
-        """Return the user-originating redirect URL if it's safe."""
-        # verbatim copy from django.contrib.auth.views.LoginView
-        redirect_to = self.request.POST.get(
-            self.redirect_field_name,
-            self.request.GET.get(self.redirect_field_name, '')
-        )
-        url_is_safe = is_safe_url(
-            url=redirect_to,
-            allowed_hosts=self.get_success_url_allowed_hosts(),
-            require_https=self.request.is_secure(),
-        )
-        if not redirect_to or not url_is_safe:
-            redirect_to = '/'
-        return redirect_to if url_is_safe else '/'
 
     def get_context_data(self, **kwargs):
         context = super(OnboardingViewMixin, self).get_context_data(**kwargs)
@@ -52,6 +37,8 @@ class OnboardingViewMixin(LoginRequiredMixin, SuccessURLAllowedHostsMixin):
         url = reverse_lazy('accounts:onboarding_step_%d' % next_step)
         return redirect_to_login(self.get_redirect_url(), url)
 
+# Copy method from LoginView
+OnboardingViewMixin.get_redirect_url = LoginView.get_redirect_url
 
 class OnboardingView(OnboardingViewMixin, UpdateView):
     "User demorgaphic information"
