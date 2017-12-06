@@ -6,34 +6,34 @@ from model_utils import Choices, FieldTracker
 
 class User(AbstractUser):
     GENDER = Choices(
-        ('female', _('Female')),
-        ('male', _('Male')),
-        ('other', _('Other')),
-        ('', _('Rather not say'))
+        ('female', _('female')),
+        ('male', _('male')),
+        ('other', _('other')),
+        ('', _('rather not say'))
     )
 
     OCCUPATION = Choices(
-        ('employed', _('Employed')),
-        ('self-employed', _('Self-employed')),
-        ('unemployed', _('Unemployed')),
-        ('homemaker', _('Homemaker')),
-        ('student', _('Student')),
-        ('retired', _('Retired')),
-        ('other', _('Other'))
+        ('employed', _('employed')),
+        ('self-employed', _('self-employed')),
+        ('unemployed', _('unemployed')),
+        ('homemaker', _('homemaker')),
+        ('student', _('student')),
+        ('retired', _('retired')),
+        ('other', _('other'))
     )
 
     year_of_birth = models.PositiveSmallIntegerField(
-        blank=True, null=True, verbose_name=_("Year of birth (생년)")
+        blank=True, null=True, verbose_name=_("year of birth")  # (생년)
     )
     location = models.ForeignKey(Area,
-        blank=True, null=True, verbose_name=_("Area of residence (거주 지역)")
+        blank=True, null=True, verbose_name=_("area of residence")  # (거주 지역))
     )
     gender = models.CharField(
-        choices=GENDER, max_length=10, verbose_name=_("Gender (성별)"),
+        choices=GENDER, max_length=10, verbose_name=_("gender"),  # (성별)
         default='', blank=True
     )
     occupation = models.CharField(
-        choices=OCCUPATION, max_length=20, verbose_name=_("Occupation (직업)"),
+        choices=OCCUPATION, max_length=20, verbose_name=_("occupation"),  # (직업)
         default=''
     )
 

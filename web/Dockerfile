@@ -14,6 +14,9 @@ ENV PACKAGES_NUMPY="\
   libpng-dev \
   openblas-dev \
   python3-dev \
+  gettext-dev \
+  curl \
+  unzip \
 "
 RUN apk add --no-cache --update-cache $PACKAGES_NUMPY
 RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
@@ -51,9 +54,6 @@ ADD requirements/api.txt /usr/src/app/requirements/api.txt
 RUN pip3 install --no-cache-dir --disable-pip-version-check -r requirements/api.txt
 ADD requirements/extras.txt /usr/src/app/requirements/extras.txt
 RUN pip3 install --no-cache-dir --disable-pip-version-check -r requirements/extras.txt
-
-RUN apk --no-cache add curl  
-RUN apk add --no-cache unzip
 
 # Copy rest of source code. Doing this in the end improves Docker caching
 COPY . /usr/src/app
