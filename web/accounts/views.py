@@ -84,7 +84,7 @@ class Onboarding3View(OnboardingViewMixin, CreateResponseView):
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
-        context = super(OnboardingViewMixin, self).get_context_data(**kwargs)
+        context = super(Onboarding3View, self).get_context_data(**kwargs)
         context.update({
             'categories': categories_real
         })

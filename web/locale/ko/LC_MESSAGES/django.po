@@ -1,0 +1,240 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-07 08:00+0000\n"
+"PO-Revision-Date: 2017-12-07 17:01+0900\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 1.8.11\n"
+
+#: accounts/models.py:9
+msgid "female"
+msgstr "여성"
+
+#: accounts/models.py:10
+msgid "male"
+msgstr "남성"
+
+#: accounts/models.py:11 accounts/models.py:22
+msgid "other"
+msgstr "다른"
+
+#: accounts/models.py:12
+msgid "rather not say"
+msgstr "답하지 않겠습니다"
+
+#: accounts/models.py:16
+msgid "employed"
+msgstr "회사원"
+
+#: accounts/models.py:17
+msgid "self-employed"
+msgstr "자영업"
+
+#: accounts/models.py:18
+msgid "unemployed"
+msgstr "실업"
+
+#: accounts/models.py:19
+msgid "homemaker"
+msgstr "주부"
+
+#: accounts/models.py:20
+msgid "student"
+msgstr "학갱"
+
+#: accounts/models.py:21
+msgid "retired"
+msgstr "퇴직"
+
+#: accounts/models.py:26
+msgid "year of birth"
+msgstr "출생년"
+
+#: accounts/models.py:29
+msgid "area of residence"
+msgstr "거주 지역"
+
+#: accounts/models.py:32
+msgid "gender"
+msgstr "성별"
+
+#: accounts/models.py:36
+msgid "occupation"
+msgstr "직업"
+
+#: accounts/templates/account/login.html:6
+#: accounts/templates/account/login.html:43 frontend/templates/base.html:40
+msgid "Login"
+msgstr "로그인"
+
+#: accounts/templates/account/login.html:7
+msgid "Login to PromiseWiser"
+msgstr "PromiseWiser에 로그인"
+
+#: accounts/templates/account/login.html:15
+#, python-format
+msgid ""
+"Please sign in with one\n"
+"of your existing third party accounts. Or, <a href=\"%(signup_url)s\">sign "
+"up</a>\n"
+"for a %(site_name)s account and sign in below:"
+msgstr ""
+
+#: accounts/templates/account/login.html:25
+#: accounts/templates/account/onboarding_location.html:25
+msgid "or"
+msgstr "또는"
+
+#: accounts/templates/account/login.html:32
+#, python-format
+msgid ""
+"If you have not created an account yet, then please\n"
+"<a href=\"%(signup_url)s\">sign up</a> first."
+msgstr ""
+"회원 가힙 안 하신 경우에 먼저 <a href=\"%(signup_url)s\">가입해주세요</a>."
+
+#: accounts/templates/account/login.html:42
+msgid "Forgot Password?"
+msgstr "비밀번호를 잊으셨나요?"
+
+#: accounts/templates/account/onboarding.html:6
+#: accounts/templates/account/onboarding.html:7
+#: accounts/templates/account/onboarding_interests.html:6
+#: accounts/templates/account/onboarding_location.html:6
+msgid "Welcome"
+msgstr "환영합니다"
+
+#: accounts/templates/account/onboarding.html:21
+msgid ""
+"Please tell us a bit more about yourself, so we can provide you with a "
+"personal experience. All your information will be kept private and secure."
+msgstr ""
+"자신에 대해 좀 더 알려 주시면 개인적인 경험을 제공 할 수 있습니다. 모든 정보"
+"는 비공개로 안전하게 보관됩니다."
+
+#: accounts/templates/account/onboarding.html:42
+#: accounts/templates/account/onboarding_interests.html:31
+#: accounts/templates/account/onboarding_location.html:56
+msgid "Continue"
+msgstr "계속하기"
+
+#: accounts/templates/account/onboarding_finish.html:6
+msgid "Ready to start"
+msgstr "준비되었습니다"
+
+#: accounts/templates/account/onboarding_finish.html:7
+msgid "Ready to start!"
+msgstr "준비되었습니다!"
+
+#: accounts/templates/account/onboarding_finish.html:18
+msgid "Thank you. Your data helps us to personalize your experience."
+msgstr "감사합니다. 귀하의 데이터는 귀하의 경험을 개인화하는 데 도움이됩니다."
+
+#: accounts/templates/account/onboarding_finish.html:21
+msgid "Continue to application"
+msgstr "애플리케이션 계속하기"
+
+#: accounts/templates/account/onboarding_interests.html:7
+#: accounts/templates/account/onboarding_location.html:7
+msgid "You're almost ready"
+msgstr "준비 거의 다 됐습니다"
+
+#: accounts/templates/account/onboarding_interests.html:19
+msgid "Please select one or more topics you are interested in."
+msgstr "관심이있는 주제를 하나 이상 선택해주세요."
+
+#: accounts/templates/account/onboarding_location.html:19
+msgid ""
+"We would like to know your approximate place of residence to provide you "
+"with locally relevant information. Please do not enter your exact address."
+msgstr ""
+"현지 관련 정보를 제공 할 수있는 대략적인 거주지를 알고 싶습니다. 정확한 주소"
+"를 입력하지 마세요."
+
+#: accounts/templates/account/onboarding_location.html:23
+msgid "Find current location"
+msgstr "현재 위치 찾기"
+
+#: accounts/templates/account/onboarding_location.html:27
+msgid "Type city or district to search..."
+msgstr "검색 할 도시 또는 지구 입력..."
+
+#: accounts/templates/account/onboarding_location.html:72
+msgid "No results, please refine your search."
+msgstr "결과가 없으므로 검색 범위를 좁히십시오."
+
+#: accounts/templates/account/onboarding_location.html:78
+msgid "Please pick your residence or refine the search."
+msgstr "거주지를 선택하거나 검색을 구체화하십시오."
+
+#: accounts/templates/account/onboarding_location.html:103
+msgid "Searching for location, please wait..."
+msgstr "위치를 검색 중입니다. 잠시 기다려주십시오..."
+
+#: accounts/templates/account/signup.html:5 frontend/templates/base.html:41
+msgid "Signup"
+msgstr "회원 가입"
+
+#: accounts/templates/account/signup.html:7
+msgid "PromiseWiser Signup"
+msgstr "PromiseWiser 가입"
+
+#: accounts/templates/account/signup.html:11
+#, python-format
+msgid ""
+"Welcome to PromiseWiser. Already have an account? Then please <a href="
+"\"%(login_url)s\">sign in</a>."
+msgstr ""
+"PromiseWiser 환영합니다. 이미 계정이 있나요? <a href=\"%(login_url)s\">로그"
+"인 해주세요</a>."
+
+#: accounts/templates/account/signup.html:20
+msgid "Sign Up"
+msgstr "회원 가입"
+
+#: config/settings/common.py:168
+msgid "Korean"
+msgstr "한국어"
+
+#: config/settings/common.py:169
+msgid "English"
+msgstr "영어"
+
+#: frontend/templates/base.html:37
+#, python-format
+msgid "Logged in as %(username)s"
+msgstr "%(username)s으로 로그인됨"
+
+#: frontend/templates/base.html:38
+msgid "Logout"
+msgstr "로그아웃"
+
+#: frontend/templates/base.html:43
+msgid "API"
+msgstr "API"
+
+#: frontend/templates/index.html:6
+msgid ""
+"Welcome to PromiseWiser. Be part of a growing community of citizens who care "
+"about politics. Your participation can help change your country for the "
+"better."
+msgstr ""
+"PromiseWiser에 환영합니다. 정치에 관심이있는 성장하는 시민 사회의 일원이 되십"
+"시오. 당신의 참여는 우리 나라를 나은 방향으로 변화시키는 데 도움이 될 수 있습"
+"니다."
+
+#: spatial/templates/rest_framework/filters/geolocation.html:2
+msgid "Reverse Geocode"
+msgstr "Reverse Geocode"

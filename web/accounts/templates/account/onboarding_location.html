@@ -22,7 +22,7 @@
             <div class="option">
                 <a href="javascript:getLocation()" class="button btn-primary" id="getLocationButton">{% trans "Find current location" %}</a>
             </div>
-            <div class="line" data-text="or"></div>
+            <div class="line" data-text="{% trans "or" %}"></div>
             <div class="option">
                 <input style="flex: 1" type="text" onkeyup="search(this.value)" name="location_search" placeholder="{% trans "Type city or district to search..." %}" value="{{object.location.display_name}}">    
             </div>
@@ -69,17 +69,17 @@
 
     function showResults(data) {
       if (data.results.length == 0) {
-        document.getElementById('location_options').innerHTML = '<div class="location-options-status">No results, please refine your search.</div>';
+        document.getElementById('location_options').innerHTML = '<div class="location-options-status">{% trans "No results, please refine your search." %}</div>';
         return;
       }
       var html = data.results.map(area => 
         '<li><a href="javascript:selectLocation(' + area.pk + ',\'' + area.display_name + '\')">' + area.display_name + '</a></li>'
       ).join('');
-      document.getElementById('location_options').innerHTML = '<div class="location-options-status">Please pick your residence or refine the search.</div><ul class="location-options">' + html + '</ul>';
+      document.getElementById('location_options').innerHTML = '<div class="location-options-status">{% trans "Please pick your residence or refine the search." %}</div><ul class="location-options">' + html + '</ul>';
     }
     function getLocation() {
         if ("geolocation" in navigator) {
-          document.getElementById('location_options').innerHTML = '<div class="location-options-status">Searching for location...</div>';
+          document.getElementById('location_options').innerHTML = '<div class="location-options-status">{% trans "Searching for location, please wait..." %}</div>';
           navigator.geolocation.getCurrentPosition(function(position) {
             fetch('/api/areas/?lat='+position.coords.latitude+'&lon='+position.coords.longitude).then(resp => resp.json()).then(
                 data => {
@@ -100,7 +100,7 @@
       if (!query || query.length < 2 || last_query == query) return;
       last_query = query;
       debounce(function() {
-        document.getElementById('location_options').innerHTML = '<div class="location-options-status">Searching for location, please wait...</div>';
+        document.getElementById('location_options').innerHTML = '<div class="location-options-status">{% trans "Searching for location, please wait..." %}</div>';
         fetch('/api/areas/?search='+query).then(resp => resp.json()).then(
             data => {
               console.log(data);
