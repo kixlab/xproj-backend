@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-12-07 08:00+0000\n"
-"PO-Revision-Date: 2017-12-07 17:01+0900\n"
+"PO-Revision-Date: 2017-12-08 15:40+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ko\n"
@@ -28,7 +28,7 @@ msgstr "남성"
 
 #: accounts/models.py:11 accounts/models.py:22
 msgid "other"
-msgstr "다른"
+msgstr "그 외"
 
 #: accounts/models.py:12
 msgid "rather not say"
@@ -52,7 +52,7 @@ msgstr "주부"
 
 #: accounts/models.py:20
 msgid "student"
-msgstr "학갱"
+msgstr "학생"
 
 #: accounts/models.py:21
 msgid "retired"
@@ -60,7 +60,7 @@ msgstr "퇴직"
 
 #: accounts/models.py:26
 msgid "year of birth"
-msgstr "출생년"
+msgstr "출생년도"
 
 #: accounts/models.py:29
 msgid "area of residence"
