@@ -1,5 +1,5 @@
 # api, authentication
-django-allauth==0.24.1
+django-allauth==0.34.0
 django-rest-auth==0.9.1
 djangorestframework==3.6.3
 django-filter==1.0.4
