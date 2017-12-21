@@ -31,7 +31,7 @@ class ArticleViewSet(viewsets.ReadOnlyModelViewSet):
         if not url:
             raise ValidationError({'error': 'url is required'})
         article = Article.get_or_create_by_url(url=url)
-        article.analyze_article()
+        article.analyze_article(redo=True)
         context = {
             'request': request
         }

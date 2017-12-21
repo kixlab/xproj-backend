@@ -3,7 +3,11 @@ from django.contrib.postgres.fields import ArrayField
 from django.utils.timezone import now
 from promises.models import Promise
 from urllib.parse import urlparse
-from .parser import guess_category, title2list, load_article_naver, load_article_daum
+from .parser import load_article_naver, load_article_daum
+from promises.nlp import guess_category, title2list
+from promises.matcher import promise_matcher
+import logging
+logger = logging.getLogger('xproject')
 
 class Article(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
@@ -45,15 +49,23 @@ class Article(models.Model):
         self.analyze_article()
         self.save()
     
-    def analyze_article(self):
+    def analyze_article(self, redo=False):
         """Analyzing of loaded article"""
-        self.title_keywords = title2list(self.title)
-        if self.text:
+        if self.title and (not self.title_keywords or redo):
+            self.title_keywords = title2list(self.title[:100])
+        if self.text and (not self.categories or redo):
             self.categories = guess_category(self.text)
+        if self.title and (not self.promises or redo):
+            matches = promise_matcher.most_similar(self.title[:100])
+            promise_ids = [match[2][1] for match in matches]
+            self.promises = Promise.objects.filter(pk__in=promise_ids)
+
+        """
         if self.categories:
             # Dummy
             self.promises = Promise.objects.filter(categories__overlap=self.categories,
                                                    person__mayor_for_province="서울특별시")[:10]
+         """
 
     @classmethod
     def get_or_create_by_url(cls, url):

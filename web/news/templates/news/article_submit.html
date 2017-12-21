@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load form_utils %}
+
+{% block head_title %}{% trans "Submit an article" %}{% endblock %}
+{% block title %}{% trans "Submit an article" %}{% endblock %}
+
+{% block content %}
+
+<form class="signup step-form" method="post">
+    {% csrf_token %}
+  
+  
+    <div class="steps">
+        <span class="current-step">Enter URL</span>
+    </div>
+    <div class="inside">
+  
+        <p>{% blocktrans %}Please enter an article URL. Currently, only Naver and Daum news are supported.{% endblocktrans %}</p>
+        
+        {% include 'form.html' %}
+  
+      <div class="form-actions">
+        <button type="submit">{% trans "Continue" %} &raquo;</button>
+      </div>
+  
+    </div>
+
+</form>
+
+{% if article %}
+<div class="signup step-form">
+    <div class="steps">
+        <span class="current-step">Parsed Article</span>
+    </div>
+    <div class="inside">
+  
+        <p>{% blocktrans %}Thank you for submitting this article!{% endblocktrans %}</p>
+        <p>{% blocktrans %}This is the information that we gathered about this article.{% endblocktrans %}</p>
+        
+        <p><strong>Title:</strong> {{article.title}}</p>
+
+        <p><strong>Related promises:</strong></p>
+        <ol>
+        {% for match in promises %}
+            <li>{{match.score}}% {{match.object}}</li>
+        {% empty %}
+            <li>None found</li>
+        {% endfor %}
+        </ol>
+
+        <p><strong>Originally posted at:</strong> {{article.original_post_date}} (UTC)</p>
+        <p><strong>First retrieved at:</strong> {{article.retrieved_date}} (UTC)</p>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

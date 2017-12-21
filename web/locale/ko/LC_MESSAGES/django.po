@@ -169,7 +169,7 @@ msgstr "현재 위치 찾기"
 
 #: accounts/templates/account/onboarding_location.html:27
 msgid "Type city or district to search..."
-msgstr "검색 할 도시 또는 지구 입력..."
+msgstr "검색 할 도시 또는 지구 (시/군/구/읍/면/동) 입력..."
 
 #: accounts/templates/account/onboarding_location.html:72
 msgid "No results, please refine your search."

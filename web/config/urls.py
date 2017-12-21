@@ -18,8 +18,9 @@ urlpatterns += [
 
 # Apps
 urlpatterns += [
+    url(r'^news/', include('news.urls')),
     url(r'', include('api.urls')),
-    url(r'^$', IndexView.as_view(), name='home')
+    url(r'^$', IndexView.as_view(), name='home'),
 ]
 
 # For local dev, serve static files directly from Django
