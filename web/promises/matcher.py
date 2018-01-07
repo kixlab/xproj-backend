@@ -61,7 +61,7 @@ class DocumentMatcher(object):
         
         dictionary_ko = corpora.Dictionary.load('/data/ko.dict')
 
-        num_topics = 100
+        num_topics = 40
 
         logger.debug('Matcher - Building Lsi model...')
         # Generate Lsi model for promise text corpus
