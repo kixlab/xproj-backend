@@ -14,6 +14,8 @@ else
     exit
 fi
 
+echo "Active machine:"
+echo $(AWS_PROFILE=kixlab docker-machine active)
 
 docker-compose -f docker-compose.yml -f docker-compose.staging.yml build
 
@@ -24,7 +26,7 @@ if [ "$(ls -A certificates)" ]; then
 else
     # Run letsencrypt initialization
     docker-compose -f docker-compose.yml -f docker-compose.staging.yml stop && \
-    docker-compose -f docker-compose.yml -f docker-compose.staging.yml run --service-ports nginx /init-letsencrypt.sh && \
+    docker-compose -f docker-compose.yml -f docker-compose.staging.yml run --service-ports --rm nginx /init-letsencrypt.sh && \
     touch certificates/done.txt
 fi
 
