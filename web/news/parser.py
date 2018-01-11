@@ -26,9 +26,7 @@ def parse_article_date(np_article):
     if not date_string:
         return None
     date_string = re.sub(r'[^0-9:\-. ]+', '', date_string)
-    logger.warn("Date string %s" % date_string)
     date_string = date_string.strip().replace('. ', 'T').replace('.', '-').replace(' ', 'T') + ':00'
-    logger.warn("Date string %s" % date_string)
     dt = parse_datetime(date_string)
     if dt:
         return timezone('Asia/Seoul').localize(dt)

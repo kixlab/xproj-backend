@@ -3,7 +3,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.utils.timezone import now
 from promises.models import Promise
 from urllib.parse import urlparse
-from .parser import load_article_naver, load_article_daum, parse_article_date
+from .parser import parse_article_date
 from promises.nlp import guess_category, title2list
 from promises.matcher import promise_matcher
 import newspaper
