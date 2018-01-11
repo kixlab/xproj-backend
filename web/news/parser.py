@@ -10,17 +10,24 @@ def load_article_soup(url):
     with urllib.request.urlopen(url, timeout=10) as response:
         html = response.read()
         soup = BeautifulSoup(html, "html.parser")
-    
     return soup
+
+def _get_publish_date_element(parser, doc):
+    "Tries to find HTML element with publish date info"
+    try:
+        return parser.css_select(doc, '.sponsor .t11')[0]  # naver
+    except IndexError:
+        pass
+    try:
+        return parser.css_select(doc, '.info_view .txt_info')[0]  #daum
+    except IndexError:
+        pass
+    return None
 
 def parse_article_date(np_article):
     "Alternative date parsing, for when newspaper's parser fails"
-    parser = np_article.extractor.parser
-    try:
-        element = parser.css_select(np_article.clean_doc, '.sponsor .t11')[0]  # naver
-    except IndexError:
-        element = parser.css_select(np_article.clean_doc, '.info_view .txt_info')[1]  #daum
-    except IndexError:
+    element = _get_publish_date_element(np_article.extractor.parser, np_article.clean_doc)
+    if not element:
         return None
     date_string = parser.getText(element)
     if not date_string:
