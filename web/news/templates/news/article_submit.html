@@ -52,6 +52,8 @@
 
         <p><strong>Originally posted at:</strong> {{article.original_post_date}} (UTC)</p>
         <p><strong>First retrieved at:</strong> {{article.retrieved_date}} (UTC)</p>
+        <p><strong>Text:</strong></p>
+        {{article.text|linebreaksbr}}
     </div>
 </div>
 {% endif %}

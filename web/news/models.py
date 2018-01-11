@@ -3,9 +3,10 @@ from django.contrib.postgres.fields import ArrayField
 from django.utils.timezone import now
 from promises.models import Promise
 from urllib.parse import urlparse
-from .parser import load_article_naver, load_article_daum
+from .parser import load_article_naver, load_article_daum, parse_article_date
 from promises.nlp import guess_category, title2list
 from promises.matcher import promise_matcher
+import newspaper
 import logging
 logger = logging.getLogger('xproject')
 
@@ -32,19 +33,15 @@ class Article(models.Model):
         """Initial loading of article from source URL and parsing of document"""
         if self.retrieved_date is not None:
             return
-        
-        if self.source == 'news.naver.com':
-            load_article_naver(self)
-        elif self.source == 'v.media.daum.net':
-            load_article_daum(self)
-        else:
-            # Unkown source
-            self.text = "Unknown source"
-            return
 
-        if not self.text:
-            self.text = "Text not found"
-
+        article = newspaper.Article(self.url, language='ko')
+        article.download()
+        article.parse()
+        self.text = article.text
+        self.title = article.title
+        self.original_post_date = article.publish_date
+        if not self.original_post_date:
+            self.original_post_date = parse_article_date(article)
         self.retrieved_date = now()
         self.analyze_article()
         self.save()

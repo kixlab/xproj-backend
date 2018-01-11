@@ -41,6 +41,9 @@ RUN echo \
   && apk add --no-cache --update $PACKAGES || \
     (sed -i -e 's/dl-cdn/dl-4/g' /etc/apk/repositories && apk add --no-cache $PACKAGES)
 
+# For Pillow
+RUN apk add --no-cache --update-cache libjpeg-turbo-dev zlib-dev libpng-dev libxml2-dev libxslt-dev py-lxml
+
 # Setup app dir
 RUN mkdir -p /usr/src/app
 
@@ -54,6 +57,8 @@ ADD requirements/api.txt /usr/src/app/requirements/api.txt
 RUN pip3 install --no-cache-dir --disable-pip-version-check -r requirements/api.txt
 ADD requirements/extras.txt /usr/src/app/requirements/extras.txt
 RUN pip3 install --no-cache-dir --disable-pip-version-check -r requirements/extras.txt
+ADD requirements/extras2.txt /usr/src/app/requirements/extras2.txt
+RUN pip3 install --no-cache-dir --disable-pip-version-check -r requirements/extras2.txt
 
 # Copy rest of source code. Doing this in the end improves Docker caching
 COPY . /usr/src/app

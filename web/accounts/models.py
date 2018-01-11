@@ -37,3 +37,10 @@ class User(AbstractUser):
         default=''
     )
 
+    def experiment_bucket(self, n):
+        """
+        Assign user to one of n buckets for experiment versions.
+        This should be fixed per user per n
+        """
+        return self.pk % n
+
