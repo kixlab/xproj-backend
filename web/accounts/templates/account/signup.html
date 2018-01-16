@@ -14,6 +14,8 @@
   {% csrf_token %}
   {% include 'form.html' %}
 
+  <div class="password-help-text">{{password_validators_help_text_html}}</div>
+
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}

@@ -14,7 +14,7 @@ class ForceOnboardingMiddleware:
             return False
         if request.resolver_match.func == serve_static or not request.path:
             return False
-        if 'onboarding' in request.path or 'api' in request.path or 'confirm-email' in request.path:
+        if 'onboarding' in request.path or 'api' in request.path or 'confirm-email' in request.path or 'logout' in request.path:
             return False
         return True
 

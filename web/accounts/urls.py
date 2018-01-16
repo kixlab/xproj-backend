@@ -6,5 +6,5 @@ urlpatterns = [
     url(r'^onboarding/location/', Onboarding2View.as_view(), name='onboarding_step_2'),
     url(r'^onboarding/interests/', Onboarding3View.as_view(), name='onboarding_step_3'),
     url(r'^onboarding/finish/', Onboarding4View.as_view(), name='onboarding_step_4'),
-    url(r'consolidate-user/', ConsolidateUserView.as_view(), name='consolidate_user')
+    url(r'consolidate-user/', ConsolidateUserView.as_view(), name='consolidate_user'),
 ]

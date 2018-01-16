@@ -179,6 +179,12 @@ form button, a.button, .btn-primary {
     color: #fff;
 }
 
+.password-help-text {
+    margin: 1em 0;
+    color: #777;
+    line-height: 1.6;
+}
+
 
 
 .messages {
