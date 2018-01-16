@@ -1,0 +1,52 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block head_title %}{% blocktrans %}Tuna News - enhance your news with civic action for politics{% endblocktrans %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static "style.css" %}" />
+    {% block extra_head %}
+    {% endblock %}
+  </head>
+  <body class="site site-news-reader">
+    {% block body %}
+
+    {% if messages %}
+    <div class="messages">
+      <ul>
+      {% for message in messages %}
+      <li>{{message}}</li>
+      {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <div class="content">
+      <h1><span>{% block title %}{% blocktrans %}Tuna News{% endblocktrans %}{% endblock %}</span></h1>
+
+      {% block content %}
+      <div class="hero">
+        <p>{% blocktrans %}Tuna News is a browser extension that enhances your reading experience of online news.{% endblocktrans %}</p>
+
+        <a class="button huge-button btn-primary" href="">{% trans 'Install Now' %}</a>
+      </div>
+
+      <p>{% blocktrans %}With Tuna News, whenever you read an article on any news site (online newspapers or aggregators such as Naver and Daum), we will show you politicians' promises related to the content. You tell us your opinion, and we tell you how you compare to others. The collected data will be used to find out what our country's citizens think and how our politicians are doing!{% endblocktrans %}</p>
+      
+      <p>{% blocktrans %}<strong>How does it work?</strong> When you read an article, we'll ask you a few questions. In return, you can learn about what our politicians are doing and how your fellow citizens think about that.{% endblocktrans %}</p>
+      <p>{% blocktrans %}<strong>We need your help!</strong> To get the true pulse of the country, we need to represent everyone's opinion. Every bit helps! If you want to support this cause, please consider inviting your friends.{% endblocktrans %}</p>
+      
+      {% endblock %}
+    </div>
+
+    {% endblock %}
+
+    {% include 'footer.html' %}
+
+    {% block extra_body %}{% endblock %}
+  </body>
+</html>
+
+
+
+

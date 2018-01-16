@@ -3,7 +3,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from allauth.account import views as allauth_views
 from rest_framework.authtoken import views as rest_views
-from frontend.views import IndexView
+from frontend.views import IndexView, NewsReaderView
 
 urlpatterns = []
 
@@ -20,6 +20,7 @@ urlpatterns += [
 urlpatterns += [
     url(r'^news/', include('news.urls')),
     url(r'', include('api.urls')),
+    url(r'^news-reader/', NewsReaderView.as_view(), name='news-reader'),
     url(r'^$', IndexView.as_view(), name='home'),
 ]
 

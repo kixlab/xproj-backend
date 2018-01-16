@@ -1,0 +1,16 @@
+{% load i18n %}
+<div class="footer">
+    <div>&copy; {% now "Y" %} <a href="http://kixlab.org">KIXLAB</a>. Funding generously provided by National Research Foundation of Korea.</div>
+    <div>
+        <ul class="nav">
+        {% if user.is_authenticated %}
+        <li>{% blocktrans with username=user.get_short_name|default:user.username %}Logged in as {{username}}{% endblocktrans %}</li>
+        <li><a href="{% url 'account_logout' %}">{% blocktrans %}Logout{% endblocktrans %}</a></li>
+        {% else %}
+        <li><a href="{% url 'account_login' %}">{% blocktrans %}Login{% endblocktrans %}</a></li>
+        <li><a href="{% url 'account_signup' %}">{% blocktrans %}Signup{% endblocktrans %}</a></li>
+        {% endif %}
+        <li><a href="{% url 'api-root' %}">{% blocktrans %}API{% endblocktrans %}</a></li>
+        </ul>
+      </div>
+  </div>

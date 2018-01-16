@@ -6,10 +6,19 @@
 <p>{% blocktrans %}Welcome to PromiseWiser. Be part of a growing community of citizens who care about politics. Your participation can help change your country for the better.{% endblocktrans %}</p>
 
 <div class="apps">
-    <div class="app"><h2>News Reader</h2><p>Enhance your news reading experience.</p></div>
-    <div class="app"><h2>PromiseBook</h2><p>Description is subject to change.</p></div>
+    <div class="app"><h2><a href="{% url 'news-reader' %}">News Reader</a></h2><p>Enhance your news reading experience.</p></div>
+    <div class="app"><h2>?</h2><p>Coming soon.</p></div>
     <div class="app"><h2>?</h2><p>Coming soon.</p></div>
 </div>
+<script>
 
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('.app').forEach(function(elem){
+    elem.addEventListener("click", function(e) {
+        e.target.querySelectorAll('a')[0].click();
+    });
+  });
+});
+</script>
 
 {% endblock %}

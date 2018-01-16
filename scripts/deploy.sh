@@ -30,6 +30,6 @@ else
     touch certificates/done.txt
 fi
 
-docker-compose -f docker-compose.yml -f docker-compose.staging.yml run web python3 manage.py migrate
+docker-compose -f docker-compose.yml -f docker-compose.staging.yml run --rm web python3 manage.py migrate
 
 docker-compose -f docker-compose.yml -f docker-compose.staging.yml up -d
