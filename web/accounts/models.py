@@ -9,7 +9,7 @@ class User(AbstractUser):
         ('female', _('female')),
         ('male', _('male')),
         ('other', _('other')),
-        ('', _('rather not say'))
+        ('unstated', _('rather not say'))
     )
 
     OCCUPATION = Choices(
@@ -30,7 +30,7 @@ class User(AbstractUser):
     )
     gender = models.CharField(
         choices=GENDER, max_length=10, verbose_name=_("gender"),  # (성별)
-        default='', blank=True
+        default=''
     )
     occupation = models.CharField(
         choices=OCCUPATION, max_length=20, verbose_name=_("occupation"),  # (직업)
