@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-01-16 12:15+0000\n"
-"PO-Revision-Date: 2018-01-16 21:15+0900\n"
+"PO-Revision-Date: 2018-01-16 21:53+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ko\n"
@@ -253,7 +253,7 @@ msgstr "뉴스참치는 뉴스를 통해 정치에 참여하는 확장 프로그
 
 #: frontend/templates/news-reader.html:31
 msgid "Install Now"
-msgstr "바로 설치함니다"
+msgstr "바로 설치합니다"
 
 #: frontend/templates/news-reader.html:34
 msgid ""
