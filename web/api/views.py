@@ -47,3 +47,5 @@ class AnnonymousSignupTokenView(oauth2_provider.views.TokenView):
         }
         request.POST = post_data
         return super(AnnonymousSignupTokenView, self).create_token_response(request)
+
+

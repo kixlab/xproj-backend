@@ -20,6 +20,7 @@ urlpatterns += [
 urlpatterns += [
     url(r'^news/', include('news.urls')),
     url(r'', include('api.urls')),
+    url(r'', include('personalization.urls')),
     url(r'^news-reader/', NewsReaderView.as_view(), name='news-reader'),
     url(r'^$', IndexView.as_view(), name='home'),
 ]
