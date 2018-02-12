@@ -31,6 +31,16 @@ class PromiseViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('title',)
 
+    @list_route()
+    def short(self, request):
+        qs = self.queryset.prefetch_related('person')
+        page = self.paginate_queryset(qs)
+        if page is not None:
+            serializer = PromiseShortSerializer(page, many=True, context={'request': request})
+            return self.get_paginated_response(serializer.data)
+        serializer = PromiseShortSerializer(qs, many=True, context={'request': request})
+        return Response(serializer.data)
+
 class PersonViewSet(viewsets.ReadOnlyModelViewSet):
     """
     People are members of the public holding some function, like politicians.

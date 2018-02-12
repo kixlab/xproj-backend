@@ -10,6 +10,15 @@ class PersonSerializer(serializers.HyperlinkedModelSerializer):
         model = Person
         fields = ('url', 'name', 'mop_for_district', 'promises_url', 'mayor_for_province', 'mayor_for_district',)
 
+
+class PromiseShortSerializer(serializers.HyperlinkedModelSerializer):
+    person_name = serializers.CharField(read_only=True, source='person.name')
+    
+    class Meta:
+        model = Promise
+        fields = ('id', 'url', 'title', 'person_name')
+
+
 class PromiseSerializer(serializers.HyperlinkedModelSerializer):
     person = PersonSerializer()
 
