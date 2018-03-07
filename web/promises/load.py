@@ -2,6 +2,7 @@ import os
 from spatial.models import VotingDistrict
 from promises.models import Person, Promise, BudgetProgram
 import json
+import csv
 import re
 
 def run(verbose=True):
@@ -106,6 +107,17 @@ def promises():
                 promise = Promise(title=p['title'], categories=p['category'], target_groups=p['target'])
                 promise.person = person
                 promise.save()
+
+
+def goal_texts():
+    with open('/data/promise-goals/goals.csv') as f:
+        reader = csv.DictReader(f)
+        for idx, row in enumerate(reader):
+            pk = (idx+1)
+            promise = Promise.objects.get(id=pk)
+            promise.goals = row['goal']
+            promise.save()
+            print("%d - %s - %s" % (pk, row['promise'], promise.title))
 
 from itertools import islice
 import numpy as np

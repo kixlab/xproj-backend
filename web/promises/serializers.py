@@ -24,7 +24,7 @@ class PromiseSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Promise
-        fields = ('url', 'title', 'categories', 'target_groups', 'person')
+        fields = ('url', 'title', 'goals', 'categories', 'target_groups', 'person')
 
 class BudgetProgramSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

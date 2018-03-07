@@ -25,6 +25,7 @@ class Promise(models.Model):
     person = models.ForeignKey(Person, related_name='promises',
         on_delete=models.SET_NULL, blank=True, null=True)
     budget_programs = models.ManyToManyField('BudgetProgram', related_name='promises')
+    goals = models.TextField(default="", blank=True)
 
     def __str__(self):
         return self.title
