@@ -5,6 +5,8 @@ services:
     build: ./web/
     links:
       - db:db
+    # volumes:
+    #   - ./web:/usr/src/app
     environment:
       - XPROJ_SEOUL_API_KEY
       - AWS_SES_ACCESS_KEY_ID
