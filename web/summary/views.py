@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from stakeholdergroup.serializers import StakeholderGroupSerializer
-from stakeholdergroup.models import StakeholderGroup
+from summary.serializers import SummarySerializer
+from summary.models import Summary
 # Create your views here.
 
 class SummaryViewSet(viewsets.ModelViewSet):

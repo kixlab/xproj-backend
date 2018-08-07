@@ -4,6 +4,6 @@ from userpolicy.serializers import UserPolicySerializer
 from userpolicy.models import UserPolicy
 # Create your views here.
 
-class StakeholderGroupViewSet(viewsets.ModelViewSet):
+class UserPolicyViewSet(viewsets.ModelViewSet):
     queryset = UserPolicy.objects.all()
     serializer_class = UserPolicySerializer

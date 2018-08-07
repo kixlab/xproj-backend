@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from policy.models import Policy
+from summary.models import Summary
 
-class StakeholderGroupSerializer(serializers.ModelSerializer):
+class SummarySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Policy
-        fields = ('url', 'id', 'title', 'description')
+        model = Summary
+        fields = ('url', 'id','stakeholder_group', 'text', 'likes')

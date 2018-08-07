@@ -9,6 +9,7 @@ from prompt_responses.viewsets import PromptViewSet, PromptSetViewSet
 from rest_auth.registration.views import RegisterView, VerifyEmailView
 from policy.viewsets import *
 from effect.viewsets import *
+from stakeholdergroup.viewsets import *
 
 router = Router()
 router.register(r'areas', AreaViewSet)
@@ -19,6 +20,7 @@ router.register(r'news', ArticleViewSet)
 router.register(r'budget-programs', BudgetProgramViewSet)
 router.register(r'policies', PolicyViewSet)
 router.register(r'effects', EffectViewSet)
+router.register(r'stakeholdergroups', StakeholderGroupViewSet)
 # External packages
 router.register(r'prompts', PromptViewSet)
 router.register(r'prompt-sets', PromptSetViewSet)
