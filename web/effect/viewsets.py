@@ -24,9 +24,13 @@ class EffectViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Effect.objects.all()
         policy = self.request.query_params.get('policy', None)
+        stakeholder_group = self.request.query_params.get('stakeholder_group', None)
 
         if policy is not None:
             queryset = queryset.filter(policy = policy)
+
+        if stakeholder_group is not None:
+            queryset = queryset.filter(stakeholder_group = stakeholder_group)
 
         return queryset
 
@@ -40,12 +44,14 @@ class EffectViewSet(viewsets.ModelViewSet):
 
     #     effect.set_policy(serializer.data['policy'])
     #     effect.set_isBenefit(serializer.data['isBenefit'])
-    #     effect.set_identity(serializer.data['identity'])
+    #     effect.set_stakeholder_group(serializer.data['stakeholder_group'])
     #     effect.set_description(serializer.data['description'])
-    #     effect.set_oneliner(serializer.data['oneliner'])
-    #     effect.set_likes(serializer.data['likes'])
+    #     effect.set_stakeholder_detail(serializer.data['stakeholder_detail'])
+    #     effect.set_empathy(serializer.data['empathy'])
+    #     effect.set_novelty(serializer.data['novelty'])
+    #     effect.set_source(serializer.data['source'])
 
     #     effect.save()
 
-    #     return Response({'statue': 'effect set'})
+    #     return Response({'status': 'effect set'})
     

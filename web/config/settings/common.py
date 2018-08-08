@@ -74,7 +74,8 @@ LOCAL_APPS = [
     'effect',
     'userpolicy',
     'stakeholdergroup',
-    'summary'
+    'summary',
+    'flag'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS_PRIORITY + THIRD_PARTY_APPS + LOCAL_APPS

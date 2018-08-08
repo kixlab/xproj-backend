@@ -3,5 +3,8 @@ from policy.models import Policy
 # Create your models here.
 
 class StakeholderGroup(models.Model):
-    policy = models.ForeignKey('policy.Policy', related_name="stakeholder_group", null="False")
+    policy = models.ForeignKey('policy.Policy', related_name="stakeholder_group", null=False)
     name = models.CharField(max_length = 255)
+
+    def __str__(self):
+        return self.name
