@@ -2,12 +2,13 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from effect.serializers import EffectSerializer, EffectSlugSerializer
 from effect.models import Effect
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 # from rest_framework.decorators import action
 # Create your views here.
 
 class EffectViewSet(viewsets.ModelViewSet):
-    permission_classes = (AllowAny,)
+    # permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     queryset = Effect.objects.all()
     serializer_class = EffectSerializer
 

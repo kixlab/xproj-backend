@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from stakeholdergroup.models import StakeholderGroup
 
-
 class StakeholderGroupSerializer(serializers.ModelSerializer):
     keywords = serializers.SerializerMethodField()
     class Meta:
@@ -9,6 +8,20 @@ class StakeholderGroupSerializer(serializers.ModelSerializer):
         fields = ('url', 'id', 'policy', 'name', 'keywords')
 
     def get_keywords(self, obj):
-        effects = obj.effects.all()
-        # TODO: Implement TF-IDF? Keyword extraction
-        return [effect.description for effect in effects]
+        negEffects = obj.effects.filter(isBenefit=0).order_by('empathy', 'novelty')
+        posEffects = obj.effects.filter(isBenefit=1).order_by('empathy', 'novelty')
+        
+        negEffect = 'Negative effect not posted... yet!'
+        posEffect = 'Positive effect not posted... yet!'
+        
+        try:
+            negEffect = negEffects[0].description
+        except IndexError:
+            pass
+        finally:
+            try:
+                posEffect = posEffects[0].description
+            except IndexError:
+                pass
+            finally:
+                return {'positive': posEffect, 'negative': negEffect}

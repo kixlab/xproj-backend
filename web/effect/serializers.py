@@ -19,6 +19,7 @@ class EffectSlugSerializer(serializers.ModelSerializer):
         read_only = True,
         slug_field = 'name'
     )
+    flags = serializers.SerializerMethodField()
 
     class Meta:
         model = Effect
