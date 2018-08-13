@@ -7,3 +7,4 @@ from userpolicy.models import UserPolicy
 class UserPolicyViewSet(viewsets.ModelViewSet):
     queryset = UserPolicy.objects.all()
     serializer_class = UserPolicySerializer
+    # return userPolicy ID

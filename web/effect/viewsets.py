@@ -2,13 +2,14 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from effect.serializers import EffectSerializer, EffectSlugSerializer
 from effect.models import Effect
-from rest_framework.permissions import AllowAny, IsAuthenticated
-# from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
+from rest_framework.decorators import detail_route
+from rest_framework.response import Response
 # Create your views here.
 
 class EffectViewSet(viewsets.ModelViewSet):
     # permission_classes = (AllowAny,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly, )
     queryset = Effect.objects.all()
     serializer_class = EffectSerializer
 
@@ -35,24 +36,25 @@ class EffectViewSet(viewsets.ModelViewSet):
 
         return queryset
 
+    # @detail_route(methods=['post'])
+    # def increment_empathy(self, request, pk=None):
+    #     effect = self.get_object()
+    #     user = request.user
+
+        
+
     # @action(methods=['get'], detail=False)
     # def effects_by_policy(self, request):
     #     effects_by_policy = Effect.objects.filter()
-    # def create(self, request):
-    #     effect = self.get_object()
 
-    #     serializer = EffectSerializer(data = request.data)
+    def create(self, request):
+        data = request.data
+        data['user'] = request.user.pk
+        serializer = EffectSerializer(data = request.data)
 
-    #     effect.set_policy(serializer.data['policy'])
-    #     effect.set_isBenefit(serializer.data['isBenefit'])
-    #     effect.set_stakeholder_group(serializer.data['stakeholder_group'])
-    #     effect.set_description(serializer.data['description'])
-    #     effect.set_stakeholder_detail(serializer.data['stakeholder_detail'])
-    #     effect.set_empathy(serializer.data['empathy'])
-    #     effect.set_novelty(serializer.data['novelty'])
-    #     effect.set_source(serializer.data['source'])
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=200, data="Effect added successfully")
 
-    #     effect.save()
-
-    #     return Response({'status': 'effect set'})
+        return Response(status = 400, data = serializer.errors)
     

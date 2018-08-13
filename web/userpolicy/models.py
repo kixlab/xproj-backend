@@ -8,5 +8,9 @@ class UserPolicy(models.Model):
     user = models.ForeignKey('accounts.User', related_name='userpolicy', null=False)
     policy = models.ForeignKey('policy.Policy', related_name='userpolicy', null=False)
     effect_size = models.IntegerField(default = 0)
-    stakeholder_group = models.ForeignKey('stakeholdergroup.StakeholderGroup', related_name='userpolicy', null=True)
-    stakeholder_detail = models.TextField()
+    # TODO: Add more fields to track user activity
+
+    user_type = models.CharField(max_length = 40) # Articles / SeeStakeholders / TakePerspectives
+    stakeholders_answered = models.IntegerField()
+    stakeholders_seen = models.IntegerField()
+
