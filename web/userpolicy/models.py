@@ -13,4 +13,5 @@ class UserPolicy(models.Model):
     user_type = models.CharField(max_length = 40) # Articles / SeeStakeholders / TakePerspectives
     stakeholders_answered = models.IntegerField()
     stakeholders_seen = models.IntegerField()
+    articles_seen = models.IntegerField()
 

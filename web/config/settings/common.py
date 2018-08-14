@@ -66,10 +66,10 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     'spatial',
-    # 'promises',
-    # 'news',
+    'promises',
+    'news',
     'api',
-    # 'personalization',
+    'personalization',
     'policy',
     'effect',
     'userpolicy',
@@ -77,7 +77,9 @@ LOCAL_APPS = [
     'summary',
     'flag',
     'empathy',
-    'novelty'
+    'novelty',
+    'minisurvey',
+    'userprofile'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS_PRIORITY + THIRD_PARTY_APPS + LOCAL_APPS
@@ -240,6 +242,9 @@ REST_FRAMEWORK = {
     'VIEW_NAME_FUNCTION': 'api.router.get_view_name'
 }
 
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'userprofile.serializers.UserSerializer'
+}
 """
 OAUTH2_PROVIDER = {
     'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore'

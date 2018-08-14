@@ -49,8 +49,8 @@ RUN mkdir -p /usr/src/app
 
 # Install pip packages, split into multiple requirements files for better Docker caching
 WORKDIR /usr/src/app/
-# ADD requirements/nlp.txt /usr/src/app/requirements/nlp.txt
-# RUN pip3 install --no-cache-dir --disable-pip-version-check -r requirements/nlp.txt
+ADD requirements/nlp.txt /usr/src/app/requirements/nlp.txt
+RUN pip3 install --no-cache-dir --disable-pip-version-check -r requirements/nlp.txt
 ADD requirements/base.txt /usr/src/app/requirements/base.txt
 RUN pip3 install --no-cache-dir --disable-pip-version-check -r requirements/base.txt
 ADD requirements/api.txt /usr/src/app/requirements/api.txt
