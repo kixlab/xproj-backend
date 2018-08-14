@@ -65,11 +65,11 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    'spatial',
-    'promises',
-    'news',
+    # 'spatial',
+    # 'promises',
+    # 'news',
     'api',
-    'personalization',
+    # 'personalization',
     'policy',
     'effect',
     'userpolicy',

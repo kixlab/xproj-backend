@@ -12,6 +12,7 @@ from effect.viewsets import *
 from stakeholdergroup.viewsets import *
 from empathy.viewsets import *
 from novelty.viewsets import *
+from userpolicy.viewsets import *
 router = Router()
 router.register(r'areas', AreaViewSet)
 router.register(r'people', PersonViewSet)
@@ -24,6 +25,7 @@ router.register(r'effects', EffectViewSet)
 router.register(r'stakeholdergroups', StakeholderGroupViewSet)
 router.register(r'empathy', EmpathyViewSet)
 router.register(r'novelty', NoveltyViewSet)
+router.register(r'userpolicy', UserPolicyViewSet)
 # External packages
 router.register(r'prompts', PromptViewSet)
 router.register(r'prompt-sets', PromptSetViewSet)
