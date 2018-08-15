@@ -11,8 +11,8 @@ class StakeholderGroupSerializer(serializers.ModelSerializer):
         negEffects = obj.effects.filter(isBenefit=0).order_by('empathy', 'novelty')
         posEffects = obj.effects.filter(isBenefit=1).order_by('empathy', 'novelty')
         
-        negEffect = 'Negative effect not posted... yet!'
-        posEffect = 'Positive effect not posted... yet!'
+        negEffect = '아직 부정적 효과가 없어요. 클릭하신 뒤 직접 추가해주세요!'
+        posEffect = '아직 긍정적 효과가 없어요. 클릭하신 뒤 직접 추가해주세요!'
         
         try:
             negEffect = negEffects[0].description
