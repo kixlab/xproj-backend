@@ -4,4 +4,4 @@ from flag.models import Flag
 class FlagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Flag
-        fields = ('url', 'id', 'effect', 'reason')
+        fields = ('url', 'id', 'user', 'effect', 'reason')
