@@ -15,7 +15,7 @@ class MiniSurveyViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = MiniSurvey.objects.all()
         policy = self.request.query_params.get('policy', None)
-        user = self.request.query_params.get('user', None)
+        user = self.request.user.pk
 
         if policy is not None:
             queryset = queryset.filter(policy = policy)
