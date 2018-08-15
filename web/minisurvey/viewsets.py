@@ -24,3 +24,14 @@ class MiniSurveyViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(user = user)
 
         return queryset
+
+    def create(self, request):
+        data = request.data
+        data['user'] = request.user.pk
+        serializer = MiniSurveySerializer(data = request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=200, data="Result added successfully")
+
+        return Response(status = 400, data = serializer.errors)
