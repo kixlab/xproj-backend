@@ -5,7 +5,7 @@ class StakeholderGroupSerializer(serializers.ModelSerializer):
     keywords = serializers.SerializerMethodField()
     class Meta:
         model = StakeholderGroup
-        fields = ('url', 'id', 'policy', 'name', 'keywords')
+        fields = ('url', 'id', 'policy', 'name', 'keywords', 'is_visible')
 
     def get_keywords(self, obj):
         negEffects = obj.effects.filter(isBenefit=0).order_by('empathy', 'novelty')

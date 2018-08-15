@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from effect.serializers import EffectSerializer, EffectSlugSerializer
 from effect.models import Effect
+from stakeholdergroup.models import StakeholderGroup
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
