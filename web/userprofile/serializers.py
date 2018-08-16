@@ -5,7 +5,7 @@ from rest_auth.registration.serializers import RegisterSerializer
 
 class UserSerializer(UserDetailsSerializer):
     is_participant = serializers.BooleanField(source = 'userprofile.is_participant')
-
+    step = serializers.IntegerField(source = 'userprofile.step')
     class Meta(UserDetailsSerializer.Meta):
         fields = UserDetailsSerializer.Meta.fields + ('is_participant', 'step', )
 
@@ -14,8 +14,6 @@ class UserSerializer(UserDetailsSerializer):
         is_participant = profile_data.get('is_participant')
         step = profile_data.get('step')
         instance = super(UserSerializer, self).update(instance, validated_data)
-
-        
 
         if not hasattr(instance, 'userprofile'):
             profile = UserProfile(user = instance, is_participant = is_participant, step=step)
