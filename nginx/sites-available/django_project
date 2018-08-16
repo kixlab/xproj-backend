@@ -24,8 +24,8 @@ server {
 
     sendfile off;
 
-    ssl_certificate /etc/letsencrypt/live/api.budgetwiser.org/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/api.budgetwiser.org/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/xproj-api.hyunwoo.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/xproj-api.hyunwoo.me/privkey.pem;
 
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
     ssl_prefer_server_ciphers on;
@@ -64,12 +64,12 @@ server {
 # Static files are collected and served by nginx
 server {
     listen 80;
-    server_name api.budgetwiser.org;
+    server_name xproj-api.hyunwoo.me;
     charset utf-8;
 
     # letsencrypt challenge
     location /.well-known/ {
-        root /var/www/api.budgetwiser.org/;
+        root /var/www/xproj-api.hyunwoo.me/;
     }
 
     location / {
@@ -80,11 +80,11 @@ server {
 
 server {
     listen 443 ssl;
-    server_name api.budgetwiser.org;
+    server_name xproj-api.hyunwoo.me;
     charset utf-8;
 
-    ssl_certificate /etc/letsencrypt/live/api.budgetwiser.org/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/api.budgetwiser.org/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/xproj-api.hyunwoo.me/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/xproj-api.hyunwoo.me/privkey.pem;
 
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
     ssl_prefer_server_ciphers on;

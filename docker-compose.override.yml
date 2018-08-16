@@ -13,4 +13,4 @@ services:
       - "443:443"
     volumes:
       - ./web:/usr/src/app/
-      - ./nginx/dummycerts:/etc/letsencrypt/live/api.budgetwiser.org/
+      - ./nginx/dummycerts:/etc/letsencrypt/live/xproj-api.hyunwoo.me/
