@@ -5,3 +5,4 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
     is_participant = models.BooleanField()
+    step = models.IntegerField(default=1)
