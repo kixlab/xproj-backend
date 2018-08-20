@@ -6,3 +6,4 @@ class UserProfile(models.Model):
 
     is_participant = models.BooleanField()
     step = models.IntegerField(default=1)
+    presurvey_done = models.BooleanField(default = False)
