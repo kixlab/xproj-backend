@@ -9,7 +9,7 @@ class UserSerializer(UserDetailsSerializer):
     presurvey_done = serializers.BooleanField(source = 'userprofile.presurvey_done')
 
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + ('is_participant', 'step', )
+        fields = UserDetailsSerializer.Meta.fields + ('is_participant', 'step', 'presurvey_done',)
 
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('userprofile', {})
