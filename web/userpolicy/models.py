@@ -14,4 +14,5 @@ class UserPolicy(models.Model):
     stakeholders_answered = models.IntegerField()
     stakeholders_seen = models.IntegerField()
     articles_seen = models.IntegerField()
+    effects_seen = models.IntegerField(default=0)
 
