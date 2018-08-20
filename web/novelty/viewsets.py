@@ -31,11 +31,12 @@ class NoveltyViewSet(viewsets.ModelViewSet):
         data['user'] = request.user.pk
         serializer = NoveltySerializer(data = request.data)
         prev_novelty = Novelty.objects.filter(user=data['user']).filter(effect=data['effect'])
+
         if serializer.is_valid() and not (prev_novelty.exists()):
             serializer.save()
-            return Response({'status': 201})
+            return Response(status=201)
         elif serializer.is_valid() and prev_novelty.exists():
-            return Response({'status': 409})
+            return Response(status=409)
         # Novelty.set_effect(serializer.data['effect'])
         # Novelty.set_user(request.user)
 
