@@ -35,7 +35,7 @@ class EmpathyViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(status=201)
         elif serializer.is_valid() and prev_empathy.exists():
-            return Response(status=409)
+            return Response(status=409, data='already voted!')
         # empathy.set_effect(serializer.data['effect'])
         # empathy.set_user(request.user)
 
