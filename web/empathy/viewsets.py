@@ -31,10 +31,10 @@ class EmpathyViewSet(viewsets.ModelViewSet):
         data['user'] = request.user.pk
         prev_empathy = Empathy.objects.filter(user=data['user']).filter(effect=data['effect'])
         serializer = EmpathySerializer(data = request.data)
-        if serializer.is_valid() and prev_empathy.exists():
+        if serializer.is_valid() and not prev_empathy.exists():
             serializer.save()
             return Response({'status': 201})
-        elif serializer.is_valid() and not prev_empathy.exists():
+        elif serializer.is_valid() and prev_empathy.exists():
             return Response({'status': 409})
         # empathy.set_effect(serializer.data['effect'])
         # empathy.set_user(request.user)
