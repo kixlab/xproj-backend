@@ -54,4 +54,4 @@ class UserProfileSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = UserProfile
-        fields = ('url', 'id', 'user', 'is_participant', 'step')
+        fields = ('url', 'id', 'user', 'is_participant', 'step', 'presurvey_done')
