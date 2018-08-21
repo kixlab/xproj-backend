@@ -3,6 +3,7 @@ from stakeholdergroup.models import StakeholderGroup
 
 class StakeholderGroupSerializer(serializers.ModelSerializer):
     keywords = serializers.SerializerMethodField()
+    counts = serializers.SerializerMethodField()
     class Meta:
         model = StakeholderGroup
         fields = ('url', 'id', 'policy', 'name', 'keywords', 'is_visible', 'counts')
