@@ -28,7 +28,7 @@ class StakeholderGroupSerializer(serializers.ModelSerializer):
                 return {'positive': posEffect, 'negative': negEffect}
 
     def get_counts(self, obj):
-        negEffects = obj.effects.count(isBenefit=0)
-        posEffects = obj.effects.count(isBenefit=1)
+        negEffects = obj.effects.filter(isBenefit=0).count()
+        posEffects = obj.effects.filter(isBenefit=1).count()
 
         return {'positive': posEffects, 'negative': negEffects}
