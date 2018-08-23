@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from fishy.serializers import fishySerializer
+from fishy.serializers import FishySerializer
 from fishy.models import fishy
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
