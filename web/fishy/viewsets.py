@@ -1,18 +1,18 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from novelty.serializers import NoveltySerializer
-from novelty.models import Novelty
+from fishy.serializers import fishySerializer
+from fishy.models import fishy
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 # Create your views here.
 
-class NoveltyViewSet(viewsets.ModelViewSet):
-    queryset = Novelty.objects.all()
-    serializer_class = NoveltySerializer
+class FishyViewSet(viewsets.ModelViewSet):
+    queryset = Fishy.objects.all()
+    serializer_class = FishySerializer
     permission_classes = (IsAuthenticatedOrReadOnly, )
 
     def get_queryset(self):
-        queryset = Novelty.objects.all()
+        queryset = fishy.objects.all()
         effect = self.request.query_params.get('effect', None)
         user = self.request.user.pk
 
@@ -26,21 +26,20 @@ class NoveltyViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
 
-        # Novelty = self.get_object()
+        # fishy = self.get_object()
         data = request.data
         data['user'] = request.user.pk
-        serializer = NoveltySerializer(data = request.data)
-        prev_novelty = Novelty.objects.filter(user=data['user']).filter(effect=data['effect'])
-
-        if serializer.is_valid() and not (prev_novelty.exists()):
+        prev_fishy = Fishy.objects.filter(user=data['user']).filter(effect=data['effect'])
+        serializer = FishySerializer(data = request.data)
+        if serializer.is_valid() and not prev_fishy.exists():
             serializer.save()
             return Response(status=201, data='successfully voted')
-        elif serializer.is_valid() and prev_novelty.exists():
-            prev_novelty.delete()
+        elif serializer.is_valid() and prev_fishy.exists():
+            prev_fishy.delete()
             return Response(status=409, data='successfully unvoted')
-        # Novelty.set_effect(serializer.data['effect'])
-        # Novelty.set_user(request.user)
+        # fishy.set_effect(serializer.data['effect'])
+        # fishy.set_user(request.user)
 
-        # Novelty.save()
+        # fishy.save()
 
         return Response(status= 400, data=serializer.errors)
