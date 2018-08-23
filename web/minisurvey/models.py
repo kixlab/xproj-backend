@@ -14,4 +14,4 @@ class MiniSurvey(models.Model):
     fifth_answer = models.IntegerField()
 
     def __str__(self):
-        return '%s-%s' % (this.user.email % this.policy.title)
+        return '%s-%s' % (self.user.email % self.policy.title)
