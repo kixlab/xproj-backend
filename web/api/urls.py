@@ -15,6 +15,7 @@ from novelty.viewsets import *
 from userpolicy.viewsets import *
 from minisurvey.viewsets import *
 from userprofile.viewsets import *
+from fishy.viewsets import *
 from flag.viewsets import *
 router = Router()
 router.register(r'areas', AreaViewSet)
@@ -28,6 +29,7 @@ router.register(r'effects', EffectViewSet)
 router.register(r'stakeholdergroups', StakeholderGroupViewSet)
 router.register(r'empathy', EmpathyViewSet)
 router.register(r'novelty', NoveltyViewSet)
+router.register(r'fishy', FishyViewSet)
 router.register(r'userpolicy', UserPolicyViewSet)
 router.register(r'minisurvey', MiniSurveyViewSet)
 router.register(r'userprofile', UserProfileViewSet)
