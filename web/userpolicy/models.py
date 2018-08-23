@@ -16,3 +16,5 @@ class UserPolicy(models.Model):
     articles_seen = models.IntegerField()
     effects_seen = models.IntegerField(default=0)
 
+    def __str__(self):
+        return "%s-%s" % (self.user.email, self.policy.title)

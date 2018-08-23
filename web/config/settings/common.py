@@ -78,6 +78,7 @@ LOCAL_APPS = [
     'flag',
     'empathy',
     'novelty',
+    'fishy',
     'minisurvey',
     'userprofile'
 ]

@@ -1,18 +1,18 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from empathy.serializers import EmpathySerializer
-from empathy.models import Empathy
+from fishy.serializers import fishySerializer
+from fishy.models import fishy
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 # Create your views here.
 
-class EmpathyViewSet(viewsets.ModelViewSet):
-    queryset = Empathy.objects.all()
-    serializer_class = EmpathySerializer
+class FishyViewSet(viewsets.ModelViewSet):
+    queryset = Fishy.objects.all()
+    serializer_class = FishySerializer
     permission_classes = (IsAuthenticatedOrReadOnly, )
 
     def get_queryset(self):
-        queryset = Empathy.objects.all()
+        queryset = fishy.objects.all()
         effect = self.request.query_params.get('effect', None)
         user = self.request.user.pk
 
@@ -26,20 +26,20 @@ class EmpathyViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
 
-        # empathy = self.get_object()
+        # fishy = self.get_object()
         data = request.data
         data['user'] = request.user.pk
-        prev_empathy = Empathy.objects.filter(user=data['user']).filter(effect=data['effect'])
-        serializer = EmpathySerializer(data = request.data)
-        if serializer.is_valid() and not prev_empathy.exists():
+        prev_fishy = Fishy.objects.filter(user=data['user']).filter(effect=data['effect'])
+        serializer = FishySerializer(data = request.data)
+        if serializer.is_valid() and not prev_fishy.exists():
             serializer.save()
             return Response(status=201, data='successfully voted')
-        elif serializer.is_valid() and prev_empathy.exists():
-            prev_empathy.delete()
+        elif serializer.is_valid() and prev_fishy.exists():
+            prev_fishy.delete()
             return Response(status=409, data='successfully unvoted')
-        # empathy.set_effect(serializer.data['effect'])
-        # empathy.set_user(request.user)
+        # fishy.set_effect(serializer.data['effect'])
+        # fishy.set_user(request.user)
 
-        # empathy.save()
+        # fishy.save()
 
         return Response(status= 400, data=serializer.errors)
