@@ -34,9 +34,10 @@ class NoveltyViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid() and not (prev_novelty.exists()):
             serializer.save()
-            return Response(status=201)
+            return Response(status=201, data='successfully voted')
         elif serializer.is_valid() and prev_novelty.exists():
-            return Response(status=409, data='already voted!')
+            prev_novelty.delete()
+            return Response(status=409, data='successfully unvoted')
         # Novelty.set_effect(serializer.data['effect'])
         # Novelty.set_user(request.user)
 
