@@ -11,3 +11,7 @@ class MiniSurvey(models.Model):
     second_answer = models.IntegerField()
     third_answer = models.IntegerField()
     fourth_answer = models.IntegerField()
+    fifth_answer = models.IntegerField()
+
+    def __str__(self):
+        return '%s-%s' % (this.user.email % this.policy.title)
