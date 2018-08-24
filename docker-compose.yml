@@ -1,0 +1,29 @@
+# Base configuration
+version: '3'
+services:
+  web:
+    build: ./web/
+    links:
+      - db:db
+    # volumes:
+    #   - ./web:/usr/src/app
+    environment:
+      - XPROJ_SEOUL_API_KEY
+
+  db:
+    image: mdillon/postgis:9.4-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - data-volume:/var/lib/postgresql
+    environment:
+      - POSTGRES_USER=postgres
+
+  nginx:
+    build: ./nginx/
+    links:
+      - web:web
+
+volumes:
+  data-volume:
+  static-volume:
