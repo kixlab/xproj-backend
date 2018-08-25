@@ -8,6 +8,7 @@ from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
 from taggit.models import Tag
 from taggit_serializer.serializers import TaggitSerializer
+from django.db.models import Count, Q, F
 
 # Create your views here.
     
@@ -47,7 +48,21 @@ class EffectViewSet(viewsets.ModelViewSet):
     @list_route(methods=['get'])
     def tag_list(self, request):
         tags = Tag.objects.all()
-        tag_list = [tag.name for tag in tags]
+        # .distinct().annotate(
+        #     refs = Count("effect", distinct=True), 
+        #     positives = Count("effect_taggedeffect_items", distinct=True, filter=Q(content_object__isBenefit__exact=1)),
+        #     negatives = Count("effect_taggedeffect_items", distinct=True, filter=Q(content_object__isBenefit__exact=0)),
+        #     )
+
+        tag_list = [
+            {
+                "name": tag.name,
+                "refs": tag.effect_taggedeffect_items.count(),
+                "positive": tag.effect_taggedeffect_items.filter(content_object__isBenefit__exact=1).count(),
+                "negative": tag.effect_taggedeffect_items.filter(content_object__isBenefit__exact=0).count(),
+            } for tag in tags
+        ]
+
         return Response(data=tag_list, status=200)
 
     @list_route(methods=['get'])
