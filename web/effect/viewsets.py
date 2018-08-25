@@ -47,19 +47,30 @@ class EffectViewSet(viewsets.ModelViewSet):
 
     @list_route(methods=['get'])
     def tag_list(self, request):
+        policy = self.request.query_params.get('policy', None)
         tags = Tag.objects.all()
-        # .distinct().annotate(
-        #     refs = Count("effect", distinct=True), 
-        #     positives = Count("effect_taggedeffect_items", distinct=True, filter=Q(content_object__isBenefit__exact=1)),
-        #     negatives = Count("effect_taggedeffect_items", distinct=True, filter=Q(content_object__isBenefit__exact=0)),
-        #     )
 
+        Qobj = Q(content_object__policy__exact = policy) if policy is not None else None
+        Qpos = Q(content_object__isBenefit__exact = 1)
+        Qpos = Qpos & Qobj if Qobj is not None else Qpos
+        Qneg = Q(content_object__isBenefit__exact = 0)
+        Qneg = Qneg & Qobj if Qobj is not None else Qneg
+        
+        # if Qobj is not None:
+        #     tags = tags.annotate(
+        #         refs = Count("effect_taggedeffect_items", filter=Qobj), 
+        #         # positives = Count("effect_taggedeffect_items", distinct=True, filter=Q(content_object__isBenefit__exact=1)),
+        #         # negatives = Count("effect_taggedeffect_items", distinct=True, filter=Q(content_object__isBenefit__exact=0)),
+        #     )
+        #     tags = tags.filter(refs__gt = 0)
+        # query = tags.query
+        # print('tag_list %s' % query)
         tag_list = [
             {
                 "name": tag.name,
-                "refs": tag.effect_taggedeffect_items.count(),
-                "positive": tag.effect_taggedeffect_items.filter(content_object__isBenefit__exact=1).count(),
-                "negative": tag.effect_taggedeffect_items.filter(content_object__isBenefit__exact=0).count(),
+                "refs": tag.effect_taggedeffect_items.filter(Qobj).count() if Qobj is not None else tag.effect_tagged_effect_items.count(),
+                "positive": tag.effect_taggedeffect_items.filter(Qpos).count(),
+                "negative": tag.effect_taggedeffect_items.filter(Qneg).count(),
             } for tag in tags
         ]
 
