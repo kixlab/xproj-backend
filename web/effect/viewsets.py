@@ -4,10 +4,13 @@ from effect.serializers import EffectSerializer, EffectSlugSerializer
 from effect.models import Effect
 from stakeholdergroup.models import StakeholderGroup
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
-# Create your views here.
+from taggit.models import Tag
+from taggit_serializer.serializers import TaggitSerializer
 
+# Create your views here.
+    
 class EffectViewSet(viewsets.ModelViewSet):
     # permission_classes = (AllowAny,)
     permission_classes = (IsAuthenticatedOrReadOnly, )
@@ -36,16 +39,31 @@ class EffectViewSet(viewsets.ModelViewSet):
         if stakeholder_group is not None:
             queryset = queryset.filter(stakeholder_group = stakeholder_group)
 
-        if tags is not None:
+        if len(tags) > 0:
             queryset = queryset.filter(tags__name__in=tags).distinct()
 
         return queryset
 
-    # @detail_route(methods=['post'])
-    # def increment_empathy(self, request, pk=None):
-    #     effect = self.get_object()
-    #     user = request.user
+    @list_route(methods=['get'])
+    def tag_list(self, request):
+        tags = Tag.objects.all()
+        tag_list = [tag.name for tag in tags]
+        return Response(data=tag_list, status=200)
 
+    @list_route(methods=['get'])
+    def tag_info(self, request):
+        tag = self.request.query_params.get('tag', None)
+        queryset = Effect.objects.all().filter(tags__name__in=[tag]).distinct()
+        
+        posCount = queryset.filter(isBenefit = 1).count()
+        negCount = queryset.filter(isBenefit = 0).count()
+
+        return Response(status=200, data={
+            "tag": tag,
+            "refs": posCount + negCount,
+            "positive": posCount,
+            "negative": negCount
+        })
         
 
     # @action(methods=['get'], detail=False)

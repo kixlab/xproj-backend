@@ -2,6 +2,7 @@ from rest_framework import serializers
 from policy.models import Policy
 from effect.models import Effect
 from taggit_serializer.serializers import TagListSerializerField, TaggitSerializer
+from taggit.models import Tag
 
 class VoteListingField(serializers.RelatedField):
     def to_representation(self, value):
@@ -33,7 +34,7 @@ class EffectSerializer(TaggitSerializer, serializers.ModelSerializer):
     # def get_novelty(self, obj):
     #     return obj.novelty.count()
 
-class EffectSlugSerializer(serializers.ModelSerializer):
+class EffectSlugSerializer(TaggitSerializer, serializers.ModelSerializer):
     stakeholder_group = serializers.SlugRelatedField(
         many = False,
         read_only = True,
@@ -48,7 +49,7 @@ class EffectSlugSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Effect
-        fields = ('url', 'id', 'policy', 'stakeholder_group', 'isBenefit', 'stakeholder_detail', 'description', 'empathy', 'novelty', 'fishy', 'source', 'flags', 'user')
+        fields = ('url', 'id', 'policy', 'stakeholder_group', 'isBenefit', 'stakeholder_detail', 'description', 'empathy', 'novelty', 'fishy', 'source', 'flags', 'user', 'tags')
     
     def get_flags(self, obj):
         return obj.flag.count()
@@ -64,3 +65,9 @@ class EffectSlugSerializer(serializers.ModelSerializer):
     #     effect = Effect()
     #     print(validated_data)
     #     return effect
+
+# class TagSerializer(serializers.ModelSerializer):
+
+#     class Meta:
+#         model = Tag
+#         fields = ()
