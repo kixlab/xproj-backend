@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from fishy.serializers import FishySerializer
-from fishy.models import fishy
+from fishy.models import Fishy
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 # Create your views here.

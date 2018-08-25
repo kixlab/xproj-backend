@@ -61,7 +61,9 @@ THIRD_PARTY_APPS = [
     'debug_toolbar',
     'form_utils',
     'prompt_responses',
-    'sortedm2m'
+    'sortedm2m',
+    'taggit',
+    'taggit_serializer'
 ]
 
 LOCAL_APPS = [

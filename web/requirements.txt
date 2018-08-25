@@ -1,5 +1,6 @@
 -r requirements/base.txt
 -r requirements/api.txt
-# -r requirements/nlp.txt
+-r requirements/nlp.txt
 -r requirements/extras.txt
 -r requirements/extras2.txt
+-r requirements/tags.txt

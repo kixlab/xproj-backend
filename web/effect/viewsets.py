@@ -28,12 +28,16 @@ class EffectViewSet(viewsets.ModelViewSet):
         queryset = Effect.objects.all()
         policy = self.request.query_params.get('policy', None)
         stakeholder_group = self.request.query_params.get('stakeholder_group', None)
+        tags = self.request.query_params.getlist('tag', None)
 
         if policy is not None:
             queryset = queryset.filter(policy = policy)
 
         if stakeholder_group is not None:
             queryset = queryset.filter(stakeholder_group = stakeholder_group)
+
+        if tags is not None:
+            queryset = queryset.filter(tags__name__in=tags).distinct()
 
         return queryset
 

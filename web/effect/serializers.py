@@ -1,12 +1,13 @@
 from rest_framework import serializers
 from policy.models import Policy
 from effect.models import Effect
+from taggit_serializer.serializers import TagListSerializerField, TaggitSerializer
 
 class VoteListingField(serializers.RelatedField):
     def to_representation(self, value):
         return value.user.pk
 
-class EffectSerializer(serializers.ModelSerializer):
+class EffectSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     flags = serializers.SerializerMethodField()
     empathy = VoteListingField(read_only=True, many=True)
@@ -17,10 +18,11 @@ class EffectSerializer(serializers.ModelSerializer):
     # )
     novelty = VoteListingField(read_only=True, many=True)
     fishy = VoteListingField(read_only=True, many=True)
+    tags = TagListSerializerField()
 
     class Meta:
         model = Effect
-        fields = ('url', 'id', 'policy', 'stakeholder_group', 'isBenefit', 'stakeholder_detail', 'description', 'empathy', 'novelty', 'fishy', 'source', 'flags', 'user')
+        fields = ('url', 'id', 'policy', 'stakeholder_group', 'isBenefit', 'stakeholder_detail', 'description', 'empathy', 'novelty', 'fishy', 'source', 'flags', 'user', 'tags')
 
     def get_flags(self, obj):
         return obj.flag.count()
@@ -41,6 +43,8 @@ class EffectSlugSerializer(serializers.ModelSerializer):
     empathy = VoteListingField(read_only=True, many=True)
     novelty = VoteListingField(read_only=True, many=True)
     fishy = VoteListingField(read_only=True, many=True)
+    tags = TagListSerializerField()
+
 
     class Meta:
         model = Effect

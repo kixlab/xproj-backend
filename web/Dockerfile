@@ -59,6 +59,8 @@ ADD requirements/extras.txt /usr/src/app/requirements/extras.txt
 RUN pip3 install --no-cache-dir --disable-pip-version-check -r requirements/extras.txt
 ADD requirements/extras2.txt /usr/src/app/requirements/extras2.txt
 RUN pip3 install --no-cache-dir --disable-pip-version-check -r requirements/extras2.txt
+ADD requirements/tags.txt /usr/src/app/requirements/tags.txt
+RUN pip3 install --no-cache-dir --disable-pip-version-check -r requirements/tags.txt
 
 # Copy rest of source code. Doing this in the end improves Docker caching
 COPY . /usr/src/app
