@@ -51,29 +51,46 @@ class EffectViewSet(viewsets.ModelViewSet):
         policy = self.request.query_params.get('policy', None)
         tags = Tag.objects.all()
 
-        Qobj = Q(content_object__policy__exact = policy) if policy is not None else None
-        Qpos = Q(content_object__isBenefit__exact = 1)
-        Qpos = Qpos & Qobj if Qobj is not None else Qpos
-        Qneg = Q(content_object__isBenefit__exact = 0)
-        Qneg = Qneg & Qobj if Qobj is not None else Qneg
-        
-        # if Qobj is not None:
-        #     tags = tags.annotate(
-        #         refs = Count("effect_taggedeffect_items", filter=Qobj), 
-        #         # positives = Count("effect_taggedeffect_items", distinct=True, filter=Q(content_object__isBenefit__exact=1)),
-        #         # negatives = Count("effect_taggedeffect_items", distinct=True, filter=Q(content_object__isBenefit__exact=0)),
-        #     )
-        #     tags = tags.filter(refs__gt = 0)
+        if policy is None:
+            return Response(status = 400, data = "Please specify policy idx")
+
+        Qobj = Q(content_object__policy__exact = policy)
+        Qpos = Q(content_object__isBenefit = 1)
+        # Qpos = Qpos & Qobj
+        Qneg = Q(content_object__isBenefit = 0)
+        # Qneg = Qneg & Qobj
+        tags = tags.filter(effect__policy__exact = policy).distinct()
+        # tags = tags.annotate(
+        #     refs = Count("effect"), 
+        #     positives = Count("effect", filter=Qpos),
+        #     negatives = Count("effect", filter=Qneg),
+        # )
+        # tags = tags.annotate(
+        #     negatives = Count("effect_taggedeffect_items", distinct=True, filter=Qneg),
+        # )
+        # tags = tags.filter(refs__gt = 0)
         # query = tags.query
         # print('tag_list %s' % query)
-        tag_list = [
-            {
+        tag_list = []
+
+        for tag in tags:
+            query = tag.effect_taggedeffect_items.filter(Qobj)
+            refs = query.count()
+            tag_list.append({
                 "name": tag.name,
-                "refs": tag.effect_taggedeffect_items.filter(Qobj).count() if Qobj is not None else tag.effect_tagged_effect_items.count(),
-                "positive": tag.effect_taggedeffect_items.filter(Qpos).count(),
-                "negative": tag.effect_taggedeffect_items.filter(Qneg).count(),
-            } for tag in tags
-        ]
+                "refs": refs,
+                "positive": query.filter(Qpos).count(),
+                "negative": query.filter(Qneg).count(),
+            })
+        #TODO: find more optimal way
+        # tag_list = [
+        #     {
+        #         "name": tag.name,
+        #         "refs": tag.effect_taggedeffect_items.filter(Qobj).count(),
+        #         "positive": tag.effect_taggedeffect_items.filter(Qpos).count(),
+        #         "negative": tag.effect_taggedeffect_items.filter(Qneg).count(),
+        #     } for tag in tags
+        # ]
 
         return Response(data=tag_list, status=200)
 
@@ -95,7 +112,7 @@ class EffectViewSet(viewsets.ModelViewSet):
     @list_route(methods=['get'])
     def random(self, request):
         policy = self.request.query_params.get('policy', None)
-        exclude = self.request.query_params.getlist('exclude')
+        exclude = self.request.query_params.getlist('exclude[]')
 
         if policy is None:
             return Response(status = 400, data = "Please specify policy idx")
