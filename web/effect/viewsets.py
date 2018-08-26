@@ -8,7 +8,8 @@ from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
 from taggit.models import Tag
 from taggit_serializer.serializers import TaggitSerializer
-from django.db.models import Count, Q, F
+from django.db.models import Count, Q, F, Sum
+import random
 
 # Create your views here.
     
@@ -90,6 +91,41 @@ class EffectViewSet(viewsets.ModelViewSet):
             "positive": posCount,
             "negative": negCount
         })
+
+    @list_route(methods=['get'])
+    def random(self, request):
+        policy = self.request.query_params.get('policy', None)
+        exclude = self.request.query_params.getlist('exclude')
+
+        if policy is None:
+            return Response(status = 400, data = "Please specify policy idx")
+
+        queryset = Effect.objects.filter(policy = policy)
+        if len(exclude) > 0:
+            queryset = queryset.exclude(id__in=exclude)
+
+        queryset = queryset.annotate(
+            empathy_count = Count("empathy", distinct=True),
+            novelty_count = Count("novelty", distinct=True),
+            fishy_count = Count("fishy", distinct=True),
+            score = F('empathy_count') + F('novelty_count')
+        )
+        # queryset = queryset.annotate(
+        #     score = Sum(F('empathy_count'), F('novelty_count'))
+        # )
+
+        queryset = queryset.filter(score__gte=1)
+        count = queryset.count()
+
+        if (count == 0):
+            return Response(status=404, data = "no such effect")
+        while True:
+            idx = random.randint(0, count-1)
+            obj = queryset[idx]
+
+            serializer = EffectSerializer(obj, context={'request': self.request})
+            return Response(status = 200, data=serializer.data)
+            
         
 
     # @action(methods=['get'], detail=False)
