@@ -6,12 +6,18 @@ from stakeholdergroup.models import StakeholderGroup
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 from taggit.models import Tag
 from taggit_serializer.serializers import TaggitSerializer
 from django.db.models import Count, Q, F, Sum
 import random
 
 # Create your views here.
+
+class EffectPagination(PageNumberPagination):
+    page_size = 5
+    page_size_query_param = 'page_size'
+    max_page_size = 500
     
 class EffectViewSet(viewsets.ModelViewSet):
     # permission_classes = (AllowAny,)
