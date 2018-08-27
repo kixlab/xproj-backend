@@ -54,6 +54,14 @@ class EffectViewSet(viewsets.ModelViewSet):
             for tag in tags:
                 queryset = queryset.filter(tags__name__in=[tag])
 
+        queryset = queryset.annotate(
+            empathy_count = Count("empathy", distinct=True),
+            novelty_count = Count("novelty", distinct=True),
+            fishy_count = Count("fishy", distinct=True),
+            score = F('empathy_count') + F('novelty_count')
+        )
+
+        queryset = queryset.order_by('score')
         return queryset
 
     @list_route(methods=['get'])

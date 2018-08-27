@@ -11,14 +11,14 @@ class TaggedEffect(TaggedItemBase):
 
 class Effect(models.Model):
     policy = models.ForeignKey('policy.Policy', related_name="effects", null=False)
-    stakeholder_group = models.ForeignKey('stakeholdergroup.StakeholderGroup', related_name="effects", null=False)
+    stakeholder_group = models.ForeignKey('stakeholdergroup.StakeholderGroup', related_name="effects", null=False) #TODO: Remove it!
     user = models.ForeignKey('accounts.User', related_name='effects')
     # user_policy = models.ForeignKey('userpolicy.UserPolicy', related_name='effects')
     isBenefit = models.IntegerField(default = 0)
-    stakeholder_detail = models.TextField()
+    stakeholder_detail = models.TextField(null=True)
     description = models.TextField()
     source = models.TextField()
     tags = TaggableManager(through=TaggedEffect)
 
     def __str__(self):
-        return self.stakeholder_detail
+        return self.description
