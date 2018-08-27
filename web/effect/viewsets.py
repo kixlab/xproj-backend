@@ -24,6 +24,7 @@ class EffectViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly, )
     queryset = Effect.objects.all()
     serializer_class = EffectSerializer
+    pagination_class = EffectPagination
 
     def get_serializer_class(self):
         serializer_class = EffectSerializer
