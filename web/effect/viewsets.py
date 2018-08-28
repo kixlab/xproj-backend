@@ -41,12 +41,16 @@ class EffectViewSet(viewsets.ModelViewSet):
         policy = self.request.query_params.get('policy', None)
         stakeholder_group = self.request.query_params.get('stakeholder_group', None)
         tags = self.request.query_params.getlist('tag[]', None)
+        isBenefit = self.request.query_params.get('is_benefit', None)
 
         if policy is not None:
             queryset = queryset.filter(policy = policy)
 
         if stakeholder_group is not None:
             queryset = queryset.filter(stakeholder_group = stakeholder_group)
+
+        if isBenefit is not None:
+            queryset = queryset.filter(isBenefit = isBenefit)
 
         # if len(tags) > 0:
         #     queryset = queryset.filter(tags__name__in=tags).distinct()
@@ -61,7 +65,7 @@ class EffectViewSet(viewsets.ModelViewSet):
             score = F('empathy_count') + F('novelty_count')
         )
 
-        queryset = queryset.order_by('score')
+        queryset = queryset.order_by('-score')
         return queryset
 
     @list_route(methods=['get'])
