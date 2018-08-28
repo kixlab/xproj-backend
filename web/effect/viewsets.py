@@ -52,11 +52,11 @@ class EffectViewSet(viewsets.ModelViewSet):
         if isBenefit is not None:
             queryset = queryset.filter(isBenefit = isBenefit)
 
-        # if len(tags) > 0:
-        #     queryset = queryset.filter(tags__name__in=tags).distinct()
         if len(tags) > 0:
-            for tag in tags:
-                queryset = queryset.filter(tags__name__in=[tag])
+            queryset = queryset.filter(tags__name__in=tags).distinct()
+        # if len(tags) > 0:
+        #     for tag in tags:
+        #         queryset = queryset.filter(tags__name__in=[tag])
 
         queryset = queryset.annotate(
             empathy_count = Count("empathy", distinct=True),
