@@ -19,6 +19,7 @@ class Effect(models.Model):
     description = models.TextField()
     source = models.TextField()
     tags = TaggableManager(through=TaggedEffect)
+    confidence = models.IntegerField(default = 0)
 
     def __str__(self):
         return self.description
