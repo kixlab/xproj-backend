@@ -35,6 +35,10 @@ class UserSerializer(UserDetailsSerializer):
         return instance
     
     def get_experiment_condition(self, obj):
+
+        if (obj.userprofile.is_participant is False):
+            return -1
+
         user_count = UserProfile.objects.filter(presurvey_done = True).count()
 
         if (user_count < 50):
