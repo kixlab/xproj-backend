@@ -9,7 +9,8 @@ services:
     #   - ./web:/usr/src/app
     environment:
       - XPROJ_SEOUL_API_KEY
-
+      - AWS_SES_ACCESS_KEY_ID=${AWS_SES_ACCESS_KEY_ID}
+      - AWS_SES_SECRET_ACCESS_KEY=${AWS_SES_SECRET_ACCESS_KEY}
   db:
     image: mdillon/postgis:9.4-alpine
     ports:
