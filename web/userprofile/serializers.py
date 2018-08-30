@@ -7,9 +7,10 @@ class UserSerializer(UserDetailsSerializer):
     is_participant = serializers.BooleanField(source = 'userprofile.is_participant')
     step = serializers.IntegerField(source = 'userprofile.step')
     presurvey_done = serializers.BooleanField(source = 'userprofile.presurvey_done')
+    experiment_condition = serializers.SerializerMethodField()
 
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + ('is_participant', 'step', 'presurvey_done',)
+        fields = UserDetailsSerializer.Meta.fields + ('is_participant', 'step', 'presurvey_done', 'experiment_condition', )
 
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('userprofile', {})
@@ -32,6 +33,14 @@ class UserSerializer(UserDetailsSerializer):
             profile.save()
 
         return instance
+    
+    def get_experiment_condition(self, obj):
+        user_count = UserProfile.objects.filter(presurvey_done = True).count()
+
+        if (user_count < 50):
+            return 7
+        else:
+            return obj.pk % 6
 
 # class NewUserSerializer(RegisterSerializer):
 #     is_participant = serializers.BooleanField(source = 'userprofile.is_participant')
