@@ -42,7 +42,7 @@ class UserSerializer(UserDetailsSerializer):
         user_count = UserProfile.objects.filter(presurvey_done = True).count()
 
         if (user_count < 50):
-            return 7
+            return 7 + (obj.pk % 2)
         else:
             return obj.pk % 6
 
@@ -64,7 +64,20 @@ class UserSerializer(UserDetailsSerializer):
 # from rest_auth.serializers import UserDetailsSerializer
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    experiment_condition = serializers.SerializerMethodField()
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = UserProfile
-        fields = ('url', 'id', 'user', 'is_participant', 'step', 'presurvey_done')
+        fields = ('url', 'id', 'user', 'is_participant', 'step', 'presurvey_done', 'experiment_condition')
+    
+    def get_experiment_condition(self, obj):
+
+        if (obj.is_participant is False):
+            return -1
+
+        user_count = UserProfile.objects.filter(presurvey_done = True).count()
+
+        if (user_count < 50):
+            return 7 + (obj.user.pk % 2)
+        else:
+            return obj.user.pk % 6
