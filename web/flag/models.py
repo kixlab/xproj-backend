@@ -8,3 +8,9 @@ class Flag(models.Model):
     user = models.ForeignKey('accounts.User', related_name='flag', null=False)
     effect = models.ForeignKey('effect.Effect', related_name='flag', null=False)
     reason = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.effect.description
+
+        

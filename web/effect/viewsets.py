@@ -37,7 +37,7 @@ class EffectViewSet(viewsets.ModelViewSet):
 
 
     def get_queryset(self):
-        queryset = Effect.objects.all()
+        queryset = Effect.objects.filter(source = 'guess')
         policy = self.request.query_params.get('policy', None)
         stakeholder_group = self.request.query_params.get('stakeholder_group', None)
         tags = self.request.query_params.getlist('tag[]', None)

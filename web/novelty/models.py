@@ -6,3 +6,9 @@ from effect.models import Effect
 class Novelty(models.Model):
     user = models.ForeignKey('accounts.User', related_name='novelty', null=False)
     effect = models.ForeignKey('effect.Effect', related_name='novelty', null=False)
+
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.effect.description
+        

@@ -13,5 +13,7 @@ class MiniSurvey(models.Model):
     fourth_answer = models.IntegerField()
     fifth_answer = models.IntegerField()
 
+    created = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return "%s-%s" % (self.user.email, self.policy.title)
