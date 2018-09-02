@@ -13,6 +13,14 @@ class MiniSurvey(models.Model):
     fourth_answer = models.IntegerField()
     fifth_answer = models.IntegerField()
 
+    article1_q1 = models.IntegerField(default = 0)
+    article1_q2 = models.IntegerField(default = 0)
+    article1_q3 = models.IntegerField(default = 0)
+
+    article2_q1 = models.IntegerField(default = 0)
+    article2_q2 = models.IntegerField(default = 0)
+    article2_q3 = models.IntegerField(default = 0)
+    
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
