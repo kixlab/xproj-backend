@@ -55,9 +55,9 @@ class EffectViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(isBenefit = isBenefit)
         
         if include_guess is not None:
-            if include_guess:
+            if include_guess == '1':
                 queryset = queryset.filter(is_guess=True)
-            else:
+            elif include_guess == '0':
                 queryset = queryset.filter(is_guess=False)
         
         if len(tags) > 0 and not is_and:
