@@ -43,7 +43,7 @@ class EffectViewSet(viewsets.ModelViewSet):
         tags = self.request.query_params.getlist('tag[]', None)
         isBenefit = self.request.query_params.get('is_benefit', None)
         is_and = self.request.query_params.get('is_and', False)
-        include_guess = self.request.query_params.get('include_guess', False)
+        include_guess = self.request.query_params.get('include_guess', None)
 
         if policy is not None:
             queryset = queryset.filter(policy = policy)
@@ -55,10 +55,10 @@ class EffectViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(isBenefit = isBenefit)
         
         if include_guess is not None:
-            if include_guess == 1:
+            if include_guess:
                 queryset = queryset.filter(is_guess=True)
-            elif include_guess == 0:
-                queryset = queryset.exclude(is_guess=False)
+            else:
+                queryset = queryset.filter(is_guess=False)
         
         if len(tags) > 0 and not is_and:
             queryset = queryset.filter(tags__name__in=tags).distinct()
