@@ -77,7 +77,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
         user_count = UserProfile.objects.filter(presurvey_done = True).count()
 
-        if (user_count < 50):
+        if (user_count < 10):
             return 7 + (obj.user.pk % 2)
         else:
             return obj.user.pk % 6
