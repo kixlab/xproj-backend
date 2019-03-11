@@ -19,7 +19,7 @@ class TagNode:
     neg_count = 0
     total_count = 0
     children = []
-
+    pc = ''
     def __repr__(self):
         return self.tag
 
@@ -29,7 +29,7 @@ class TagNode:
         self.neg_count = neg_count
         self.total_count = pos_count + neg_count
         self.children = []
-    
+        self.pc = ''
     def add_child(self, node):
         if node not in self.children:
             self.children.append(node)
@@ -57,25 +57,34 @@ class TagTree:
 
         while len(sorted_tags) > 0:
             ele = sorted_tags.pop(0) # pick the most referenced one
+            queryset_level1 = Effect.objects.all().filter(tags__name__in=[ele[0]])
 
             level1_node = TagNode(ele[0], ele[2], ele[3])
+            self.included_tags.append(ele[0])
+            # self.root.add_child(level1_node)
+
+            possible_children = list(queryset_level1.values('tags__name')) # extract possible childs
+            # possible_children_text = list(set([tag for tag in possible_children['tags__name']]))
+            level1_node.pc = possible_children
+            #for t in possible_children_text:
+            #    if t in self.included_tags:
+            #        continue
+            #    t12_count = queryset_level1.filter(tags__name__in=[t]).count()
+            #    t2 = None
+            #    t2idx = None
+            #    for idx, tag in enumerate(sorted_tags):
+            #        if tag == t:
+            #            t2idx = idx
+            #            t2 = tag 
+            #    if t2 is None:
+            #        continue
+
+            #    t2_count = t2[1]
+            #    if t12_count >= 0:
+            #        level1_node.add_child(TagNode(t2[0], t2[2], t2[3]))
+            #        sorted_tags.pop(t2idx)
+
             self.root.add_child(level1_node)
-
-            possible_children = list(queryset.filter(tags__name__in=[ele[0]]).values_list('tags', flat=True)) # extract possible childs
-            possible_children_text = list(set([tag for tag in possible_children]))
-            queryset_level1 = queryset.filter(tags__name__in=[ele[0]])
-            for t in possible_children_text:
-                if t in self.included_tags:
-                    continue
-                t12_count = queryset_level1.filter(tags__name__in=[t])
-                t2 = [elem for elem in sorted_tags if elem[0] == t]
-                if len(t2) <= 0:
-                    continue
-                t2_count = t2[0][1]
-                if t12_count >= t2_count * 0.9:
-                    level1_node.add_child(TagNode(t2[0][0], t2[0][2], t2[0][3]))
-                    sorted_tags.remove(t2)
-
 
 def decide_inclusion(tag1, tag2):
     queryset = Effect.objects.all()

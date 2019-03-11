@@ -13,6 +13,7 @@ from django.db.models import Count, Q, F, Sum
 import random
 from effect.taghelpers import TagTree, TagTreeEncoder
 import json
+from django.http import HttpResponse
 # Create your views here.
 
 class EffectPagination(PageNumberPagination):
@@ -125,7 +126,7 @@ class EffectViewSet(viewsets.ModelViewSet):
             self.tag_tree = TagTree()
         self.tag_tree.construct_tag_tree(tag_list_2)
 
-        myJson = json.dumps(self.tag_tree.root, cls=TagTreeEncoder)
+        myJson = json.dumps(self.tag_tree.root, cls=TagTreeEncoder, indent = 2, ensure_ascii = False)
         
         #TODO: find more optimal way
         # tag_list = [
@@ -137,8 +138,8 @@ class EffectViewSet(viewsets.ModelViewSet):
         #     } for tag in tags
         # ]
 
-        return Response(data=myJson, status=200)
-
+        #return Response(data=myJson, status=200)
+        return HttpResponse(myJson, content_type="application/json")
     @list_route(methods=['get'])
     def tag_info(self, request):
         tag = self.request.query_params.get('tag', None)
