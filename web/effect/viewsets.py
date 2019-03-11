@@ -39,7 +39,6 @@ class EffectViewSet(viewsets.ModelViewSet):
     pagination_class = EffectPagination
     tag_tree = [None, None]
     keywords = []
-
     def get_serializer_class(self):
         serializer_class = EffectSerializer
         get_stakeholder_names = self.request.query_params.get('get_stakeholder_names', None)
@@ -87,8 +86,8 @@ class EffectViewSet(viewsets.ModelViewSet):
             fishy_count = Count("fishy", distinct=True),
             score = F('empathy_count') + F('novelty_count')
         )
-        corpus = list(queryset.values_list('description', flat=True))
-        self.keywords = get_top_n_words_from_tfidf_kor(corpus, n=10)
+        corpus = [e.description for e in queryset] #list(queryset.values_list('description', flat=True))
+        self.keywords = get_top_n_words_from_tfidf_kor(corpus, 10)
         queryset = queryset.order_by('-score')
         return queryset
 
