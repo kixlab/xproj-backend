@@ -57,6 +57,9 @@ class TagTree:
         self.root = TagNode('root')
         self.included_tags = []
 
+    def isEmpty(self):
+        return len(self.included_tags) <= 0
+
     def construct_tag_tree(self, tag_list):
         sorted_tags = sorted(tag_list, key = lambda x: x[1], reverse = True)
 

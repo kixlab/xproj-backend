@@ -106,7 +106,6 @@ class EffectViewSet(viewsets.ModelViewSet):
         # query = tags.query
         # print('tag_list %s' % query)
         tag_list = []
-        tag_list_2 = []
 
         for tag in tags:
             query = tag.effect_taggedeffect_items.filter(Qobj)
@@ -120,11 +119,58 @@ class EffectViewSet(viewsets.ModelViewSet):
                 "positive": pos_count,
                 "negative": neg_count,
             })
-            tag_list_2.append((name, total_count, pos_count, neg_count))
+        
+        #TODO: find more optimal way
+        # tag_list = [
+        #     {
+        #         "name": tag.name,
+        #         "refs": tag.effect_taggedeffect_items.filter(Qobj).count(),
+        #         "positive": tag.effect_taggedeffect_items.filter(Qpos).count(),
+        #         "negative": tag.effect_taggedeffect_items.filter(Qneg).count(),
+        #     } for tag in tags
+        # ]
 
-        if self.tag_tree is None:
+        return Response(data=myJson, status=200)
+
+    @list_route(methods=['get'])
+    def tag_list2(self, request):
+        policy = self.request.query_params.get('policy', None)
+        tags = Tag.objects.all()
+
+        if policy is None:
+            return Response(status = 400, data = "Please specify policy idx")
+
+        Qobj = Q(content_object__policy__exact = policy)
+        Qpos = Q(content_object__isBenefit = 1)
+        # Qpos = Qpos & Qobj
+        Qneg = Q(content_object__isBenefit = 0)
+        # Qneg = Qneg & Qobj
+        tags = tags.filter(effect__policy__exact = policy).distinct()
+        # tags = tags.annotate(
+        #     refs = Count("effect"), 
+        #     positives = Count("effect", filter=Qpos),
+        #     negatives = Count("effect", filter=Qneg),
+        # )
+        # tags = tags.annotate(
+        #     negatives = Count("effect_taggedeffect_items", distinct=True, filter=Qneg),
+        # )
+        # tags = tags.filter(refs__gt = 0)
+        # query = tags.query
+        # print('tag_list %s' % query)
+        tag_list = []
+        tag_list= []
+
+        for tag in tags:
+            query = tag.effect_taggedeffect_items.filter(Qobj)
+            total_count = query.count()
+            name = tag.name
+            pos_count = query.filter(Qpos).count()
+            neg_count = query.filter(Qneg).count()
+            tag_list.append((name, total_count, pos_count, neg_count))
+
+        if self.tag_tree.isEmpty():
             self.tag_tree = TagTree()
-        self.tag_tree.construct_tag_tree(tag_list_2)
+            self.tag_tree.construct_tag_tree(tag_list)
 
         myJson = json.dumps(self.tag_tree.root, cls=TagTreeEncoder, indent = 2, ensure_ascii = False)
         
@@ -140,6 +186,7 @@ class EffectViewSet(viewsets.ModelViewSet):
 
         #return Response(data=myJson, status=200)
         return HttpResponse(myJson, content_type="application/json")
+
     @list_route(methods=['get'])
     def tag_info(self, request):
         tag = self.request.query_params.get('tag', None)
