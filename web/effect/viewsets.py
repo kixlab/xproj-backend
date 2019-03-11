@@ -166,7 +166,7 @@ class EffectViewSet(viewsets.ModelViewSet):
             pos_count = query.filter(Qpos).count()
             neg_count = query.filter(Qneg).count()
             tag_list.append((name, total_count, pos_count, neg_count))
-        ppp = int(policy)
+        ppp = int(policy) - 1
         if self.tag_tree[ppp] is None or self.tag_tree[ppp].isEmpty():
             self.tag_tree[ppp] = TagTree()
             self.tag_tree[ppp].construct_tag_tree(tag_list)
