@@ -29,7 +29,7 @@ class TagNode:
         self.neg_count = neg_count
         self.total_count = pos_count + neg_count
         self.children = []
-        self.pc = ''
+        self.pc = 0
     def add_child(self, node):
         if node not in self.children:
             self.children.append(node)
@@ -69,6 +69,7 @@ class TagTree:
                if t in self.included_tags:
                    continue
                t12_count = queryset_level1.filter(tags__name__in=[t]).count()
+               level1_node.pc += t12_count
                t2 = None
                t2idx = None
                for idx, tag in enumerate(sorted_tags):
