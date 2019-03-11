@@ -27,7 +27,7 @@ class EffectViewSet(viewsets.ModelViewSet):
     queryset = Effect.objects.all()
     serializer_class = EffectSerializer
     pagination_class = EffectPagination
-    tag_tree = None
+    tag_tree = [None, None]
 
     def get_serializer_class(self):
         serializer_class = EffectSerializer
@@ -167,11 +167,11 @@ class EffectViewSet(viewsets.ModelViewSet):
             neg_count = query.filter(Qneg).count()
             tag_list.append((name, total_count, pos_count, neg_count))
 
-        if self.tag_tree.isEmpty():
-            self.tag_tree = TagTree()
+        if self.tag_tree[policy] is None or self.tag_tree[policy].isEmpty():
+            self.tag_tree[policy] = TagTree()
             self.tag_tree.construct_tag_tree(tag_list)
 
-        myJson = json.dumps(self.tag_tree.root, cls=TagTreeEncoder, indent = 2, ensure_ascii = False)
+        myJson = json.dumps(self.tag_tree[policy].root, cls=TagTreeEncoder, indent = 2, ensure_ascii = False)
         
         #TODO: find more optimal way
         # tag_list = [
