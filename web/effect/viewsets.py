@@ -21,6 +21,15 @@ class EffectPagination(PageNumberPagination):
     page_size = 5
     page_size_query_param = 'page_size'
     max_page_size = 500
+
+    def get_paginated_response(self, data, keywords):
+        return Response({
+            'count': self.page.paginator.count,
+            'next': self.get_next_link(),
+            'prev': self.get_previous_link(),
+            'keywords': keywords,
+            'results': data
+        })
     
 class EffectViewSet(viewsets.ModelViewSet):
     # permission_classes = (AllowAny,)
@@ -29,6 +38,7 @@ class EffectViewSet(viewsets.ModelViewSet):
     serializer_class = EffectSerializer
     pagination_class = EffectPagination
     tag_tree = [None, None]
+    keywords = []
 
     def get_serializer_class(self):
         serializer_class = EffectSerializer
@@ -77,9 +87,13 @@ class EffectViewSet(viewsets.ModelViewSet):
             fishy_count = Count("fishy", distinct=True),
             score = F('empathy_count') + F('novelty_count')
         )
-
+        corpus = list(queryset.values_list('description', flat=True))
+        self.keywords = get_top_n_words_from_tfidf_kor(corpus, n=10)
         queryset = queryset.order_by('-score')
         return queryset
+
+    def get_paginated_response(self, data):
+        return self.paginator.get_paginated_response(data, self.keywords)
 
     @list_route(methods=['get'])
     def tag_list(self, request):
@@ -239,46 +253,48 @@ class EffectViewSet(viewsets.ModelViewSet):
             serializer = EffectSerializer(obj, context={'request': self.request})
             return Response(status = 200, data=serializer.data)
 
-    @list_route(methods=['get'])
-    def get_keywords(self, request):
-        queryset = Effect.objects.all()
-        policy = self.request.query_params.get('policy', None)
-        tags = self.request.query_params.getlist('tag[]', None)
-        isBenefit = self.request.query_params.get('is_benefit', None)
-        is_and = self.request.query_params.get('is_and', False)
-        include_guess = self.request.query_params.get('include_guess', None)
+    # @list_route(methods=['get'])
+    # def get_keywords(self, request):
+    #     queryset = Effect.objects.all()
+    #     policy = self.request.query_params.get('policy', None)
+    #     tags = self.request.query_params.getlist('tag[]', None)
+    #     isBenefit = self.request.query_params.get('is_benefit', None)
+    #     is_and = self.request.query_params.get('is_and', False)
+    #     include_guess = self.request.query_params.get('include_guess', None)
 
-        if policy is not None:
-            queryset = queryset.filter(policy = policy)
+    #     if policy is not None:
+    #         queryset = queryset.filter(policy = policy)
 
-        if isBenefit is not None:
-            queryset = queryset.filter(isBenefit = isBenefit)
+    #     if isBenefit is not None:
+    #         queryset = queryset.filter(isBenefit = isBenefit)
         
-        if include_guess is not None:
-            if include_guess == '1':
-                queryset = queryset.filter(is_guess=True)
-            elif include_guess == '0':
-                queryset = queryset.filter(is_guess=False)
+    #     if include_guess is not None:
+    #         if include_guess == '1':
+    #             queryset = queryset.filter(is_guess=True)
+    #         elif include_guess == '0':
+    #             queryset = queryset.filter(is_guess=False)
         
-        if len(tags) > 0 and not is_and:
-            queryset = queryset.filter(tags__name__in=tags).distinct()
+    #     if len(tags) > 0 and not is_and:
+    #         queryset = queryset.filter(tags__name__in=tags).distinct()
 
-        elif len(tags) > 0 and is_and:
-            for tag in tags:
-                queryset = queryset.filter(tags__name__in=[tag])
+    #     elif len(tags) > 0 and is_and:
+    #         for tag in tags:
+    #             queryset = queryset.filter(tags__name__in=[tag])
 
-        queryset = queryset.annotate(
-            empathy_count = Count("empathy", distinct=True),
-            novelty_count = Count("novelty", distinct=True),
-            fishy_count = Count("fishy", distinct=True),
-            score = F('empathy_count') + F('novelty_count')
-        )
-        corpus = [e.description for e in queryset]
-        keywords = get_top_n_words_from_tfidf_kor(corpus, n=10)
-        queryset = queryset.order_by('-score')
-        res = Response(data=queryset)
-        res.data['keywords'] = keywords
-        return res
+    #     queryset = queryset.annotate(
+    #         empathy_count = Count("empathy", distinct=True),
+    #         novelty_count = Count("novelty", distinct=True),
+    #         fishy_count = Count("fishy", distinct=True),
+    #         score = F('empathy_count') + F('novelty_count')
+    #     )
+    #     corpus = list(queryset.values_list('description', flat=True))
+    #     keywords = get_top_n_words_from_tfidf_kor(corpus, n=10)
+    #     queryset = queryset.order_by('-score')
+
+    #     serializer = EffectSerializer(queryset, context={'request': self.request})
+    #     res = Response(serializer.data)
+    #     res.data['keywords'] = keywords
+    #     return res
 
     # @action(methods=['get'], detail=False)
     # def effects_by_policy(self, request):
