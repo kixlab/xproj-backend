@@ -30,9 +30,15 @@ class TagNode:
         self.total_count = pos_count + neg_count
         self.children = []
         self.pc = 0
+
     def add_child(self, node):
-        if node not in self.children:
+        if node.name not in [t.name for t in self.children]:
             self.children.append(node)
+
+    def add_child_name(self, name, pos_count, neg_count):
+        if name not in [t.name for t in self.children]:
+            self.children.append(TagNode(name, pos_count, neg_count))
+
 
     def remove_child(self, tag):
         targetIdx = None
@@ -60,7 +66,7 @@ class TagTree:
             queryset_level1 = Effect.objects.filter(tags__name__in=[ele[0]])
             level1_node = TagNode(ele[0], ele[2], ele[3])
             self.included_tags.append(ele[0])
-            level1_node.pc = queryset_level1.count()
+            level1_node.pc = 0
             # self.root.add_child(level1_node)
 
             # possible_children = list(queryset_level1.values('tags__name')) # extract possible childs
@@ -82,7 +88,7 @@ class TagTree:
 
                t2_count = t2[1]
                if t12_count >= 0:
-                   level1_node.add_child(TagNode(t2[0], t2[2], t2[3]))
+                   level1_node.add_child_name(t2[0], t2[2], t2[3])
                    sorted_tags.pop(t2idx)
 
             self.root.add_child(level1_node)
