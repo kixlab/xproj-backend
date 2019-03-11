@@ -130,7 +130,7 @@ class EffectViewSet(viewsets.ModelViewSet):
         #     } for tag in tags
         # ]
 
-        return Response(data=myJson, status=200)
+        return Response(data=tag_list, status=200)
 
     @list_route(methods=['get'])
     def tag_list2(self, request):
