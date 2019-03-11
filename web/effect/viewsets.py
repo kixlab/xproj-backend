@@ -166,12 +166,12 @@ class EffectViewSet(viewsets.ModelViewSet):
             pos_count = query.filter(Qpos).count()
             neg_count = query.filter(Qneg).count()
             tag_list.append((name, total_count, pos_count, neg_count))
+        ppp = int(policy)
+        if self.tag_tree[ppp] is None or self.tag_tree[ppp].isEmpty():
+            self.tag_tree[ppp] = TagTree()
+            self.tag_tree[ppp].construct_tag_tree(tag_list)
 
-        if self.tag_tree[policy] is None or self.tag_tree[policy].isEmpty():
-            self.tag_tree[policy] = TagTree()
-            self.tag_tree.construct_tag_tree(tag_list)
-
-        myJson = json.dumps(self.tag_tree[policy].root, cls=TagTreeEncoder, indent = 2, ensure_ascii = False)
+        myJson = json.dumps(self.tag_tree[ppp].root, cls=TagTreeEncoder, indent = 2, ensure_ascii = False)
         
         #TODO: find more optimal way
         # tag_list = [
