@@ -52,23 +52,25 @@ class TagTree:
         sorted_tags = sorted(tag_list, key = lambda x: x[1], reverse = True)
         queryset = Effect.objects.all()
 
-        while sorted_tags.length > 0:
+        while len(sorted_tags) > 0:
             ele = sorted_tags.pop(0) # pick the most referenced one
 
             level1_node = TagNode(ele[0], ele[2], ele[3])
             self.root.add_child(level1_node)
 
             possible_children = list(queryset.filter(tags__name__in=[ele[0]]).values_list('tags', flat=True)) # extract possible childs
-            possible_children_text = list(set([tag.name in tag for possible_children]))
+            possible_children_text = list(set([tag for tag in possible_children]))
             queryset_level1 = queryset.filter(tags__name__in=[ele[0]])
             for t in possible_children_text:
                 if t in self.included_tags:
                     continue
                 t12_count = queryset_level1.filter(tags__name__in=[t])
                 t2 = [elem for elem in sorted_tags if elem[0] == t]
-                t2_count = t2[1]
+                if len(t2) <= 0:
+                    continue
+                t2_count = t2[0][1]
                 if t12_count >= t2_count * 0.9:
-                    level1_node.add_child(TagNode(t2[0], t2[2], t2[3]))
+                    level1_node.add_child(TagNode(t2[0][0], t2[0][2], t2[0][3]))
                     sorted_tags.remove(t2)
 
 

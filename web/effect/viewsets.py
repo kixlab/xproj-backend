@@ -11,7 +11,8 @@ from taggit.models import Tag
 from taggit_serializer.serializers import TaggitSerializer
 from django.db.models import Count, Q, F, Sum
 import random
-import taghelpers
+from effect.taghelpers import TagTree, TagTreeEncoder
+import json
 # Create your views here.
 
 class EffectPagination(PageNumberPagination):
@@ -120,11 +121,11 @@ class EffectViewSet(viewsets.ModelViewSet):
             })
             tag_list_2.append((name, total_count, pos_count, neg_count))
 
-        if self.tag_tree is not None:
-            self.tag_tree = taghelpers.TagTree()
-            self.tag_tree.construct_tag_tree(tag_list_2)
+        if self.tag_tree is None:
+            self.tag_tree = TagTree()
+        self.tag_tree.construct_tag_tree(tag_list_2)
 
-        json = json.dumps(self.tag_tree.root, cls=taghelpers.TagTreeEncoder)
+        myJson = json.dumps(self.tag_tree.root, cls=TagTreeEncoder)
         
         #TODO: find more optimal way
         # tag_list = [
@@ -136,7 +137,7 @@ class EffectViewSet(viewsets.ModelViewSet):
         #     } for tag in tags
         # ]
 
-        return Response(data=json, status=200)
+        return Response(data=myJson, status=200)
 
     @list_route(methods=['get'])
     def tag_info(self, request):
