@@ -13,6 +13,7 @@ from django.db.models import Count, Q, F, Sum
 import random
 from effect.taghelpers import TagTree, TagTreeEncoder
 import json
+from .nlp import get_top_n_words_from_tfidf_kor
 from django.http import HttpResponse
 # Create your views here.
 
@@ -237,8 +238,47 @@ class EffectViewSet(viewsets.ModelViewSet):
 
             serializer = EffectSerializer(obj, context={'request': self.request})
             return Response(status = 200, data=serializer.data)
-            
+
+    @list_route(methods=['get'])
+    def get_keywords(self, request):
+        queryset = Effect.objects.all()
+        policy = self.request.query_params.get('policy', None)
+        tags = self.request.query_params.getlist('tag[]', None)
+        isBenefit = self.request.query_params.get('is_benefit', None)
+        is_and = self.request.query_params.get('is_and', False)
+        include_guess = self.request.query_params.get('include_guess', None)
+
+        if policy is not None:
+            queryset = queryset.filter(policy = policy)
+
+        if isBenefit is not None:
+            queryset = queryset.filter(isBenefit = isBenefit)
         
+        if include_guess is not None:
+            if include_guess == '1':
+                queryset = queryset.filter(is_guess=True)
+            elif include_guess == '0':
+                queryset = queryset.filter(is_guess=False)
+        
+        if len(tags) > 0 and not is_and:
+            queryset = queryset.filter(tags__name__in=tags).distinct()
+
+        elif len(tags) > 0 and is_and:
+            for tag in tags:
+                queryset = queryset.filter(tags__name__in=[tag])
+
+        queryset = queryset.annotate(
+            empathy_count = Count("empathy", distinct=True),
+            novelty_count = Count("novelty", distinct=True),
+            fishy_count = Count("fishy", distinct=True),
+            score = F('empathy_count') + F('novelty_count')
+        )
+        corpus = [e.description for e in queryset]
+        keywords = get_top_n_words_from_tfidf_kor(corpus, n=10)
+        queryset = queryset.order_by('-score')
+        res = Response(data=queryset)
+        res.data['keywords'] = keywords
+        return res
 
     # @action(methods=['get'], detail=False)
     # def effects_by_policy(self, request):
