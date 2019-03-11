@@ -141,10 +141,10 @@ class EffectViewSet(viewsets.ModelViewSet):
             return Response(status = 400, data = "Please specify policy idx")
 
         ppp = int(policy) - 1
-        
+
         if self.tag_tree[ppp] is None or self.tag_tree[ppp].isEmpty():
             self.tag_tree[ppp] = TagTree()
-             Qobj = Q(content_object__policy__exact = policy)
+            Qobj = Q(content_object__policy__exact = policy)
             Qpos = Q(content_object__isBenefit = 1)
             # Qpos = Qpos & Qobj
             Qneg = Q(content_object__isBenefit = 0)
