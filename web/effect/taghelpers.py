@@ -32,11 +32,11 @@ class TagNode:
         self.pc = 0
 
     def add_child(self, node):
-        if node.name not in [t.name for t in self.children]:
+        if node.tag not in [t.tag for t in self.children]:
             self.children.append(node)
 
     def add_child_name(self, name, pos_count, neg_count):
-        if name not in [t.name for t in self.children]:
+        if name not in [t.tag for t in self.children]:
             self.children.append(TagNode(name, pos_count, neg_count))
 
 
@@ -83,14 +83,14 @@ class TagTree:
                t2 = None
                t2idx = None
                for idx, tag in enumerate(sorted_tags):
-                   if tag == t:
+                   if tag[0] == t:
                        t2idx = idx
                        t2 = tag 
                if t2 is None:
                    continue
 
                t2_count = t2[1]
-               if t12_count >= 0:
+               if t12_count >= 0.7 * t2_count:
                    level1_node.add_child_name(t2[0], t2[2], t2[3])
                    sorted_tags.pop(t2idx)
 
