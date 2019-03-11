@@ -4,7 +4,6 @@ from flag.serializers import FlagSerializer
 from flag.models import Flag
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
-
 # Create your views here.
 
 class FlagViewSet(viewsets.ModelViewSet):
@@ -33,7 +32,7 @@ class FlagViewSet(viewsets.ModelViewSet):
         serializer = FlagSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(status = 200)
+            return Response(status = 200, data='successfully added!')
         # Flag.set_effect(serializer.data['effect'])
         # Flag.set_user(request.user)
 
