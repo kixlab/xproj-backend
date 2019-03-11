@@ -28,6 +28,7 @@ class TagNode:
         self.pos_count = pos_count
         self.neg_count = neg_count
         self.total_count = pos_count + neg_count
+        self.children = []
     
     def add_child(self, node):
         if node not in self.children:
