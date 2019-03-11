@@ -8,6 +8,8 @@ class TagTreeEncoder(JSONEncoder):
             return o.__dict__
         elif isinstance(o, TagTree):
             return self.default(TagTree.root)
+        elif isinstance(o, list):
+            return JSONEncoder.default(self, [self.default(p) for p in o])
         else:
             return JSONEncoder.default(self, o)
 
