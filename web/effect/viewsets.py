@@ -11,7 +11,7 @@ from taggit.models import Tag
 from taggit_serializer.serializers import TaggitSerializer
 from django.db.models import Count, Q, F, Sum
 import random
-
+import taghelpers
 # Create your views here.
 
 class EffectPagination(PageNumberPagination):
@@ -25,6 +25,7 @@ class EffectViewSet(viewsets.ModelViewSet):
     queryset = Effect.objects.all()
     serializer_class = EffectSerializer
     pagination_class = EffectPagination
+    tag_tree = None
 
     def get_serializer_class(self):
         serializer_class = EffectSerializer
@@ -103,16 +104,28 @@ class EffectViewSet(viewsets.ModelViewSet):
         # query = tags.query
         # print('tag_list %s' % query)
         tag_list = []
+        tag_list_2 = []
 
         for tag in tags:
             query = tag.effect_taggedeffect_items.filter(Qobj)
-            refs = query.count()
+            total_count = query.count()
+            name = tag.name
+            pos_count = query.filter(Qpos).count()
+            neg_count = query.filter(Qneg).count()
             tag_list.append({
-                "name": tag.name,
-                "refs": refs,
-                "positive": query.filter(Qpos).count(),
-                "negative": query.filter(Qneg).count(),
+                "name": name,
+                "total_count": total_count,
+                "positive": pos_count,
+                "negative": neg_count,
             })
+            tag_list_2.append((name, total_count, pos_count, neg_count))
+
+        if self.tag_tree is not None:
+            self.tag_tree = taghelpers.TagTree()
+            self.tag_tree.construct_tag_tree(tag_list_2)
+
+        json = json.dumps(self.tag_tree.root, cls=taghelpers.TagTreeEncoder)
+        
         #TODO: find more optimal way
         # tag_list = [
         #     {
@@ -123,7 +136,7 @@ class EffectViewSet(viewsets.ModelViewSet):
         #     } for tag in tags
         # ]
 
-        return Response(data=tag_list, status=200)
+        return Response(data=json, status=200)
 
     @list_route(methods=['get'])
     def tag_info(self, request):
