@@ -158,7 +158,6 @@ class EffectViewSet(viewsets.ModelViewSet):
         # query = tags.query
         # print('tag_list %s' % query)
         tag_list = []
-        tag_list= []
 
         for tag in tags:
             query = tag.effect_taggedeffect_items.filter(Qobj)
