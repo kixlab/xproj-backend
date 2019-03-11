@@ -12,7 +12,7 @@ class FishyViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly, )
 
     def get_queryset(self):
-        queryset = fishy.objects.all()
+        queryset = Fishy.objects.all()
         effect = self.request.query_params.get('effect', None)
         user = self.request.user.pk
 
