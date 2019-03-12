@@ -19,7 +19,7 @@ from django.http import HttpResponse
 # Create your views here.
 
 class EffectPagination(PageNumberPagination):
-    page_size = 50
+    page_size = 50 
     page_size_query_param = 'page_size'
     # max_page_size = 500
 
@@ -87,7 +87,7 @@ class EffectViewSet(viewsets.ModelViewSet):
         #     fishy_count = Count("fishy", distinct=True),
         #     score = F('empathy_count') + F('novelty_count'),
         # )
-        corpus = [e.description for e in queryset] #list(queryset.values_list('description', flat=True))
+        corpus = list(queryset.values_list('description', flat=True))
         query = queryset.query
         self.keywords = get_top_n_words_from_tfidf_kor(corpus, query, 10)
         # if order_by == 'random':
