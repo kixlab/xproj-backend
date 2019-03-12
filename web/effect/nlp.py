@@ -17,15 +17,20 @@ stopwords += "공급 설치 조성 운영 실행 설립 확대 건설 제공 사
 stopwords += ['것', '수', '있', '같', '좋', '되', '하', '더', '보', '없', '받', '대학', '생각', '대', '결국', '과', '블라인드', '필요', '거']
 stopwords = set(stopwords)
 
+words_freq_dict = {}
+
 def tokenize(sent):
     return kkma.nouns(sent)
 
-def get_top_n_words_from_tfidf_kor(corpus, n=10):
-    vec = TfidfVectorizer(ngram_range=(1,2), stop_words = stopwords, max_features = 2000, analyzer = 'word', tokenizer = tokenize, max_df = 0.7).fit(corpus)
-    bag_of_words = vec.transform(corpus)
-    sum_words = bag_of_words.sum(axis=0)
-    words_freq = [(word, sum_words[0, idx]) for word, idx in vec.vocabulary_.items()]
-    words_freq.sort(key = lambda x: x[1], reverse = True)
+def get_top_n_words_from_tfidf_kor(corpus, query = None, n=10):
+    words_freq = words_freq_dict.get(query)
+    if words_freq is None:
+        vec = TfidfVectorizer(ngram_range=(1,2), stop_words = stopwords, max_features = 2000, analyzer = 'word', tokenizer = tokenize, max_df = 0.7).fit(corpus)
+        bag_of_words = vec.transform(corpus)
+        sum_words = bag_of_words.sum(axis=0)
+        words_freq = [(word, sum_words[0, idx]) for word, idx in vec.vocabulary_.items()]
+        words_freq.sort(key = lambda x: x[1], reverse = True)
+        words_freq_dict[query] = words_freq
     #words_freq = sorted(words_freq, key = lambda x: x[1], reverse=True)
     return words_freq[:n]
 

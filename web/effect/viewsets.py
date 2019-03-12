@@ -18,9 +18,9 @@ from django.http import HttpResponse
 # Create your views here.
 
 class EffectPagination(PageNumberPagination):
-    page_size = 5
+    page_size = 50
     page_size_query_param = 'page_size'
-    max_page_size = 500
+    # max_page_size = 500
 
     def get_paginated_response(self, data, keywords):
         return Response({
@@ -57,7 +57,7 @@ class EffectViewSet(viewsets.ModelViewSet):
         isBenefit = self.request.query_params.get('is_benefit', None)
         is_and = self.request.query_params.get('is_and', False)
         include_guess = self.request.query_params.get('include_guess', None)
-
+        order_by = self.request.query_params.get('order_by', None)
         if policy is not None:
             queryset = queryset.filter(policy = policy)
 
@@ -84,11 +84,22 @@ class EffectViewSet(viewsets.ModelViewSet):
             empathy_count = Count("empathy", distinct=True),
             novelty_count = Count("novelty", distinct=True),
             fishy_count = Count("fishy", distinct=True),
-            score = F('empathy_count') + F('novelty_count')
+            score = F('empathy_count') + F('novelty_count'),
+            description_length = Length('description')
         )
         corpus = [e.description for e in queryset] #list(queryset.values_list('description', flat=True))
-        self.keywords = get_top_n_words_from_tfidf_kor(corpus, 10)
-        queryset = queryset.order_by('-score')
+        query = queryset.query
+        self.keywords = get_top_n_words_from_tfidf_kor(corpus, query, 10)
+        if order_by == 'random':
+            pass
+        elif order_by == 'votes':
+            queryset = queryset.order_by('-score')
+        elif order_by == 'age':
+            queryset = queryset.order_by('created')
+        elif order_by == 'agd_desc':
+            queryset = queryset.order_by('-created')
+        elif order_by == 'length':
+            queryset = queryset.order_by('-description_length')
         return queryset
 
     def get_paginated_response(self, data):
@@ -188,7 +199,7 @@ class EffectViewSet(viewsets.ModelViewSet):
             self.tag_tree[ppp].construct_tag_tree(tag_list)
 
        
-        myJson = json.dumps(self.tag_tree[ppp].root, cls=TagTreeEncoder, indent = 2, ensure_ascii = False)
+        myJson = json.dumps(self.tag_tree[ppp].root, cls=TagTreeEncoder, ensure_ascii = False)
         
         #TODO: find more optimal way
         # tag_list = [
