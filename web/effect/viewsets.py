@@ -10,6 +10,7 @@ from rest_framework.pagination import PageNumberPagination
 from taggit.models import Tag
 from taggit_serializer.serializers import TaggitSerializer
 from django.db.models import Count, Q, F, Sum
+from django.db.models.functions import Length
 import random
 from effect.taghelpers import TagTree, TagTreeEncoder
 import json
