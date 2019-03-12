@@ -233,25 +233,31 @@ class EffectViewSet(viewsets.ModelViewSet):
     def random(self, request):
         policy = self.request.query_params.get('policy', None)
         exclude = self.request.query_params.getlist('exclude[]')
+        tag = self.request.query_params.get('tag', None)
+        is_pos = self.request.query_params.get('is_pos', None)
 
         if policy is None:
             return Response(status = 400, data = "Please specify policy idx")
 
         queryset = Effect.objects.filter(policy = policy)
+        if is_pos is not None:
+            queryset = queryset.filter(isBenefit = is_pos)
+        if tag is not None:
+            queryset = queryset.filter(tags__name__in=[tag])
         if len(exclude) > 0:
             queryset = queryset.exclude(id__in=exclude)
 
-        queryset = queryset.annotate(
-            empathy_count = Count("empathy", distinct=True),
-            novelty_count = Count("novelty", distinct=True),
-            fishy_count = Count("fishy", distinct=True),
-            score = F('empathy_count') + F('novelty_count')
-        )
         # queryset = queryset.annotate(
-        #     score = Sum(F('empathy_count'), F('novelty_count'))
+        #     empathy_count = Count("empathy", distinct=True),
+        #     novelty_count = Count("novelty", distinct=True),
+        #     fishy_count = Count("fishy", distinct=True),
+        #     score = F('empathy_count') + F('novelty_count')
         # )
+        # # queryset = queryset.annotate(
+        # #     score = Sum(F('empathy_count'), F('novelty_count'))
+        # # )
 
-        queryset = queryset.filter(score__gte=1)
+        # queryset = queryset.filter(score__gte=1)
         count = queryset.count()
 
         if (count == 0):
