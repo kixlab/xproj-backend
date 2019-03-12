@@ -30,7 +30,7 @@ def get_top_n_words_from_tfidf_kor(corpus, query = None, n=10):
         sum_words = bag_of_words.sum(axis=0)
         words_freq = [(word, sum_words[0, idx]) for word, idx in vec.vocabulary_.items()]
         words_freq.sort(key = lambda x: x[1], reverse = True)
-        words_freq_dict[query] = words_freq
+        words_freq_dict[query] = words_freq[:10]
     #words_freq = sorted(words_freq, key = lambda x: x[1], reverse=True)
     return words_freq[:n]
 
