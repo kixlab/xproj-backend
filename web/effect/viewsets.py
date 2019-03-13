@@ -89,7 +89,9 @@ class EffectViewSet(viewsets.ModelViewSet):
         #     fishy_count = Count("fishy", distinct=True),
         #     score = F('empathy_count') + F('novelty_count'),
         # )
-        if queryset.count() >= 10 and tags is not None:
+        if tags is None or len(tags) <= 0:
+            self.keywords = []
+        elif queryset.count() >= 10:
             corpus = list(queryset.values_list('description', flat=True))
             query = queryset.query
             self.keywords = get_top_n_words_from_tfidf_kor(corpus, query, 10)
