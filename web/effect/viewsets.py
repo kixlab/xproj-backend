@@ -68,6 +68,8 @@ class EffectViewSet(viewsets.ModelViewSet):
         if isBenefit is not None:
             queryset = queryset.filter(isBenefit = isBenefit)
         
+        queryset = queryset.exclude(source="exp_guess")
+        
         if include_guess is not None:
             if include_guess == '1':
                 queryset = queryset.filter(is_guess=True)
