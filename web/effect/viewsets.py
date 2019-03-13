@@ -276,7 +276,7 @@ class EffectViewSet(viewsets.ModelViewSet):
                 idx = random.randint(0, count_pos-1)
                 obj_pos = queryset_pos[idx]
             if count_neg > 0:
-                idx = random.randint(0, count_pos-1)
+                idx = random.randint(0, count_neg-1)
                 obj_neg = queryset_neg[idx]
             serializer = EffectSerializer([obj_pos, obj_neg], many = True, context={'request': self.request})
             return Response(status = 200, data=serializer.data)
