@@ -10,23 +10,23 @@ class VoteListingField(serializers.RelatedField):
 
 class EffectSerializer(TaggitSerializer, serializers.ModelSerializer):
 
-    flags = serializers.SerializerMethodField()
-    empathy = VoteListingField(read_only=True, many=True)
-    # serializers.SlugRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     slug_field='user'
-    # )
-    novelty = VoteListingField(read_only=True, many=True)
-    fishy = VoteListingField(read_only=True, many=True)
+    # flags = serializers.SerializerMethodField()
+    # empathy = VoteListingField(read_only=True, many=True)
+    # # serializers.SlugRelatedField(
+    # #     many=True,
+    # #     read_only=True,
+    # #     slug_field='user'
+    # # )
+    # novelty = VoteListingField(read_only=True, many=True)
+    # fishy = VoteListingField(read_only=True, many=True)
     tags = TagListSerializerField()
 
     class Meta:
         model = Effect
-        fields = ('url', 'id', 'policy', 'stakeholder_group', 'isBenefit', 'is_guess', 'stakeholder_detail', 'description', 'empathy', 'novelty', 'fishy', 'source', 'flags', 'user', 'tags', 'confidence')
+        fields = ('url', 'id', 'policy', 'stakeholder_group', 'isBenefit', 'is_guess', 'stakeholder_detail', 'description', 'source', 'user', 'tags', 'confidence')
 
-    def get_flags(self, obj):
-        return obj.flag.count()
+    # def get_flags(self, obj):
+    #     return obj.flag.count()
         
     # def get_empathy(self, obj):
     #     return obj.empathy.
@@ -40,19 +40,19 @@ class EffectSlugSerializer(TaggitSerializer, serializers.ModelSerializer):
         read_only = True,
         slug_field = 'name'
     )
-    flags = serializers.SerializerMethodField()
-    empathy = VoteListingField(read_only=True, many=True)
-    novelty = VoteListingField(read_only=True, many=True)
-    fishy = VoteListingField(read_only=True, many=True)
+    # flags = serializers.SerializerMethodField()
+    # empathy = VoteListingField(read_only=True, many=True)
+    # novelty = VoteListingField(read_only=True, many=True)
+    # fishy = VoteListingField(read_only=True, many=True)
     tags = TagListSerializerField()
 
 
     class Meta:
         model = Effect
-        fields = ('url', 'id', 'policy', 'stakeholder_group', 'isBenefit', 'is_guess', 'stakeholder_detail', 'description', 'empathy', 'novelty', 'fishy', 'source', 'flags', 'user', 'tags', 'confidence')
+        fields = ('url', 'id', 'policy', 'stakeholder_group', 'isBenefit', 'is_guess', 'stakeholder_detail', 'description', 'source', 'user', 'tags', 'confidence')
     
-    def get_flags(self, obj):
-        return obj.flag.count()
+    # def get_flags(self, obj):
+    #     return obj.flag.count()
 
     # def get_empathy(self, obj):
     #     return obj.empathy.count()
