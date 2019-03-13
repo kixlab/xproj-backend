@@ -236,6 +236,7 @@ class EffectViewSet(viewsets.ModelViewSet):
         exclude = self.request.query_params.getlist('exclude[]')
         tag = self.request.query_params.get('tag', None)
         is_pos = self.request.query_params.get('is_pos', None)
+        both = self.request.query_params.get('both', False)
 
         if policy is None:
             return Response(status = 400, data = "Please specify policy idx")
@@ -263,6 +264,21 @@ class EffectViewSet(viewsets.ModelViewSet):
 
         if (count == 0):
             return Response(status=404, data = "no such effect")
+        if both:
+            queryset_pos = queryset.filter(isBenefit = 1)
+            count_pos = queryset_pos.count()
+            queryset_neg = queryset.filter(isBenefit = 0)
+            count_neg = queryset_neg.count()
+            obj_pos, obj_neg = None
+
+            if count_pos > 0:
+                idx = random.randint(0, count_pos-1)
+                obj_pos = queryset_pos[idx]
+            if count_neg > 0:
+                idx = random.randint(0, count_pos-1)
+                obj_neg = queryset_neg[idx]
+            serializer = EffectSerializer([obj_pos, obj_neg], many = True, context={'request': self.request})
+            return Response(status = 200, data=serializer.data)
         while True:
             idx = random.randint(0, count-1)
             obj = queryset[idx]
