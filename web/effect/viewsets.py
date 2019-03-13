@@ -269,7 +269,8 @@ class EffectViewSet(viewsets.ModelViewSet):
             count_pos = queryset_pos.count()
             queryset_neg = queryset.filter(isBenefit = 0)
             count_neg = queryset_neg.count()
-            obj_pos, obj_neg = None
+            obj_pos = None
+            obj_neg = None
 
             if count_pos > 0:
                 idx = random.randint(0, count_pos-1)
