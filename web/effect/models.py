@@ -3,8 +3,15 @@ from policy.models import Policy
 from accounts.models import User
 from stakeholdergroup.models import StakeholderGroup
 from taggit.managers import TaggableManager
-from taggit.models import TaggedItemBase
+from taggit.models import TaggedItemBase, TagBase, GenericTaggedItemBase
 # Create your models here.
+
+class NewTag(Tag):
+    pass
+
+class NewTaggedEffect(GenericTaggedItemBase):
+    tag = models.ForeignKey(NewTag)
+    content_object = models.ForeignKey('Effect')
 
 class TaggedEffect(TaggedItemBase):
     content_object = models.ForeignKey('Effect')
@@ -19,6 +26,7 @@ class Effect(models.Model):
     description = models.TextField()
     source = models.TextField()
     tags = TaggableManager(through=TaggedEffect)
+    new_tags = TaggableManager(through=NewTaggedEffect, related_name="newtags")
     confidence = models.IntegerField(default = 0)
     created = models.DateTimeField(auto_now_add=True)
 
