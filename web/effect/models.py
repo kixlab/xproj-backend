@@ -6,12 +6,12 @@ from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase, TagBase, GenericTaggedItemBase
 # Create your models here.
 
-class NewTag(Tag):
+class NewTag(TagBase):
     pass
 
 class NewTaggedEffect(GenericTaggedItemBase):
     tag = models.ForeignKey(NewTag)
-    content_object = models.ForeignKey('Effect')
+    content_object = models.ForeignKey('Effect', related_name="effect_newtags")
 
 class TaggedEffect(TaggedItemBase):
     content_object = models.ForeignKey('Effect')
