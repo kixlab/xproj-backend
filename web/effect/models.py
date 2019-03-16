@@ -26,7 +26,7 @@ class Effect(models.Model):
     description = models.TextField()
     source = models.TextField()
     tags = TaggableManager(through=TaggedEffect)
-    new_tags = TaggableManager(through=NewTaggedEffect, related_name="newtags")
+    # tags = TaggableManager(through=NewTaggedEffect, related_name="newtags")
     confidence = models.IntegerField(default = 0)
     created = models.DateTimeField(auto_now_add=True)
 
