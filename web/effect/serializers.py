@@ -23,7 +23,7 @@ class EffectSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     class Meta:
         model = Effect
-        fields = ('url', 'id', 'policy', 'stakeholder_group', 'isBenefit', 'is_guess', 'stakeholder_detail', 'description', 'source', 'user', 'tags', 'newtags', 'confidence')
+        fields = ('url', 'id', 'policy', 'stakeholder_group', 'isBenefit', 'is_guess', 'stakeholder_detail', 'description', 'source', 'user', 'tags', 'new_tags', 'confidence')
 
     # def get_flags(self, obj):
     #     return obj.flag.count()
@@ -49,7 +49,7 @@ class EffectSlugSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     class Meta:
         model = Effect
-        fields = ('url', 'id', 'policy', 'stakeholder_group', 'isBenefit', 'is_guess', 'stakeholder_detail', 'description', 'source', 'user', 'tags', 'newtags', 'confidence')
+        fields = ('url', 'id', 'policy', 'stakeholder_group', 'isBenefit', 'is_guess', 'stakeholder_detail', 'description', 'source', 'user', 'tags', 'new_tags', 'confidence')
     
     # def get_flags(self, obj):
     #     return obj.flag.count()
