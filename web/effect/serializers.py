@@ -20,7 +20,7 @@ class EffectSerializer(TaggitSerializer, serializers.ModelSerializer):
     # novelty = VoteListingField(read_only=True, many=True)
     # fishy = VoteListingField(read_only=True, many=True)
     tags = TagListSerializerField()
-    new_tags = TagListSerializerField()
+    new_tags = TagListSerializerField(related_name="newtags")
     class Meta:
         model = Effect
         fields = ('url', 'id', 'policy', 'stakeholder_group', 'isBenefit', 'is_guess', 'stakeholder_detail', 'description', 'source', 'user', 'tags', 'new_tags', 'confidence')
