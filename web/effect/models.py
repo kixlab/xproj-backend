@@ -10,7 +10,7 @@ class NewTag(TagBase):
     pass
 
 class NewTaggedEffect(GenericTaggedItemBase):
-    tag = models.ForeignKey(NewTag)
+    tag = models.ForeignKey('NewTag')
     content_object = models.ForeignKey('Effect', related_name="%(app_label)s_%(class)ss")
 
 class TaggedEffect(TaggedItemBase):
