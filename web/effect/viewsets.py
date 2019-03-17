@@ -171,7 +171,7 @@ class EffectViewSet(viewsets.ModelViewSet):
     @list_route(methods=['get'])
     def tag_list2(self, request):
         policy = self.request.query_params.get('policy', None)
-        tags = Tag.objects.all()
+        tags = Tag.objects.filter(is_guess=False)
 
         if policy is None:
             return Response(status = 400, data = "Please specify policy idx")
