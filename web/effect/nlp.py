@@ -58,7 +58,7 @@ def get_keywords(queryset):
 def get_top_n_words_from_tfidf_kor(corpus, query = None, n=10):
     words_freq = words_freq_dict.get(query)
     if words_freq is None:
-        vec = CountVectorizer(ngram_range=(1,1), stop_words = stopwords, max_features = 1000, analyzer = 'word', tokenizer = tokenize, max_df = 0.7).fit(corpus)
+        vec = CountVectorizer(ngram_range=(1,1), stop_words = stopwords, max_features = 1000, analyzer = 'word', tokenizer = tokenize, max_df = 0.8).fit(corpus)
         bag_of_words = vec.transform(corpus)
         sum_words = bag_of_words.sum(axis=0)
         words_freq = [(word, sum_words[0, idx]) for word, idx in vec.vocabulary_.items()]
