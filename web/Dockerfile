@@ -23,6 +23,10 @@ RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
 
 # For KONLPY
 RUN apk add --no-cache --update-cache openjdk7
+RUN apk add --no-cache --update-cache bash git autoconf
+RUN wget https://raw.githubusercontent.com/konlpy/konlpy/master/scripts/mecab.sh \
+    && chmod +x mecab.sh \
+    && ./mecab.sh
 
 # Install binary dependencies (EDGE alpine versions)
 ENV PACKAGES="\
