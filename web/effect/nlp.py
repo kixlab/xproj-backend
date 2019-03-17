@@ -42,13 +42,13 @@ def get_keywords(queryset):
     annotated = []
 
     for keyword in keywords_all:
-        if keyword[0] in keywords_pos and keyword[0] in keywords_neg:
+        if keyword[0] in keywords_pos_txt and keyword[0] in keywords_neg_txt:
             annotated.append((keyword[0], keyword[1], 'both'))
-        elif keyword[0] in keywords_pos:
+        elif keyword[0] in keywords_pos_txt:
             annotated.append((keyword[0], keyword[1], 'pos'))
-        elif keyword[0] in keywords_neg:
+        elif keyword[0] in keywords_neg_txt:
             annotated.append((keyword[0], keyword[1], 'neg'))
-        elif keyword[0] in keywords_pos:
+        else:
             annotated.append((keyword[0], keyword[1], 'none'))
 
     return annotated
