@@ -85,7 +85,7 @@ class EffectViewSet(viewsets.ModelViewSet):
                 queryset = queryset.filter(tags__name__in=[tag])
 
         if len(exclude_tags) > 0:
-            queryset = queryset.exclude(exclude_tags)
+            queryset = queryset.exclude(tags__name__in=exclude_tags)
 
         # queryset = queryset.annotate(
         #     empathy_count = Count("empathy", distinct=True),
