@@ -1,5 +1,5 @@
 import re
-from konlpy.tag import Kkma, Hannanum, Twitter
+from konlpy.tag import Kkma, Hannanum, Twitter, Mecab
 import string
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
@@ -7,7 +7,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 kkma = Kkma()
 hannanum = Hannanum()
 twitter = Twitter()
-#mecab = Mecab()
+mecab = Mecab()
 
 remove_punct_map = dict.fromkeys(map(ord, string.punctuation))
 remove_quotes_map = dict([(ord(x), " ") for x in ".․,‘’´“”·‧<>「」–-()~…"]) 
@@ -20,7 +20,7 @@ stopwords = set(stopwords)
 words_freq_dict = {}
 
 def tokenize(sent):
-    return hannanum.nouns(sent)
+    return mecab.nouns(sent)
 
 def get_top_n_words_from_tfidf_kor(corpus, query = None, n=10):
     words_freq = words_freq_dict.get(query)
