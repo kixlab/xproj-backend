@@ -27,16 +27,33 @@ def get_keywords(queryset):
     corpus = list(queryset.values_list('description', flat=True))
     query = queryset.query
     keywords_all = get_top_n_words_from_tfidf_kor(corpus, query)
+    keywords_all_txt = [k[0] for k in keywords_all]
 
     corpus_pos = list(queryset.filter(isBenefit = True).values_list('description', flat=True))
     query_pos = queryset.filter(isBenefit = True).query
     keywords_pos = get_top_n_words_from_tfidf_kor(corpus_pos, query_pos)
+    keywords_pos_txt = [k[0] for k in keywords_pos]
 
     corpus_neg = list(queryset.filter(isBenefit = False).values_list('description', flat=True))
     query_neg = queryset.filter(isBenefit = False).query
     keywords_neg = get_top_n_words_from_tfidf_kor(corpus_neg, query_neg)
+    keywords_neg_txt = [k[0] for k in keywords_neg]
 
-    # annotated = 
+    annotated = []
+
+    for keyword in keywords_all:
+        if keyword[0] in keywords_pos and keyword[0] in keywords_neg:
+            annotated.append((keyword[0], keyword[1], 'both'))
+        elif keyword[0] in keywords_pos:
+            annotated.append((keyword[0], keyword[1], 'pos'))
+        elif keyword[0] in keywords_neg:
+            annotated.append((keyword[0], keyword[1], 'neg'))
+        elif keyword[0] in keywords_pos:
+            annotated.append((keyword[0], keyword[1], 'none'))
+
+    return annotated
+
+
 
 def get_top_n_words_from_tfidf_kor(corpus, query = None, n=10):
     words_freq = words_freq_dict.get(query)

@@ -14,7 +14,7 @@ from django.db.models.functions import Length
 import random
 from effect.taghelpers import TagTree, TagTreeEncoder
 import json
-from .nlp import get_top_n_words_from_tfidf_kor
+from .nlp import get_top_n_words_from_tfidf_kor, get_keywords
 from django.http import HttpResponse
 # Create your views here.
 
@@ -95,10 +95,12 @@ class EffectViewSet(viewsets.ModelViewSet):
         # )
         # if tags is None or len(tags) <= 0:
         #     self.keywords = []
-        if queryset.count() >= 10:
+        if queryset.count() >= 10 and isBenefit is not None:
             corpus = list(queryset.values_list('description', flat=True))
             query = queryset.query
             self.keywords = get_top_n_words_from_tfidf_kor(corpus, query, 10)
+        elif queryset.count() >= 10 and isBenefit is None:
+            self.keywords = get_keywords(queryset)
         # if order_by == 'random':
         #     pass
         # elif order_by == 'votes':
