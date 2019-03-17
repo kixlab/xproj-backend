@@ -58,6 +58,7 @@ class EffectViewSet(viewsets.ModelViewSet):
         isBenefit = self.request.query_params.get('is_benefit', None)
         is_and = self.request.query_params.get('is_and', False)
         include_guess = self.request.query_params.get('include_guess', None)
+        exclude_tags = self.request.query_params.getlist('exclude_tag[]', None)
         # order_by = self.request.query_params.get('order_by', None)
         if policy is not None:
             queryset = queryset.filter(policy = policy)
@@ -83,15 +84,18 @@ class EffectViewSet(viewsets.ModelViewSet):
             for tag in tags:
                 queryset = queryset.filter(tags__name__in=[tag])
 
+        if len(exclude_tags) > 0:
+            queryset = queryset.exclude(exclude_tags)
+
         # queryset = queryset.annotate(
         #     empathy_count = Count("empathy", distinct=True),
         #     novelty_count = Count("novelty", distinct=True),
         #     fishy_count = Count("fishy", distinct=True),
         #     score = F('empathy_count') + F('novelty_count'),
         # )
-        if tags is None or len(tags) <= 0:
-            self.keywords = []
-        elif queryset.count() >= 10:
+        # if tags is None or len(tags) <= 0:
+        #     self.keywords = []
+        if queryset.count() >= 10:
             corpus = list(queryset.values_list('description', flat=True))
             query = queryset.query
             self.keywords = get_top_n_words_from_tfidf_kor(corpus, query, 10)
