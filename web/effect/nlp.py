@@ -3,6 +3,7 @@ from konlpy.tag import Kkma, Hannanum, Twitter, Mecab
 import string
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
+from effect.models import Effect
 
 kkma = Kkma()
 hannanum = Hannanum()
@@ -22,10 +23,25 @@ words_freq_dict = {}
 def tokenize(sent):
     return mecab.nouns(sent)
 
+def get_keywords(queryset):
+    corpus = list(queryset.values_list('description', flat=True))
+    query = queryset.query
+    keywords_all = get_top_n_words_from_tfidf_kor(corpus, query)
+
+    corpus_pos = list(queryset.filter(isBenefit = True).values_list('description', flat=True))
+    query_pos = queryset.filter(isBenefit = True).query
+    keywords_pos = get_top_n_words_from_tfidf_kor(corpus_pos, query_pos)
+
+    corpus_neg = list(queryset.filter(isBenefit = False).values_list('description', flat=True))
+    query_neg = queryset.filter(isBenefit = False).query
+    keywords_neg = get_top_n_words_from_tfidf_kor(corpus_neg, query_neg)
+
+    # annotated = 
+
 def get_top_n_words_from_tfidf_kor(corpus, query = None, n=10):
     words_freq = words_freq_dict.get(query)
     if words_freq is None:
-        vec = TfidfVectorizer(ngram_range=(1,2), stop_words = stopwords, max_features = 500, analyzer = 'word', tokenizer = tokenize, max_df = 0.7).fit(corpus)
+        vec = CountVectorizer(ngram_range=(1,2), stop_words = stopwords, max_features = 500, analyzer = 'word', tokenizer = tokenize, max_df = 0.7).fit(corpus)
         bag_of_words = vec.transform(corpus)
         sum_words = bag_of_words.sum(axis=0)
         words_freq = [(word, sum_words[0, idx]) for word, idx in vec.vocabulary_.items()]
