@@ -84,10 +84,11 @@ class TagTree:
         queryset = Effect.objects.filter(is_guess = False).filter(policy = policy)
 
         for e in queryset:
-            for i in range(len(e.tags)):
+            tags = e.tags.names()
+            for i in range(len(tags)):
                 for j in range(i):
-                    t1_idx = taglist.index(e.tags[i])
-                    t2_idx = taglist.index(e.tags[j])
+                    t1_idx = taglist.index(tags[i])
+                    t2_idx = taglist.index(tags[j])
 
                     if e.isBenefit:
                         self.cooccur[t1_idx][t2_idx][0] += 1
