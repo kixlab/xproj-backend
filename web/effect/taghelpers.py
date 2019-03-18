@@ -19,7 +19,6 @@ class TagNode:
     neg_count = 0
     total_count = 0
     children = []
-    pc = ''
     def __repr__(self):
         return self.tag
 
@@ -69,7 +68,6 @@ class TagTree:
             queryset_level1 = Effect.objects.filter(tags__name__in=[ele[0]]).filter(is_guess = False)
             level1_node = TagNode(ele[0], ele[2], ele[3])
             self.included_tags.append(ele[0])
-            level1_node.pc = 0
             # self.root.add_child(level1_node)
 
             # possible_children = list(queryset_level1.values('tags__name')) # extract possible childs
@@ -78,21 +76,27 @@ class TagTree:
             for t in tags_list:
                if t in self.included_tags:
                    continue
-               t12_count = queryset_level1.filter(tags__name__in=[t]).count()
-               level1_node.pc += t12_count
-               t2 = None
-               t2idx = None
-               for idx, tag in enumerate(sorted_tags):
-                   if tag[0] == t:
-                       t2idx = idx
-                       t2 = tag 
-               if t2 is None:
-                   continue
+                
+                t12 = queryset_level1.filter(tags__name__in=[t])
+                # t12_count = t12.count()
+                t12_pos_count = t12.filter(is_benefit = True).count()
+                t12_neg_count = t12.filter(is_benefit = False).count()
 
-               t2_count = t2[1]
-               if t12_count >= 0.85 * t2_count:
-                   level1_node.add_child_name(t2[0], t2[2], t2[3])
-                   sorted_tags.pop(t2idx)
+                if (t12_neg_count + t12_pos_count) > 0:
+                    level1_node.add_child_name(t[0], t12_pos_count, t12_neg_count)
+            #    t2 = None
+            #    t2idx = None
+            #    for idx, tag in enumerate(sorted_tags):
+            #        if tag[0] == t:
+            #            t2idx = idx
+            #            t2 = tag 
+            #    if t2 is None:
+            #        continue
+
+            #    t2_count = t2[1]
+            #    if t12_count >= 0.85 * t2_count:
+            #        level1_node.add_child_name(t2[0], t2[2], t2[3])
+            #        sorted_tags.pop(t2idx)
 
             self.root.add_child(level1_node)
 
