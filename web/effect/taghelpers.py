@@ -63,7 +63,7 @@ class TagTree:
 
     def construct_tag_tree(self, tag_list, policy):
         sorted_tags = sorted(tag_list, key = lambda x: x[1], reverse = True)
-        tag_txt = [t[0] for t in tag_list]
+        tag_txt = [t[0] for t in sorted_tags]
         self.compute_cooccur(tag_txt, policy)
 
         for i in range(len(sorted_tags)):
