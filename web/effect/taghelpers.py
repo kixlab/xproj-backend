@@ -73,14 +73,14 @@ class TagTree:
 
             self.root.add_child(level1_node)
 
-    def compute_cooccur(taglist, policy):
+    def compute_cooccur(self, taglist, policy):
         cooccur = [[[0,0] for t in taglist] for t in taglist]
 
         queryset = Effect.objects.filter(is_guess = False).filter(policy = policy)
 
         for e in queryset:
             for i in range(len(e.tags)):
-                for j in range(i)
+                for j in range(i):
                     t1_idx = taglist.index(e.tags[i])
                     t2_idx = taglist.index(e.tags[j])
 

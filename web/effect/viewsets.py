@@ -207,7 +207,7 @@ class EffectViewSet(viewsets.ModelViewSet):
                 total_count = pos_count + neg_count
                 tag_list.append((name, total_count, pos_count, neg_count))
 
-            self.tag_tree[ppp].construct_tag_tree([t for t in tag_list if t[1] > 0])
+            self.tag_tree[ppp].construct_tag_tree([t for t in tag_list if t[1] > 0], policy)
 
        
         myJson = json.dumps(self.tag_tree[ppp].root, cls=TagTreeEncoder, ensure_ascii = False)
