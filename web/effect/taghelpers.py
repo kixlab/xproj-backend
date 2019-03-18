@@ -66,7 +66,7 @@ class TagTree:
         while len(sorted_tags) > 0:
             tags_list = [x[0] for x in sorted_tags]
             ele = sorted_tags.pop(0) # pick the most referenced one
-            queryset_level1 = Effect.objects.filter(tags__name__in=[ele[0]])
+            queryset_level1 = Effect.objects.filter(tags__name__in=[ele[0]]).filter(is_guess = False)
             level1_node = TagNode(ele[0], ele[2], ele[3])
             self.included_tags.append(ele[0])
             level1_node.pc = 0
@@ -90,7 +90,7 @@ class TagTree:
                    continue
 
                t2_count = t2[1]
-               if t12_count >= 0.7 * t2_count:
+               if t12_count >= 0.85 * t2_count:
                    level1_node.add_child_name(t2[0], t2[2], t2[3])
                    sorted_tags.pop(t2idx)
 
