@@ -74,8 +74,8 @@ class TagTree:
             # possible_children_text = list(set([tag for tag in possible_children['tags__name']]))
             # level1_node.pc = possible_children
             for t in tags_list:
-               if t in self.included_tags:
-                   continue
+                if t in self.included_tags:
+                    continue
                 
                 t12 = queryset_level1.filter(tags__name__in=[t])
                 # t12_count = t12.count()
