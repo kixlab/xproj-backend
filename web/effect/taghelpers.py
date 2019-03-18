@@ -67,11 +67,11 @@ class TagTree:
         self.compute_cooccur(tag_txt, policy)
 
         for i in range(len(sorted_tags)):
-            level1_node = TagNode(tag_list[0], tag_list[2], tag_list[3])
+            level1_node = TagNode(sorted_tags[i][0], sorted_tags[i][2], sorted_tags[i][3])
 
             for j in range(len(sorted_tags)):
                 if self.cooccur[i][j][0] + self.cooccur[i][j][1] > 0:
-                    level1_node.add_child_name(sorted_tags[j], self.cooccur[i][j][0], self.cooccur[i][j][1])
+                    level1_node.add_child_name(sorted_tags[j][0], self.cooccur[i][j][0], self.cooccur[i][j][1])
 
             self.root.add_child(level1_node)
 
