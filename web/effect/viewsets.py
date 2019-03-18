@@ -207,7 +207,7 @@ class EffectViewSet(viewsets.ModelViewSet):
                 neg_count = query.filter(Qneg).count()
                 tag_list.append((name, total_count, pos_count, neg_count))
 
-            self.tag_tree[ppp].construct_tag_tree(tag_list)
+            self.tag_tree[ppp].construct_tag_tree([t for t in tag_list if t.total_count > 0])
 
        
         myJson = json.dumps(self.tag_tree[ppp].root, cls=TagTreeEncoder, ensure_ascii = False)

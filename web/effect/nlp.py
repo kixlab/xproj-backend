@@ -56,6 +56,8 @@ def get_keywords(queryset):
 
 
 def get_top_n_words_from_tfidf_kor(corpus, query = None, n=10):
+    if len(corpus) < 10:
+        return []
     words_freq = words_freq_dict.get(query)
     if words_freq is None:
         vec = CountVectorizer(ngram_range=(1,1), stop_words = stopwords, max_features = 1000, analyzer = 'word', tokenizer = tokenize, max_df = 0.8).fit(corpus)
