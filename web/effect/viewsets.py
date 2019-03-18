@@ -201,10 +201,10 @@ class EffectViewSet(viewsets.ModelViewSet):
 
             for tag in tags:
                 query = tag.effect_taggedeffect_items.filter(Qobj)
-                total_count = query.count()
                 name = tag.name
                 pos_count = query.filter(Qpos).count()
                 neg_count = query.filter(Qneg).count()
+                total_count = pos_count + neg_count
                 tag_list.append((name, total_count, pos_count, neg_count))
 
             self.tag_tree[ppp].construct_tag_tree([t for t in tag_list if t[1] > 0])
