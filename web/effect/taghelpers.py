@@ -79,8 +79,8 @@ class TagTree:
                 
                 t12 = queryset_level1.filter(tags__name__in=[t])
                 # t12_count = t12.count()
-                t12_pos_count = t12.filter(is_benefit = True).count()
-                t12_neg_count = t12.filter(is_benefit = False).count()
+                t12_pos_count = t12.filter(isBenefit = True).count()
+                t12_neg_count = t12.filter(isBenefit = False).count()
 
                 if (t12_neg_count + t12_pos_count) > 0:
                     level1_node.add_child_name(t[0], t12_pos_count, t12_neg_count)
