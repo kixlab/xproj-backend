@@ -189,7 +189,7 @@ class TagCoOccur:
         for i in range(len(self.taglist)):
             if self.cooccur[tagidx][i][2] > target[1] and (self.cooccur[tagidx][i][2] / self.cooccur[tagidx][i][0]) > 0.5:
                 target = (i, self.cooccur[tagidx][i][2], (self.cooccur[tagidx][i][2] / self.cooccur[tagidx][i][0]))
-            elif self.cooccur[tagidx][i][2] == target[1] and (self.cooccur[tagidx][i][2] / self.cooccur[tagidx][i][0]):
+            elif self.cooccur[tagidx][i][2] == target[1] and (self.cooccur[tagidx][i][2] / self.cooccur[tagidx][i][0]) > target[2]:
                 target = (i, self.cooccur[tagidx][i][2], (self.cooccur[tagidx][i][2] / self.cooccur[tagidx][i][0]))
 
         return self.tag_txt[target[0]]
