@@ -139,7 +139,7 @@ class TagCoOccur:
         target = (0, 0, 0) # target tag index, co-occurence, total count
 
         for i in range(len(self.taglist)):
-            if self.cooccur[tagidx][i] > target[1]: # larger co-occurence 
+            if self.cooccur[tagidx][i][0] > target[1]: # larger co-occurence 
                 target = (i, self.cooccur[tagidx][i][0], self.taglist[i][1])
             elif (self.cooccur[tagidx][i][0] == target[1]) and (self.taglist[i][1] > target[2]): # equal co-occur but larger group
                 target = (i, self.cooccur[tagidx][i][0], self.taglist[i][1])
@@ -163,8 +163,8 @@ class TagCoOccur:
         target = (0, -1, 0) # target tag index, co-occured pos/total, total count
 
         for i in range(len(self.taglist)):
-            if (self.taglist[i][1] >= 3) and (abs(tag_ratio - (self.cooccur[tagidx][i][2]/ self.cooccur[tagidx][i][1] * 100)) > target[1]): # total_count > 3 and the largest ratio difference 
-                target = (i, abs(tag_ratio - (self.cooccur[tagidx][i][2]/ self.cooccur[tagidx][i][1] * 100)),  self.taglist[i][1])
+            if (self.taglist[i][1] >= 3) and (abs(tag_ratio - (self.cooccur[tagidx][i][2]/ self.cooccur[tagidx][i][0] * 100)) > target[1]): # total_count > 3 and the largest ratio difference 
+                target = (i, abs(tag_ratio - (self.cooccur[tagidx][i][2]/ self.cooccur[tagidx][i][0] * 100)),  self.taglist[i][1])
 
         return self.tag_txt[target[0]]
 
