@@ -163,7 +163,8 @@ class TagCoOccur:
         target = (0, -1, 0) # target tag index, co-occured pos/total, total count
 
         for i in range(len(self.taglist)):
-            if (self.taglist[i][1] >= 3) and (abs(tag_ratio - (self.cooccur[tagidx][i][2]/ self.cooccur[tagidx][i][0] * 100)) > target[1]): # total_count > 3 and the largest ratio difference 
+
+            if (self.taglist[i][1] >= 3) and (self.cooccur[tagidx][i][0] > 0) and (abs(tag_ratio - (self.cooccur[tagidx][i][2]/ self.cooccur[tagidx][i][0] * 100)) > target[1]): # total_count > 3 and the largest ratio difference 
                 target = (i, abs(tag_ratio - (self.cooccur[tagidx][i][2]/ self.cooccur[tagidx][i][0] * 100)),  self.taglist[i][1])
 
         return self.tag_txt[target[0]]
