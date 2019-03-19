@@ -175,7 +175,7 @@ class TagCoOccur:
 
         for i in range(len(self.taglist)):
             if self.cooccur[tagidx][i][1] > target[1]:
-                target = (i, self.cooccur[tagidx][1], self.taglist[i][1])
+                target = (i, self.cooccur[tagidx][i][1], self.taglist[i][1])
 
         return self.tag_txt[target[0]]
 
@@ -185,7 +185,7 @@ class TagCoOccur:
 
         for i in range(len(self.taglist)):
             if self.cooccur[tagidx][i][1] > target[1]:
-                target = (i, self.cooccur[tagidx][1], self.taglist[i][1])
+                target = (i, self.cooccur[tagidx][i][1], self.taglist[i][1])
 
         return self.tag_txt[target[0]]
 
