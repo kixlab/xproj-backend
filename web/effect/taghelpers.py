@@ -189,7 +189,7 @@ class TagCoOccur:
 
         return self.tag_txt[target[0]]
 
-    def farthest_group(self, tag_high, tag_low):
+    def farthest_subgroup(self, tag_high, tag_low):
         tag_high_idx = self.tag_txt.index(tag_high)
         tag_low_idx = self.tag_txt.index(tag_low)
         tag_ratio = self.cooccur[tag_high_idx][tag_low_idx][1] / self.cooccur[tag_high_idx][tag_low_idx][0] * 100 # pos / total
@@ -201,7 +201,7 @@ class TagCoOccur:
 
         return (tag_high, self.tag_txt[target[0]])
 
-    def farthest_subgroup(self, tag_high, tag_low):
+    def farthest_group(self, tag_high, tag_low):
         tag_high_idx = self.tag_txt.index(tag_high)
         tag_low_idx = self.tag_txt.index(tag_low)
         tag_ratio = self.cooccur[tag_high_idx][tag_low_idx][1] / self.cooccur[tag_high_idx][tag_low_idx][0] * 100 # pos / total
