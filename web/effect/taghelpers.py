@@ -105,7 +105,7 @@ class TagCoOccur:
 
     def __init__(self, taglist, policy):
         self.taglist = sorted(taglist, key = lambda x: x[1], reverse = True)
-        self.tag_txt = [t[0] for t in taglist]
+        self.tag_txt = [t[0] for t in self.taglist]
 
         self.policy = policy
 
@@ -164,8 +164,8 @@ class TagCoOccur:
 
         for i in range(len(self.taglist)):
 
-            if (self.taglist[i][1] >= 3) and (self.cooccur[tagidx][i][0] > 0) and (abs(tag_ratio - (self.cooccur[tagidx][i][2]/ self.cooccur[tagidx][i][0] * 100)) > target[1]): # total_count > 3 and the largest ratio difference 
-                target = (i, abs(tag_ratio - (self.cooccur[tagidx][i][2]/ self.cooccur[tagidx][i][0] * 100)),  self.taglist[i][1])
+            if (self.taglist[i][1] >= 3) and (self.cooccur[tagidx][i][0] > 0) and (abs(tag_ratio - (self.cooccur[tagidx][i][1]/ self.cooccur[tagidx][i][0] * 100)) > target[1]): # total_count > 3 and the largest ratio difference 
+                target = (i, abs(tag_ratio - (self.cooccur[tagidx][i][1]/ self.cooccur[tagidx][i][0] * 100)),  self.taglist[i][1])
 
         return self.tag_txt[target[0]]
 
