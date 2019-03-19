@@ -259,9 +259,9 @@ class EffectViewSet(viewsets.ModelViewSet):
 
             tag_list = []
 
-            for tag in tags:
-                query = tag.effect_taggedeffect_items.filter(Qobj)
-                name = tag.name
+            for t in tags:
+                query = t.effect_taggedeffect_items.filter(Qobj)
+                name = t.name
                 pos_count = query.filter(Qpos).count()
                 neg_count = query.filter(Qneg).count()
                 total_count = pos_count + neg_count
@@ -275,9 +275,9 @@ class EffectViewSet(viewsets.ModelViewSet):
         different = self.tag_cooccur[ppp].fetch_different(tag)
         return Response(status=200, data={
             "tag": tag,
-            "refs": posCount + negCount,
-            "positive": posCount,
-            "negative": negCount,
+            # "refs": posCount + negCount,
+            # "positive": posCount,
+            # "negative": negCount,
             "closest": closest,
             "farthest": farthest,
             "different": different
