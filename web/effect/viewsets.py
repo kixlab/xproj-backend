@@ -272,7 +272,7 @@ class EffectViewSet(viewsets.ModelViewSet):
 
         closest = self.tag_cooccur[ppp].closest(tag)
         farthest = self.tag_cooccur[ppp].farthest(tag)
-        different = self.tag_cooccur[ppp].different(tag)
+        different = self.tag_cooccur[ppp].most_different(tag)
         most_pos = self.tag_cooccur[ppp].most_positive(tag)
         most_neg = self.tag_cooccur[ppp].most_negative(tag)
 
