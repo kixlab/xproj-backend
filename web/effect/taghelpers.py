@@ -171,7 +171,7 @@ class TagCoOccur:
 
     def most_positive(self, tag): # tag that contributes positive effects the most 
         tagidx = self.tag_txt.index(tag)
-        target = (0, 0, 0.5) # tag idx, # of positive effects, ratio of positive effects
+        target = (0, 1, 0.5) # tag idx, # of positive effects, ratio of positive effects
 
         for i in range(len(self.taglist)):
             if self.cooccur[tagidx][i][1] > target[1]:
@@ -184,7 +184,7 @@ class TagCoOccur:
 
     def most_negative(self, tag): # tag that contributes negative effects the most 
         tagidx = self.tag_txt.index(tag)
-        target = (0, 0, 0.5) # tag idx, # of negative effects, ratio of negative effects
+        target = (0, 1, 0.5) # tag idx, # of negative effects, ratio of negative effects
 
         for i in range(len(self.taglist)):
             if self.cooccur[tagidx][i][2] > target[1]:
