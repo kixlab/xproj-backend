@@ -96,6 +96,78 @@ class TagTree:
                     else:
                         self.cooccur[t1_idx][t2_idx][1] += 1
                         self.cooccur[t2_idx][t1_idx][1] += 1
+
+class TagCoOccur:
+    cooccur = None
+    taglist = None
+    tag_txt = None
+    policy = None
+
+    def __init__(self, taglist, policy):
+        self.taglist = sorted(taglist, key = lambda x: x[1], reverse = True)
+        self.tag_txt = [t[0] for t in taglist]
+
+        self.policy = policy
+
+        self.cooccur = [[[0, 0, 0] for t in taglist] for u in taglist]
+
+        queryset = Effect.objects.filter(is_guess = False).filter(policy = policy)
+
+        for e in queryset:
+            tags = e.tags.names()
+            for i in range(len(tags)):
+                for j in range(i):
+                    t1_idx = self.tag_txt.index(tags[i])
+                    t2_idx = self.tag_txt.index(tags[j])
+
+                    if e.isBenefit:
+                        self.cooccur[t1_idx][t2_idx][1] += 1
+                        self.cooccur[t2_idx][t1_idx][1] += 1
+                    else:
+                        self.cooccur[t1_idx][t2_idx][2] += 1
+                        self.cooccur[t2_idx][t1_idx][2] += 1
+
+                    
+        for i in range(len(taglist)):
+            for j in range(i):
+                self.cooccur[i][j][0] = self.cooccur[i][j][1] + self.cooccur[i][j][2]
+                self.cooccur[j][i][0] = self.cooccur[i][j][0]
+
+    def fetch_closest(self, tag):
+        tagidx = self.tag_txt.index(tag)
+
+        target = (0, 0, 0) # target tag index, co-occurence, total count
+
+        for i in range(len(self.taglist)):
+            if self.cooccur[tagidx][i] > target[1]: # larger co-occurence 
+                target = (i, self.cooccur[tagidx][i][0], self.taglist[i][1])
+            elif (self.cooccur[tagidx][i][0] == target[1]) and (self.taglist[i][1] > target[2]): # equal co-occur but larger group
+                target = (i, self.cooccur[tagidx][i][0], self.taglist[i][1])
+        
+        return self.tag_txt[target[0]]
+
+    def fetch_farthest(self, tag):
+        tagidx = self.tag_txt.index(tag)
+        tag_ratio = self.taglist[tagidx][2] / self.taglist[tagidx][1] * 100 # pos / total
+        target = (0, -1, 0) # target tag index, pos/total, total count
+
+        for i in range(len(self.taglist)):
+            if (self.taglist[i][1] >= 3) and (abs(tag_ratio - (self.taglist[i][2]/ self.taglist[i][1] * 100)) > target[1]): # total_count > 3 and the largest ratio difference 
+                target = (i, abs(tag_ratio - (self.taglist[i][2]/ self.taglist[i][1] * 100)),  self.taglist[i][1])
+
+        return self.tag_txt[target[0]]
+
+    def fetch_different(self, tag):
+        tagidx = self.tag_txt.index(tag)
+        tag_ratio = self.taglist[tagidx][2] / self.taglist[tagidx][1] * 100 # pos / total
+        target = (0, -1, 0) # target tag index, co-occured pos/total, total count
+
+        for i in range(len(self.taglist)):
+            if (self.taglist[i][1] >= 3) and (abs(tag_ratio - (self.cooccur[tagidx][i][2]/ self.cooccur[tagidx][i][1] * 100)) > target[1]): # total_count > 3 and the largest ratio difference 
+                target = (i, abs(tag_ratio - (self.cooccur[tagidx][i][2]/ self.cooccur[tagidx][i][1] * 100)),  self.taglist[i][1])
+
+        return self.tag_txt[target[0]]
+
         
 
     # def construct_tag_tree(self, tag_list, policy):

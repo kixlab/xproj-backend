@@ -12,7 +12,7 @@ from taggit_serializer.serializers import TaggitSerializer
 from django.db.models import Count, Q, F, Sum
 from django.db.models.functions import Length
 import random
-from effect.taghelpers import TagTree, TagTreeEncoder
+from effect.taghelpers import TagTree, TagTreeEncoder, TagCoOccur
 import json
 from .nlp import get_top_n_words_from_tfidf_kor, get_keywords
 from django.http import HttpResponse
@@ -40,6 +40,7 @@ class EffectViewSet(viewsets.ModelViewSet):
     pagination_class = EffectPagination
     tag_tree = [None, None]
     keywords = []
+    tag_cooccur = [None, None]
     def get_serializer_class(self):
         serializer_class = EffectSerializer
         get_stakeholder_names = self.request.query_params.get('get_stakeholder_names', None)
@@ -240,6 +241,59 @@ class EffectViewSet(viewsets.ModelViewSet):
             "negative": negCount
         })
 
+    @list_route(methods=['get'])
+    def tag_info2(self, request):
+        tag = self.request.query_params.get('tag', None)
+        policy = self.request.query_params.get('policy', None)
+
+        if policy is None:
+            return Response(status = 400, data = "Please specify policy idx")
+
+        ppp = int(policy) - 1
+
+        if self.tag_cooccur[ppp] is None:
+            tags = Tag.objects.filter(effect__policy__exact = policy).distinct()
+            Qobj = Q(content_object__policy__exact = policy) & Q(content_object__is_guess = False)
+            Qpos = Q(content_object__isBenefit = 1)
+            Qneg = Q(content_object__isBenefit = 0)
+
+            tag_list = []
+
+            for tag in tags:
+                query = tag.effect_taggedeffect_items.filter(Qobj)
+                name = tag.name
+                pos_count = query.filter(Qpos).count()
+                neg_count = query.filter(Qneg).count()
+                total_count = pos_count + neg_count
+                if total_count > 0:
+                    tag_list.append((name, total_count, pos_count, neg_count))
+
+            self.tag_cooccur[ppp] = TagCoOccur(tag_list, policy)
+
+        closest = self.tag_cooccur[ppp].fetch_closest(tag)
+        farthest = self.tag_cooccur[ppp].fetch_farthest(tag)
+        different = self.tag_cooccur[ppp].fetch_different(tag)
+        return Response(status=200, data={
+            "tag": tag,
+            "refs": posCount + negCount,
+            "positive": posCount,
+            "negative": negCount,
+            "closest": closest,
+            "farthest": farthest,
+            "different": different
+        })
+
+        #TODO: find more optimal way
+        # tag_list = [
+        #     {
+        #         "name": tag.name,
+        #         "refs": tag.effect_taggedeffect_items.filter(Qobj).count(),
+        #         "positive": tag.effect_taggedeffect_items.filter(Qpos).count(),
+        #         "negative": tag.effect_taggedeffect_items.filter(Qneg).count(),
+        #     } for tag in tags
+        # ]
+
+        #return Response(data=myJson, status=200)
     @list_route(methods=['get'])
     def random(self, request):
         policy = self.request.query_params.get('policy', None)
