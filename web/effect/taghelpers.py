@@ -64,38 +64,38 @@ class TagTree:
     def construct_tag_tree(self, tag_list, policy):
         sorted_tags = sorted(tag_list, key = lambda x: x[1], reverse = True)
         tag_txt = [t[0] for t in sorted_tags]
-        self.compute_cooccur(tag_txt, policy)
+        self.cooccur = TagCoOccur(tag_txt, policy)
 
         for i in range(len(sorted_tags)):
             level1_node = TagNode(sorted_tags[i][0], sorted_tags[i][2], sorted_tags[i][3])
 
             for j in range(len(sorted_tags)):
-                if self.cooccur[i][j][0] + self.cooccur[i][j][1] > 0:
-                    level1_node.add_child_name(sorted_tags[j][0], self.cooccur[i][j][0], self.cooccur[i][j][1])
+                if self.cooccur[i][j][0] + self.cooccur.cooccur[i][j][1] > 0:
+                    level1_node.add_child_name(sorted_tags[j][0], self.cooccur.cooccur[i][j][0], self.cooccur.cooccur[i][j][1])
 
             self.root.add_child(level1_node)
 
-    def compute_cooccur(self, taglist, policy):
-        if self.cooccur is not None:
-            return
+    # def compute_cooccur(self, taglist, policy):
+    #     if self.cooccur is not None:
+    #         return
 
-        self.cooccur = [[[0,0] for t in taglist] for t in taglist]
+    #     self.cooccur = [[[0,0] for t in taglist] for t in taglist]
 
-        queryset = Effect.objects.filter(is_guess = False).filter(policy = policy)
+    #     queryset = Effect.objects.filter(is_guess = False).filter(policy = policy)
 
-        for e in queryset:
-            tags = e.tags.names()
-            for i in range(len(tags)):
-                for j in range(i):
-                    t1_idx = taglist.index(tags[i])
-                    t2_idx = taglist.index(tags[j])
+    #     for e in queryset:
+    #         tags = e.tags.names()
+    #         for i in range(len(tags)):
+    #             for j in range(i):
+    #                 t1_idx = taglist.index(tags[i])
+    #                 t2_idx = taglist.index(tags[j])
 
-                    if e.isBenefit:
-                        self.cooccur[t1_idx][t2_idx][0] += 1
-                        self.cooccur[t2_idx][t1_idx][0] += 1
-                    else:
-                        self.cooccur[t1_idx][t2_idx][1] += 1
-                        self.cooccur[t2_idx][t1_idx][1] += 1
+    #                 if e.isBenefit:
+    #                     self.cooccur[t1_idx][t2_idx][0] += 1
+    #                     self.cooccur[t2_idx][t1_idx][0] += 1
+    #                 else:
+    #                     self.cooccur[t1_idx][t2_idx][1] += 1
+    #                     self.cooccur[t2_idx][t1_idx][1] += 1
 
 class TagCoOccur:
     cooccur = None
@@ -174,7 +174,7 @@ class TagCoOccur:
         target = (0, 1, 0.5) # tag idx, # of positive effects, ratio of positive effects
 
         for i in range(len(self.taglist)):
-            if self.cooccur[tagidx][i][1] > target[1] and (self.cooccur[tagidx][i][1] / self.cooccur[tagidx][i][0]) > 0.5:
+            if self.cooccur[tagidx][i][1] > target[1] and (self.cooccur[tagidx][i][1] / self.cooccur[tagidx][i][0]) >= 0.5:
                 target = (i, self.cooccur[tagidx][i][1], (self.cooccur[tagidx][i][1] / self.cooccur[tagidx][i][0]))
             elif self.cooccur[tagidx][i][1] == target[1] and (self.cooccur[tagidx][i][1] / self.cooccur[tagidx][i][0]) > target[2]:
                 target = (i, self.cooccur[tagidx][i][1], (self.cooccur[tagidx][i][1] / self.cooccur[tagidx][i][0]))
@@ -187,7 +187,7 @@ class TagCoOccur:
         target = (0, 1, 0.5) # tag idx, # of negative effects, ratio of negative effects
 
         for i in range(len(self.taglist)):
-            if self.cooccur[tagidx][i][2] > target[1] and (self.cooccur[tagidx][i][2] / self.cooccur[tagidx][i][0]) > 0.5:
+            if self.cooccur[tagidx][i][2] > target[1] and (self.cooccur[tagidx][i][2] / self.cooccur[tagidx][i][0]) >= 0.5:
                 target = (i, self.cooccur[tagidx][i][2], (self.cooccur[tagidx][i][2] / self.cooccur[tagidx][i][0]))
             elif self.cooccur[tagidx][i][2] == target[1] and (self.cooccur[tagidx][i][2] / self.cooccur[tagidx][i][0]) > target[2]:
                 target = (i, self.cooccur[tagidx][i][2], (self.cooccur[tagidx][i][2] / self.cooccur[tagidx][i][0]))
