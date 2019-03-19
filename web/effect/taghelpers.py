@@ -171,21 +171,26 @@ class TagCoOccur:
 
     def most_positive(self, tag): # tag that contributes positive effects the most 
         tagidx = self.tag_txt.index(tag)
-        target = (0, 0, 0)
+        target = (0, 0, 0.5) # tag idx, # of positive effects, ratio of positive effects
 
         for i in range(len(self.taglist)):
             if self.cooccur[tagidx][i][1] > target[1]:
-                target = (i, self.cooccur[tagidx][i][1], self.taglist[i][1])
+                target = (i, self.cooccur[tagidx][i][1], (self.cooccur[tagidx][i][1] / self.cooccur[tagidx][i][0]))
+            elif self.cooccur[tagidx][i][1] == target[1] and (self.cooccur[tagidx][i][1] / self.cooccur[tagidx][i][0]) > target[2]:
+                target = (i, self.cooccur[tagidx][i][1], (self.cooccur[tagidx][i][1] / self.cooccur[tagidx][i][0]))
+
 
         return self.tag_txt[target[0]]
 
     def most_negative(self, tag): # tag that contributes negative effects the most 
         tagidx = self.tag_txt.index(tag)
-        target = (0, 0, 0)
+        target = (0, 0, 0.5) # tag idx, # of negative effects, ratio of negative effects
 
         for i in range(len(self.taglist)):
-            if self.cooccur[tagidx][i][1] > target[1]:
-                target = (i, self.cooccur[tagidx][i][1], self.taglist[i][1])
+            if self.cooccur[tagidx][i][2] > target[1]:
+                target = (i, self.cooccur[tagidx][i][2], (self.cooccur[tagidx][i][2] / self.cooccur[tagidx][i][0]))
+            elif self.cooccur[tagidx][i][2] == target[1] and (self.cooccur[tagidx][i][2] / self.cooccur[tagidx][i][0]):
+                target = (i, self.cooccur[tagidx][i][2], (self.cooccur[tagidx][i][2] / self.cooccur[tagidx][i][0]))
 
         return self.tag_txt[target[0]]
 
@@ -196,7 +201,7 @@ class TagCoOccur:
         target = (0, -1, 0) # target tag index, pos/total, total count
 
         for i in range(len(self.taglist)):
-            if self.cooccur[tag_high_idx][i][0] > 0 and (abs(tag_ratio - (self.cooccur[tag_high_idx][i][1] / self.cooccur[tag_high_idx][i][0] * 100)) > target[1]): # the largest ratio difference 
+            if self.cooccur[tag_high_idx][i][0] >= 3 and (abs(tag_ratio - (self.cooccur[tag_high_idx][i][1] / self.cooccur[tag_high_idx][i][0] * 100)) > target[1]): # the largest ratio difference 
                 target = (i, abs(tag_ratio - (self.cooccur[tag_high_idx][i][1] / self.cooccur[tag_high_idx][i][0] * 100)),  self.cooccur[tag_high_idx][i][0])
 
         return (tag_high, self.tag_txt[target[0]])
@@ -211,7 +216,7 @@ class TagCoOccur:
             if (self.taglist[i][1] >= 3) and (abs(tag_ratio - (self.taglist[i][2]/ self.taglist[i][1] * 100)) > target[1]): # total_count > 3 and the largest ratio difference 
                 target = (i, abs(tag_ratio - (self.taglist[i][2]/ self.taglist[i][1] * 100)),  self.taglist[i][1])
 
-        return (tag_high, self.tag_txt[target[0]])
+        return (self.tag_txt[target[0]])
         
 
     # def construct_tag_tree(self, tag_list, policy):
