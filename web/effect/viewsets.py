@@ -270,9 +270,12 @@ class EffectViewSet(viewsets.ModelViewSet):
 
             self.tag_cooccur[ppp] = TagCoOccur(tag_list, policy)
 
-        closest = self.tag_cooccur[ppp].fetch_closest(tag)
-        farthest = self.tag_cooccur[ppp].fetch_farthest(tag)
-        different = self.tag_cooccur[ppp].fetch_different(tag)
+        closest = self.tag_cooccur[ppp].closest(tag)
+        farthest = self.tag_cooccur[ppp].farthest(tag)
+        different = self.tag_cooccur[ppp].different(tag)
+        most_pos = self.tag_cooccur[ppp].most_positive(tag)
+        most_neg = self.tag_cooccur[ppp].most_negative(tag)
+
         return Response(status=200, data={
             "tag": tag,
             # "refs": posCount + negCount,
@@ -280,9 +283,58 @@ class EffectViewSet(viewsets.ModelViewSet):
             # "negative": negCount,
             "closest": closest,
             "farthest": farthest,
-            "different": different
+            "different": different,
+            "most_pos": most_pos,
+            "most_neg": most_neg
         })
 
+    @list_route(methods=['get'])
+    def tag_info3(self, request):
+        tag_high = self.request.query_params.get('tag_high', None)
+        tag_low = self.request.query_params.get('tag_low', None)
+        policy = self.request.query_params.get('policy', None)
+
+        if policy is None:
+            return Response(status = 400, data = "Please specify policy idx")
+
+        ppp = int(policy) - 1
+
+        if self.tag_cooccur[ppp] is None:
+            tags = Tag.objects.filter(effect__policy__exact = policy).distinct()
+            Qobj = Q(content_object__policy__exact = policy) & Q(content_object__is_guess = False)
+            Qpos = Q(content_object__isBenefit = 1)
+            Qneg = Q(content_object__isBenefit = 0)
+
+            tag_list = []
+
+            for t in tags:
+                query = t.effect_taggedeffect_items.filter(Qobj)
+                name = t.name
+                pos_count = query.filter(Qpos).count()
+                neg_count = query.filter(Qneg).count()
+                total_count = pos_count + neg_count
+                if total_count > 0:
+                    tag_list.append((name, total_count, pos_count, neg_count))
+
+            self.tag_cooccur[ppp] = TagCoOccur(tag_list, policy)
+
+        # closest = self.tag_cooccur[ppp].fetch_closest(tag)
+        # farthest = self.tag_cooccur[ppp].fetch_farthest(tag)
+        # different = self.tag_cooccur[ppp].fetch_different(tag)
+        farthest_group = self.tag_cooccur[ppp].farthest_group(tag_high, tag_low)
+        farthest_subgroup = self.tag_cooccur[ppp].farthest_subgroup(tag_high, tag_low)
+        return Response(status=200, data={
+            "tag_high": tag_high,
+            "tag_low": tag_low,
+            "farthest_group": farthest_group,
+            "farthest_subgroup": farthest_subgroup
+            # "refs": posCount + negCount,
+            # "positive": posCount,
+            # "negative": negCount,
+            # "closest": closest,
+            # "farthest": farthest,
+            # "different": different
+        })
         #TODO: find more optimal way
         # tag_list = [
         #     {

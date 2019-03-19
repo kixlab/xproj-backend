@@ -133,7 +133,7 @@ class TagCoOccur:
                 self.cooccur[i][j][0] = self.cooccur[i][j][1] + self.cooccur[i][j][2]
                 self.cooccur[j][i][0] = self.cooccur[i][j][0]
 
-    def fetch_closest(self, tag):
+    def closest(self, tag): # fetch the tag with highest co-occurence
         tagidx = self.tag_txt.index(tag)
 
         target = (0, 0, 0) # target tag index, co-occurence, total count
@@ -146,7 +146,7 @@ class TagCoOccur:
         
         return self.tag_txt[target[0]]
 
-    def fetch_farthest(self, tag):
+    def farthest(self, tag): # fetch the tag with the most different opinion distribution
         tagidx = self.tag_txt.index(tag)
         tag_ratio = self.taglist[tagidx][2] / self.taglist[tagidx][1] * 100 # pos / total
         target = (0, -1, 0) # target tag index, pos/total, total count
@@ -157,7 +157,7 @@ class TagCoOccur:
 
         return self.tag_txt[target[0]]
 
-    def fetch_different(self, tag):
+    def most_different(self, tag): # fetch the tag with the most different co-occurence distribution
         tagidx = self.tag_txt.index(tag)
         tag_ratio = self.taglist[tagidx][2] / self.taglist[tagidx][1] * 100 # pos / total
         target = (0, -1, 0) # target tag index, co-occured pos/total, total count
@@ -169,6 +169,49 @@ class TagCoOccur:
 
         return self.tag_txt[target[0]]
 
+    def most_positive(self, tag): # tag that contributes positive effects the most 
+        tagidx = self.tag_txt.index(tag)
+        target = (0, 0, 0)
+
+        for i in range(len(self.taglist)):
+            if self.cooccur[tagidx][i][1] > target[1]:
+                target = (i, self.cooccur[tagidx][1], self.taglist[i][1])
+
+        return self.tag_txt[target[0]]
+
+    def most_negative(self, tag): # tag that contributes negative effects the most 
+        tagidx = self.tag_txt.index(tag)
+        target = (0, 0, 0)
+
+        for i in range(len(self.taglist)):
+            if self.cooccur[tagidx][i][1] > target[1]:
+                target = (i, self.cooccur[tagidx][1], self.taglist[i][1])
+
+        return self.tag_txt[target[0]]
+
+    def farthest_group(self, tag_high, tag_low):
+        tag_high_idx = self.tag_txt.index(tag_high)
+        tag_low_idx = self.tag_txt.index(tag_low)
+        tag_ratio = self.cooccur[tag_high_idx][tag_low_idx][1] / self.cooccur[tag_high_idx][tag_low_idx][0] * 100 # pos / total
+        target = (0, -1, 0) # target tag index, pos/total, total count
+
+        for i in range(len(self.taglist)):
+            if (abs(tag_ratio - (self.cooccur[tag_high_idx][tag_low_idx][1] / self.cooccur[tag_high_idx][tag_low_idx][0] * 100)) > target[1]): # the largest ratio difference 
+                target = (i, abs(tag_ratio - (self.cooccur[tag_high_idx][tag_low_idx][1] / self.cooccur[tag_high_idx][tag_low_idx][0] * 100)),  self.cooccur[tag_high_idx][tag_low_idx][0])
+
+        return (tag_high, self.tag_txt[target[0]])
+
+    def farthest_subgroup(self, tag_high, tag_low):
+        tag_high_idx = self.tag_txt.index(tag_high)
+        tag_low_idx = self.tag_txt.index(tag_low)
+        tag_ratio = self.cooccur[tag_high_idx][tag_low_idx][1] / self.cooccur[tag_high_idx][tag_low_idx][0] * 100 # pos / total
+        target = (0, -1, 0) # target tag index, pos/total, total count
+
+        for i in range(len(self.taglist)):
+            if (self.taglist[i][1] >= 3) and (abs(tag_ratio - (self.taglist[i][2]/ self.taglist[i][1] * 100)) > target[1]): # total_count > 3 and the largest ratio difference 
+                target = (i, abs(tag_ratio - (self.taglist[i][2]/ self.taglist[i][1] * 100)),  self.taglist[i][1])
+
+        return (tag_high, self.tag_txt[target[0]])
         
 
     # def construct_tag_tree(self, tag_list, policy):
