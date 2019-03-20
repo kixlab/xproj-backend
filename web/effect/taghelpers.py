@@ -64,7 +64,7 @@ class TagTree:
             level1_node = TagNode(self.sorted_tags[i][0], self.sorted_tags[i][2], self.sorted_tags[i][3])
 
             for j in range(len(self.sorted_tags)):
-                if self.cooccur[i][j][0] + self.cooccur.cooccur[i][j][1] > 0:
+                if self.cooccur.cooccur[i][j][0] + self.cooccur.cooccur[i][j][1] > 0:
                     level1_node.add_child_name(self.sorted_tags[j][0], self.cooccur.cooccur[i][j][0], self.cooccur.cooccur[i][j][1])
 
             self.root.add_child(level1_node)
