@@ -180,7 +180,6 @@ class EffectViewSet(viewsets.ModelViewSet):
         ppp = int(policy) - 1
 
         if self.tag_tree[ppp] is None or self.tag_tree[ppp].isEmpty():
-            self.tag_tree[ppp] = TagTree()
             Qobj = Q(content_object__policy__exact = policy) & Q(content_object__is_guess = False)
             Qpos = Q(content_object__isBenefit = 1)
             # Qpos = Qpos & Qobj
@@ -208,7 +207,7 @@ class EffectViewSet(viewsets.ModelViewSet):
                 total_count = pos_count + neg_count
                 tag_list.append((name, total_count, pos_count, neg_count))
 
-            self.tag_tree[ppp].construct_tag_tree([t for t in tag_list if t[1] > 0], policy)
+            self.tag_tree[ppp] = TagTree([t for t in tag_list if t[1] > 0], policy)
 
        
         myJson = json.dumps(self.tag_tree[ppp].root, cls=TagTreeEncoder, ensure_ascii = False)
@@ -275,12 +274,12 @@ class EffectViewSet(viewsets.ModelViewSet):
         different = self.tag_cooccur[ppp].most_different(tag)
         most_pos = self.tag_cooccur[ppp].most_positive(tag)
         most_neg = self.tag_cooccur[ppp].most_negative(tag)
-
+        counts = self.tag_cooccur[ppp].get_counts(tag)
         return Response(status=200, data={
             "tag": tag,
-            # "refs": posCount + negCount,
-            # "positive": posCount,
-            # "negative": negCount,
+            "refs": counts[1],
+            "positive": counts[2],
+            "negative": counts[3],
             "closest": closest,
             "farthest": farthest,
             "different": different,
@@ -323,11 +322,15 @@ class EffectViewSet(viewsets.ModelViewSet):
         # different = self.tag_cooccur[ppp].fetch_different(tag)
         farthest_group = self.tag_cooccur[ppp].farthest_group(tag_high, tag_low)
         farthest_subgroup = self.tag_cooccur[ppp].farthest_subgroup(tag_high, tag_low)
+        cooccur_counts = self.tag_cooccur[ppp].get_cooccur_counts(tag_high, tag_low)
         return Response(status=200, data={
             "tag_high": tag_high,
             "tag_low": tag_low,
             "farthest_group": farthest_group,
-            "farthest_subgroup": farthest_subgroup
+            "farthest_subgroup": farthest_subgroup,
+            "total_count": cooccur_counts[0],
+            "pos_count": cooccur_counts[1],
+            "neg_count": cooccur_counts[2]
             # "refs": posCount + negCount,
             # "positive": posCount,
             # "negative": negCount,

@@ -53,27 +53,27 @@ class TagTree:
     included_tags = []
     cooccur = None
 
-    def __init__(self):
+    def __init__(self, tag_list, policy, cooccur):
         self.root = TagNode('root')
         self.included_tags = []
-        self.cooccur = None
+        self.cooccur = cooccur
+        self.sorted_tags = sorted(tag_list, key = lambda x: x[1], reverse = True)
+        self.tag_txt = [t[0] for t in self.sorted_tags]
+
+        for i in range(len(self.sorted_tags)):
+            level1_node = TagNode(self.sorted_tags[i][0], self.sorted_tags[i][2], self.sorted_tags[i][3])
+
+            for j in range(len(self.sorted_tags)):
+                if self.cooccur[i][j][0] + self.cooccur.cooccur[i][j][1] > 0:
+                    level1_node.add_child_name(self.sorted_tags[j][0], self.cooccur.cooccur[i][j][0], self.cooccur.cooccur[i][j][1])
+
+            self.root.add_child(level1_node)
 
     def isEmpty(self):
         return len(self.included_tags) <= 0
 
-    def construct_tag_tree(self, tag_list, policy):
-        sorted_tags = sorted(tag_list, key = lambda x: x[1], reverse = True)
-        tag_txt = [t[0] for t in sorted_tags]
-        self.cooccur = TagCoOccur(tag_txt, policy)
 
-        for i in range(len(sorted_tags)):
-            level1_node = TagNode(sorted_tags[i][0], sorted_tags[i][2], sorted_tags[i][3])
 
-            for j in range(len(sorted_tags)):
-                if self.cooccur[i][j][0] + self.cooccur.cooccur[i][j][1] > 0:
-                    level1_node.add_child_name(sorted_tags[j][0], self.cooccur.cooccur[i][j][0], self.cooccur.cooccur[i][j][1])
-
-            self.root.add_child(level1_node)
 
     # def compute_cooccur(self, taglist, policy):
     #     if self.cooccur is not None:
@@ -132,6 +132,16 @@ class TagCoOccur:
             for j in range(i):
                 self.cooccur[i][j][0] = self.cooccur[i][j][1] + self.cooccur[i][j][2]
                 self.cooccur[j][i][0] = self.cooccur[i][j][0]
+    
+    def get_cooccur_counts(self, tag_high, tag_low):
+        tag_high_idx = self.tag_txt.index(tag_high)
+        tag_low_idx = self.tag_txt.index(tag_low)
+
+        return self.cooccur[tag_high_idx][tag_low_idx]
+    
+    def get_counts(self, tag):
+        tag_idx = self.tag_txt.index(tag)
+        return self.taglist[tag_idx]
 
     def closest(self, tag): # fetch the tag with highest co-occurence
         tagidx = self.tag_txt.index(tag)
