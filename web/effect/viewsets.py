@@ -180,34 +180,37 @@ class EffectViewSet(viewsets.ModelViewSet):
         ppp = int(policy) - 1
 
         if self.tag_tree[ppp] is None or self.tag_tree[ppp].isEmpty():
-            Qobj = Q(content_object__policy__exact = policy) & Q(content_object__is_guess = False)
-            Qpos = Q(content_object__isBenefit = 1)
-            # Qpos = Qpos & Qobj
-            Qneg = Q(content_object__isBenefit = 0)
-            # Qneg = Qneg & Qobj
-            tags = tags.filter(effect__policy__exact = policy).distinct()
-            # tags = tags.annotate(
-            #     refs = Count("effect"), 
-            #     positives = Count("effect", filter=Qpos),
-            #     negatives = Count("effect", filter=Qneg),
-            # )
-            # tags = tags.annotate(
-            #     negatives = Count("effect_taggedeffect_items", distinct=True, filter=Qneg),
-            # )
-            # tags = tags.filter(refs__gt = 0)
-            # query = tags.query
-            # print('tag_list %s' % query)
-            tag_list = []
+            if self.tag_cooccur[ppp] is None:
+                Qobj = Q(content_object__policy__exact = policy) & Q(content_object__is_guess = False)
+                Qpos = Q(content_object__isBenefit = 1)
+                # Qpos = Qpos & Qobj
+                Qneg = Q(content_object__isBenefit = 0)
+                # Qneg = Qneg & Qobj
+                tags = tags.filter(effect__policy__exact = policy).distinct()
+                # tags = tags.annotate(
+                #     refs = Count("effect"), 
+                #     positives = Count("effect", filter=Qpos),
+                #     negatives = Count("effect", filter=Qneg),
+                # )
+                # tags = tags.annotate(
+                #     negatives = Count("effect_taggedeffect_items", distinct=True, filter=Qneg),
+                # )
+                # tags = tags.filter(refs__gt = 0)
+                # query = tags.query
+                # print('tag_list %s' % query)
+                tag_list = []
 
-            for tag in tags:
-                query = tag.effect_taggedeffect_items.filter(Qobj)
-                name = tag.name
-                pos_count = query.filter(Qpos).count()
-                neg_count = query.filter(Qneg).count()
-                total_count = pos_count + neg_count
-                tag_list.append((name, total_count, pos_count, neg_count))
+                for tag in tags:
+                    query = tag.effect_taggedeffect_items.filter(Qobj)
+                    name = tag.name
+                    pos_count = query.filter(Qpos).count()
+                    neg_count = query.filter(Qneg).count()
+                    total_count = pos_count + neg_count
+                    tag_list.append((name, total_count, pos_count, neg_count))
 
-            self.tag_tree[ppp] = TagTree([t for t in tag_list if t[1] > 0], policy)
+                self.tag_cooccur[ppp] = TagCoOccur(tag_list, policy)
+
+            self.tag_tree[ppp] = TagTree(self.tag_cooccur[ppp])
 
        
         myJson = json.dumps(self.tag_tree[ppp].root, cls=TagTreeEncoder, ensure_ascii = False)

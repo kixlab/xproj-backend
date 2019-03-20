@@ -53,12 +53,12 @@ class TagTree:
     included_tags = []
     cooccur = None
 
-    def __init__(self, tag_list, policy, cooccur):
+    def __init__(self, cooccur):
         self.root = TagNode('root')
         self.included_tags = []
         self.cooccur = cooccur
-        self.sorted_tags = sorted(tag_list, key = lambda x: x[1], reverse = True)
-        self.tag_txt = [t[0] for t in self.sorted_tags]
+        self.sorted_tags = self.cooccur.taglist
+        self.tag_txt = self.cooccur.tag_txt
 
         for i in range(len(self.sorted_tags)):
             level1_node = TagNode(self.sorted_tags[i][0], self.sorted_tags[i][2], self.sorted_tags[i][3])
