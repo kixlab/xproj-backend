@@ -23,11 +23,11 @@ words_freq_dict = {}
 def tokenize(sent):
     return mecab.nouns(sent)
 
-def get_keywords(queryset):
+def get_keywords(queryset, isPos):
+    # Fetch keywords list
     corpus = list(queryset.values_list('description', flat=True))
     query = queryset.query
     keywords_all = get_top_n_words_from_tfidf_kor(corpus, query)
-    keywords_all_txt = [k[0] for k in keywords_all]
 
     corpus_pos = list(queryset.filter(isBenefit = True).values_list('description', flat=True))
     query_pos = queryset.filter(isBenefit = True).query
@@ -38,21 +38,32 @@ def get_keywords(queryset):
     query_neg = queryset.filter(isBenefit = False).query
     keywords_neg = get_top_n_words_from_tfidf_kor(corpus_neg, query_neg)
     keywords_neg_txt = [k[0] for k in keywords_neg]
-
+    
     annotated = []
 
-    for keyword in keywords_all:
-        if keyword[0] in keywords_pos_txt and keyword[0] in keywords_neg_txt:
-            annotated.append((keyword[0], keyword[1], 'both'))
-        elif keyword[0] in keywords_pos_txt:
-            annotated.append((keyword[0], keyword[1], 'pos'))
-        elif keyword[0] in keywords_neg_txt:
-            annotated.append((keyword[0], keyword[1], 'neg'))
-        else:
-            annotated.append((keyword[0], keyword[1], 'none'))
-
+    if isPos is None:
+        for keyword in keywords_all:
+            if keyword[0] in keywords_pos_txt and keyword[0] in keywords_neg_txt:
+                annotated.append((keyword[0], keyword[1], 'both'))
+            elif keyword[0] in keywords_pos_txt:
+                annotated.append((keyword[0], keyword[1], 'pos'))
+            elif keyword[0] in keywords_neg_txt:
+                annotated.append((keyword[0], keyword[1], 'neg'))
+            else:
+                annotated.append((keyword[0], keyword[1], 'none'))
+    elif isPos:
+        for keyword in keywords_pos:
+            if keyword[0] in keywords_neg_txt:
+                annotated.append((keyword[0], keyword[1], 'both'))
+            else:
+                annotated.append((keyword[0], keyword[1], 'pos'))
+    elif not isPos:
+        for keyword in keywords_neg:
+            if keyword[0] in keywords_pos_txt:
+                annotated.append((keyword[0], keyword[1], 'both'))
+            else:
+                annotated.append((keyword[0], keyword[1], 'neg'))
     return annotated
-
 
 
 def get_top_n_words_from_tfidf_kor(corpus, query = None, n=10):
