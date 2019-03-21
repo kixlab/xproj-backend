@@ -29,13 +29,13 @@ def get_keywords(queryset, isPos):
     query = queryset.query
     keywords_all = get_top_n_words_from_tfidf_kor(corpus, query)
 
-    corpus_pos = list(queryset.filter(isBenefit = True).values_list('description', flat=True))
-    query_pos = queryset.filter(isBenefit = True).query
+    corpus_pos = list(queryset.filter(isBenefit = 1).values_list('description', flat=True))
+    query_pos = queryset.filter(isBenefit = 1).query
     keywords_pos = get_top_n_words_from_tfidf_kor(corpus_pos, query_pos)
     keywords_pos_txt = [k[0] for k in keywords_pos]
 
-    corpus_neg = list(queryset.filter(isBenefit = False).values_list('description', flat=True))
-    query_neg = queryset.filter(isBenefit = False).query
+    corpus_neg = list(queryset.filter(isBenefit = 0).values_list('description', flat=True))
+    query_neg = queryset.filter(isBenefit = 0).query
     keywords_neg = get_top_n_words_from_tfidf_kor(corpus_neg, query_neg)
     keywords_neg_txt = [k[0] for k in keywords_neg]
     
