@@ -51,13 +51,13 @@ def get_keywords(queryset, isPos):
                 annotated.append((keyword[0], keyword[1], 'neg'))
             else:
                 annotated.append((keyword[0], keyword[1], 'none'))
-    elif isPos:
+    elif isPos == 1:
         for keyword in keywords_pos:
             if keyword[0] in keywords_neg_txt:
                 annotated.append((keyword[0], keyword[1], 'both'))
             else:
                 annotated.append((keyword[0], keyword[1], 'pos'))
-    elif not isPos:
+    elif isPos == 0:
         for keyword in keywords_neg:
             if keyword[0] in keywords_pos_txt:
                 annotated.append((keyword[0], keyword[1], 'both'))
