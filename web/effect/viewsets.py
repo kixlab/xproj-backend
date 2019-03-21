@@ -66,9 +66,6 @@ class EffectViewSet(viewsets.ModelViewSet):
 
         if stakeholder_group is not None:
             queryset = queryset.filter(stakeholder_group = stakeholder_group)
-
-        if isBenefit is not None:
-            queryset = queryset.filter(isBenefit = isBenefit)
         
         queryset = queryset.exclude(source="exp_guess")
         
@@ -103,6 +100,9 @@ class EffectViewSet(viewsets.ModelViewSet):
         # el
         if queryset.count() >= 10:
             self.keywords = get_keywords(queryset, isBenefit)
+
+        if isBenefit is not None:
+            queryset = queryset.filter(isBenefit = isBenefit)
         # if order_by == 'random':
         #     pass
         # elif order_by == 'votes':
