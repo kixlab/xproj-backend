@@ -101,7 +101,7 @@ class EffectViewSet(viewsets.ModelViewSet):
         #     query = queryset.query
         #     self.keywords = get_top_n_words_from_tfidf_kor(corpus, query, 10)
         # el
-        if queryset.count() >= 10 and isBenefit is None:
+        if queryset.count() >= 10:
             self.keywords = get_keywords(queryset, isBenefit)
         # if order_by == 'random':
         #     pass
