@@ -1,13 +1,13 @@
 import re
-from konlpy.tag import Kkma, Hannanum, Twitter, Mecab
+from konlpy.tag import Mecab
 import string
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 from effect.models import Effect
 
-kkma = Kkma()
-hannanum = Hannanum()
-twitter = Twitter()
+# kkma = Kkma()
+# hannanum = Hannanum()
+# twitter = Twitter()
 mecab = Mecab()
 
 remove_punct_map = dict.fromkeys(map(ord, string.punctuation))
