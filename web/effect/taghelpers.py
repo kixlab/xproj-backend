@@ -146,15 +146,27 @@ class TagCoOccur:
     def closest(self, tag): # fetch the tag with highest co-occurence
         tagidx = self.tag_txt.index(tag)
 
-        target = (-1, 0, 0) # target tag index, co-occurence, total count
+        cooccur_list = list(zip([x[0] for x in self.taglist], [x[1] for x in self.taglist], [x[0] for x in self.cooccur[tagidx]])) # txt, total_count, co_occur
 
-        for i in range(len(self.taglist)):
-            if self.cooccur[tagidx][i][0] > target[1]: # larger co-occurence 
-                target = (i, self.cooccur[tagidx][i][0], self.taglist[i][1])
-            elif (self.cooccur[tagidx][i][0] == target[1]) and (self.taglist[i][1] > target[2]): # equal co-occur but larger group
-                target = (i, self.cooccur[tagidx][i][0], self.taglist[i][1])
+        cooccur_list.sort(key = lambda x: x[1] * 10 + x[2], reverse=True) # the least co-occuring tag with the largest total occurance, so the users can discover unknown groups 
+
+        # for i in range(len(self.taglist)):
+        #     if self.cooccur[tagidx][i][0] < target[1]: # smaller co-occurence 
+        #         target = (i, self.cooccur[tagidx][i][0], self.taglist[i][1])
+        #     elif (self.cooccur[tagidx][i][0] == target[1]) and (self.taglist[i][1] > target[2]): # equal co-occur but larger group
+        #         target = (i, self.cooccur[tagidx][i][0], self.taglist[i][1])
         
-        return self.tag_txt[target[0]]
+        return cooccur_list[0][0], cooccur_list[1][0], cooccur_list[2][0]
+
+        # target = (-1, 0, 0) # target tag index, co-occurence, total count
+
+        # for i in range(len(self.taglist)):
+        #     if self.cooccur[tagidx][i][0] > target[1]: # larger co-occurence 
+        #         target = (i, self.cooccur[tagidx][i][0], self.taglist[i][1])
+        #     elif (self.cooccur[tagidx][i][0] == target[1]) and (self.taglist[i][1] > target[2]): # equal co-occur but larger group
+        #         target = (i, self.cooccur[tagidx][i][0], self.taglist[i][1])
+        
+        # return self.tag_txt[target[0]]
 
     def farthest(self, tag): # fetch the tag with the least co-occurence
         tagidx = self.tag_txt.index(tag)
