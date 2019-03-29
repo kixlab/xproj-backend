@@ -207,7 +207,8 @@ class EffectViewSet(viewsets.ModelViewSet):
                     pos_count = query.filter(Qpos).count()
                     neg_count = query.filter(Qneg).count()
                     total_count = pos_count + neg_count
-                    tag_list.append((name, total_count, pos_count, neg_count))
+                    if total_count > 0:
+                        tag_list.append((name, total_count, pos_count, neg_count))
 
                 self.tag_cooccur[ppp] = TagCoOccur(tag_list, policy)
 
