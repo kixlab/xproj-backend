@@ -146,7 +146,7 @@ class TagCoOccur:
     def closest(self, tag): # fetch the tag with highest co-occurence
         tagidx = self.tag_txt.index(tag)
 
-        target = (0, 0, 0) # target tag index, co-occurence, total count
+        target = (-1, 0, 0) # target tag index, co-occurence, total count
 
         for i in range(len(self.taglist)):
             if self.cooccur[tagidx][i][0] > target[1]: # larger co-occurence 
@@ -156,21 +156,37 @@ class TagCoOccur:
         
         return self.tag_txt[target[0]]
 
-    def farthest(self, tag): # fetch the tag with the most different opinion distribution
+    def farthest(self, tag): # fetch the tag with the least co-occurence
         tagidx = self.tag_txt.index(tag)
-        tag_ratio = self.taglist[tagidx][2] / self.taglist[tagidx][1] * 100 # pos / total
-        target = (0, -1, 0) # target tag index, pos/total, total count
+        target = (-1, 10000, 0) # target tag index, co-occurence, total count
 
-        for i in range(len(self.taglist)):
-            if (self.taglist[i][1] >= 3) and (abs(tag_ratio - (self.taglist[i][2]/ self.taglist[i][1] * 100)) > target[1]): # total_count > 3 and the largest ratio difference 
-                target = (i, abs(tag_ratio - (self.taglist[i][2]/ self.taglist[i][1] * 100)),  self.taglist[i][1])
+        cooccur_list = list(zip([x[0] for x in self.taglist], [x[1] for x in self.taglist], [x[0] for x in self.cooccur[tagidx]])) # txt, total_count, co_occur
 
-        return self.tag_txt[target[0]]
+        cooccur_list.sort(key = lambda x: x[1] - x[2] * 10) # the least co-occuring tag with the largest total occurance, so the users can discover unknown groups 
+
+        # for i in range(len(self.taglist)):
+        #     if self.cooccur[tagidx][i][0] < target[1]: # smaller co-occurence 
+        #         target = (i, self.cooccur[tagidx][i][0], self.taglist[i][1])
+        #     elif (self.cooccur[tagidx][i][0] == target[1]) and (self.taglist[i][1] > target[2]): # equal co-occur but larger group
+        #         target = (i, self.cooccur[tagidx][i][0], self.taglist[i][1])
+        
+        return cooccur_list[0][0], cooccur_list[1][0], cooccur_list[2][0]
+
+    # def farthest(self, tag): # fetch the tag with the most different opinion distribution
+    #     tagidx = self.tag_txt.index(tag)
+    #     tag_ratio = self.taglist[tagidx][2] / self.taglist[tagidx][1] * 100 # pos / total
+    #     target = (-1, -1, 0) # target tag index, pos/total, total count
+
+    #     for i in range(len(self.taglist)):
+    #         if (self.taglist[i][1] >= 3) and (abs(tag_ratio - (self.taglist[i][2]/ self.taglist[i][1] * 100)) > target[1]): # total_count > 3 and the largest ratio difference 
+    #             target = (i, abs(tag_ratio - (self.taglist[i][2]/ self.taglist[i][1] * 100)),  self.taglist[i][1])
+
+    #     return self.tag_txt[target[0]]
 
     def most_different(self, tag): # fetch the tag with the most different co-occurence distribution
         tagidx = self.tag_txt.index(tag)
         tag_ratio = self.taglist[tagidx][2] / self.taglist[tagidx][1] * 100 # pos / total
-        target = (0, -1, 0) # target tag index, co-occured pos/total, total count
+        target = (-1, -1, 0) # target tag index, co-occured pos/total, total count
 
         for i in range(len(self.taglist)):
 
@@ -181,7 +197,7 @@ class TagCoOccur:
 
     def most_positive(self, tag): # tag that contributes positive effects the most 
         tagidx = self.tag_txt.index(tag)
-        target = (0, 1, 0.5) # tag idx, # of positive effects, ratio of positive effects
+        target = (-1, 1, 0.5) # tag idx, # of positive effects, ratio of positive effects
 
         for i in range(len(self.taglist)):
             if self.cooccur[tagidx][i][1] > target[1] and (self.cooccur[tagidx][i][1] / self.cooccur[tagidx][i][0]) >= 0.5:
@@ -194,7 +210,7 @@ class TagCoOccur:
 
     def most_negative(self, tag): # tag that contributes negative effects the most 
         tagidx = self.tag_txt.index(tag)
-        target = (0, 1, 0.5) # tag idx, # of negative effects, ratio of negative effects
+        target = (-1, 1, 0.5) # tag idx, # of negative effects, ratio of negative effects
 
         for i in range(len(self.taglist)):
             if self.cooccur[tagidx][i][2] > target[1] and (self.cooccur[tagidx][i][2] / self.cooccur[tagidx][i][0]) >= 0.5:
@@ -208,7 +224,7 @@ class TagCoOccur:
         tag_high_idx = self.tag_txt.index(tag_high)
         tag_low_idx = self.tag_txt.index(tag_low)
         tag_ratio = self.cooccur[tag_high_idx][tag_low_idx][1] / self.cooccur[tag_high_idx][tag_low_idx][0] * 100 # pos / total
-        target = (0, -1, 0) # target tag index, pos/total, total count
+        target = (-1, -1, 0) # target tag index, pos/total, total count
 
         for i in range(len(self.taglist)):
             if self.cooccur[tag_high_idx][i][0] >= 3 and (abs(tag_ratio - (self.cooccur[tag_high_idx][i][1] / self.cooccur[tag_high_idx][i][0] * 100)) > target[1]): # the largest ratio difference 
@@ -220,7 +236,7 @@ class TagCoOccur:
         tag_high_idx = self.tag_txt.index(tag_high)
         tag_low_idx = self.tag_txt.index(tag_low)
         tag_ratio = self.cooccur[tag_high_idx][tag_low_idx][1] / self.cooccur[tag_high_idx][tag_low_idx][0] * 100 # pos / total
-        target = (0, -1, 0) # target tag index, pos/total, total count
+        target = (-1, -1, 0) # target tag index, pos/total, total count
 
         for i in range(len(self.taglist)):
             if (self.taglist[i][1] >= 3) and (abs(tag_ratio - (self.taglist[i][2]/ self.taglist[i][1] * 100)) > target[1]): # total_count > 3 and the largest ratio difference 
