@@ -158,11 +158,11 @@ class TagCoOccur:
 
     def farthest(self, tag): # fetch the tag with the least co-occurence
         tagidx = self.tag_txt.index(tag)
-        target = (-1, 10000, 0) # target tag index, co-occurence, total count
+        # target = (-1, 10000, 0) # target tag index, co-occurence, total count
 
         cooccur_list = list(zip([x[0] for x in self.taglist], [x[1] for x in self.taglist], [x[0] for x in self.cooccur[tagidx]])) # txt, total_count, co_occur
 
-        cooccur_list.sort(key = lambda x: x[1] - x[2] * 10) # the least co-occuring tag with the largest total occurance, so the users can discover unknown groups 
+        cooccur_list.sort(key = lambda x: x[1]) # the least co-occuring tag with the largest total occurance, so the users can discover unknown groups 
 
         # for i in range(len(self.taglist)):
         #     if self.cooccur[tagidx][i][0] < target[1]: # smaller co-occurence 
