@@ -207,9 +207,9 @@ class TagCoOccur:
 
         # return self.tag_txt[target[0]]
 
-        cooccur_list = list(zip([x[0] for x in self.taglist], [x[1] for x in self.taglist], [abs(tag_ratio - (x[1]/ x[0] * 100)) if x[0] > 0 else -1 for x in self.cooccur[tagidx] ])) # txt, total_count, co_occur
+        cooccur_list = list(zip([x[0] for x in self.taglist], [x[1] for x in self.taglist], [abs(tag_ratio - (x[1]/ x[0] * 100)) if x[0] > 0 else -1 for x in self.cooccur[tagidx] ])) # txt, total_count, ratio diff
 
-        cooccur_list.sort(key = lambda x: x[2]) # the least co-occuring tag with the largest total occurance, so the users can discover unknown groups 
+        cooccur_list.sort(key = lambda x: x[2], reverse=True) # the least co-occuring tag with the largest total occurance, so the users can discover unknown groups 
 
         # for i in range(len(self.taglist)):
         #     if self.cooccur[tagidx][i][0] < target[1]: # smaller co-occurence 
