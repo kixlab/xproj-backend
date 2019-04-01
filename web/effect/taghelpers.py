@@ -148,7 +148,7 @@ class TagCoOccur:
 
         cooccur_list = list(zip([x[0] for x in self.taglist], [x[1] for x in self.taglist], [x[0] for x in self.cooccur[tagidx]])) # txt, total_count, co_occur
 
-        cooccur_list.sort(key = lambda x: x[1] * 10 + x[2], reverse=True) # the least co-occuring tag with the largest total occurance, so the users can discover unknown groups 
+        cooccur_list.sort(key = lambda x: x[2] * 10 + x[1], reverse=True) # the least co-occuring tag with the largest total occurance, so the users can discover unknown groups 
 
         # for i in range(len(self.taglist)):
         #     if self.cooccur[tagidx][i][0] < target[1]: # smaller co-occurence 
@@ -156,7 +156,7 @@ class TagCoOccur:
         #     elif (self.cooccur[tagidx][i][0] == target[1]) and (self.taglist[i][1] > target[2]): # equal co-occur but larger group
         #         target = (i, self.cooccur[tagidx][i][0], self.taglist[i][1])
         
-        return cooccur_list[0][0], cooccur_list[1][0], cooccur_list[2][0]
+        return cooccur_list[1][0], cooccur_list[2][0], cooccur_list[3][0]
 
         # target = (-1, 0, 0) # target tag index, co-occurence, total count
 
@@ -174,7 +174,7 @@ class TagCoOccur:
 
         cooccur_list = list(zip([x[0] for x in self.taglist], [x[1] for x in self.taglist], [x[0] for x in self.cooccur[tagidx]])) # txt, total_count, co_occur
 
-        cooccur_list.sort(key = lambda x: x[1]) # the least co-occuring tag with the largest total occurance, so the users can discover unknown groups 
+        cooccur_list.sort(key = lambda x: x[2]) # the least co-occuring tag with the largest total occurance, so the users can discover unknown groups 
 
         # for i in range(len(self.taglist)):
         #     if self.cooccur[tagidx][i][0] < target[1]: # smaller co-occurence 
@@ -198,14 +198,26 @@ class TagCoOccur:
     def most_different(self, tag): # fetch the tag with the most different co-occurence distribution
         tagidx = self.tag_txt.index(tag)
         tag_ratio = self.taglist[tagidx][2] / self.taglist[tagidx][1] * 100 # pos / total
-        target = (-1, -1, 0) # target tag index, co-occured pos/total, total count
+        # target = (-1, -1, 0) # target tag index, co-occured pos/total, total count
 
-        for i in range(len(self.taglist)):
+        # for i in range(len(self.taglist)):
 
-            if (self.taglist[i][1] >= 3) and (self.cooccur[tagidx][i][0] > 0) and (abs(tag_ratio - (self.cooccur[tagidx][i][1]/ self.cooccur[tagidx][i][0] * 100)) > target[1]): # total_count > 3 and the largest ratio difference 
-                target = (i, abs(tag_ratio - (self.cooccur[tagidx][i][1]/ self.cooccur[tagidx][i][0] * 100)),  self.taglist[i][1])
+        #     if (self.taglist[i][1] >= 3) and (self.cooccur[tagidx][i][0] > 0) and (abs(tag_ratio - (self.cooccur[tagidx][i][1]/ self.cooccur[tagidx][i][0] * 100)) > target[1]): # total_count > 3 and the largest ratio difference 
+        #         target = (i, abs(tag_ratio - (self.cooccur[tagidx][i][1]/ self.cooccur[tagidx][i][0] * 100)),  self.taglist[i][1])
 
-        return self.tag_txt[target[0]]
+        # return self.tag_txt[target[0]]
+
+        cooccur_list = list(zip([x[0] for x in self.taglist], [x[1] for x in self.taglist], [abs(tag_ratio - (x[1]/ x[0] * 100)) for x in self.cooccur[tagidx]])) # txt, total_count, co_occur
+
+        cooccur_list.sort(key = lambda x: x[2]) # the least co-occuring tag with the largest total occurance, so the users can discover unknown groups 
+
+        # for i in range(len(self.taglist)):
+        #     if self.cooccur[tagidx][i][0] < target[1]: # smaller co-occurence 
+        #         target = (i, self.cooccur[tagidx][i][0], self.taglist[i][1])
+        #     elif (self.cooccur[tagidx][i][0] == target[1]) and (self.taglist[i][1] > target[2]): # equal co-occur but larger group
+        #         target = (i, self.cooccur[tagidx][i][0], self.taglist[i][1])
+        
+        return cooccur_list[0][0], cooccur_list[1][0], cooccur_list[2][0]
 
     def most_positive(self, tag): # tag that contributes positive effects the most 
         tagidx = self.tag_txt.index(tag)
