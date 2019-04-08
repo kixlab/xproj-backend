@@ -99,7 +99,7 @@ class EffectViewSet(viewsets.ModelViewSet):
         #     self.keywords = get_top_n_words_from_tfidf_kor(corpus, query, 10)
         # el
         if queryset.count() >= 10:
-            self.keywords = get_keywords(queryset, isBenefit)
+            self.keywords = get_keywords(queryset, 'all')
 
         if isBenefit is not None:
             queryset = queryset.filter(isBenefit = isBenefit)
@@ -273,7 +273,8 @@ class EffectViewSet(viewsets.ModelViewSet):
                     tag_list.append((name, total_count, pos_count, neg_count))
 
             self.tag_cooccur[ppp] = TagCoOccur(tag_list, policy)
-
+        # queryset = Effect.objects.filter(is_guess = False).filter(tags__name__in=[tag]).distinct()
+        # keywords = get_keywords(queryset, 'all')
         closest = self.tag_cooccur[ppp].closest(tag)
         farthest = self.tag_cooccur[ppp].farthest(tag)
         different = self.tag_cooccur[ppp].most_different(tag)
@@ -289,7 +290,8 @@ class EffectViewSet(viewsets.ModelViewSet):
             "farthest": farthest,
             "different": different,
             "most_pos": most_pos,
-            "most_neg": most_neg
+            "most_neg": most_neg,
+            "keywords": keywords
         })
 
     @list_route(methods=['get'])
@@ -325,6 +327,7 @@ class EffectViewSet(viewsets.ModelViewSet):
         # closest = self.tag_cooccur[ppp].fetch_closest(tag)
         # farthest = self.tag_cooccur[ppp].fetch_farthest(tag)
         # different = self.tag_cooccur[ppp].fetch_different(tag)
+        # queryset = Effect.objects.filter(is_guess = False).filter(tags__name__in=[tag]).filter(tags__name__in=[tag]).distinct()
         farthest_group = self.tag_cooccur[ppp].farthest_group(tag_high, tag_low)
         farthest_subgroup = self.tag_cooccur[ppp].farthest_subgroup(tag_high, tag_low)
         cooccur_counts = self.tag_cooccur[ppp].get_cooccur_counts(tag_high, tag_low)

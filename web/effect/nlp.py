@@ -13,9 +13,10 @@ mecab = Mecab()
 remove_punct_map = dict.fromkeys(map(ord, string.punctuation))
 remove_quotes_map = dict([(ord(x), " ") for x in ".․,‘’´“”·‧<>「」–-()~…"]) 
 
-stopwords = "수 년 등 및 몇 중 네이버 뉴스".split()
-stopwords += "공급 설치 조성 운영 실행 설립 확대 건설 제공 사업 실시 지원 검토 육성 추진 유치 강화 개선 구축 마련 확충 실시 개선 해소".split()
-stopwords += ['것', '수', '있', '같', '좋', '되', '하', '더', '보', '없', '받', '대학', '생각', '대', '내', '결국', '과', '블라인드', '필요', '거', '때문', '때', '데']
+stopwords = []
+# stopwords = "수 년 등 및 몇 중 네이버 뉴스".split()
+# stopwords += "공급 설치 조성 운영 실행 설립 확대 건설 제공 사업 실시 지원 검토 육성 추진 유치 강화 개선 구축 마련 확충 실시 개선 해소".split()
+stopwords += ['것', '수', '있', '같', '좋', '되', '하', '더', '보', '없', '받', '이', '생각', '대', '내', '결국', '과', '블라인드', '필요', '거', '때문', '때', '데', '경우']
 stopwords = set(stopwords)
 
 words_freq_dict = {}
@@ -23,7 +24,7 @@ words_freq_dict = {}
 def tokenize(sent):
     return mecab.nouns(sent)
 
-def get_keywords(queryset, isPos):
+def get_keywords(queryset, isPos): #TODO: Optimize more by storing keywords
     # Fetch keywords list
     corpus = list(queryset.values_list('description', flat=True))
     query = queryset.query
@@ -63,6 +64,28 @@ def get_keywords(queryset, isPos):
                 annotated.append((keyword[0], keyword[1], 'both'))
             else:
                 annotated.append((keyword[0], keyword[1], 'neg'))
+    elif isPos == 'all':
+        annotated = [[], [], []]
+        for keyword in keywords_neg:
+            if keyword[0] in keywords_pos_txt:
+                annotated[2].append((keyword[0], keyword[1], 'both'))
+            else:
+                annotated[2].append((keyword[0], keyword[1], 'neg'))
+        for keyword in keywords_pos:
+            if keyword[0] in keywords_neg_txt:
+                annotated[1].append((keyword[0], keyword[1], 'both'))
+            else:
+                annotated[1].append((keyword[0], keyword[1], 'pos'))
+        for keyword in keywords_all:
+            if keyword[0] in keywords_pos_txt and keyword[0] in keywords_neg_txt:
+                annotated[0].append((keyword[0], keyword[1], 'both'))
+            elif keyword[0] in keywords_pos_txt:
+                annotated[0].append((keyword[0], keyword[1], 'pos'))
+            elif keyword[0] in keywords_neg_txt:
+                annotated[0].append((keyword[0], keyword[1], 'neg'))
+            else:
+                annotated[0].append((keyword[0], keyword[1], 'none'))
+
     return annotated
 
 
