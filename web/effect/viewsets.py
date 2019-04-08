@@ -291,7 +291,6 @@ class EffectViewSet(viewsets.ModelViewSet):
             "different": different,
             "most_pos": most_pos,
             "most_neg": most_neg,
-            "keywords": keywords
         })
 
     @list_route(methods=['get'])
