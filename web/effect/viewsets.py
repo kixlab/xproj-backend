@@ -39,7 +39,7 @@ class EffectViewSet(viewsets.ModelViewSet):
     serializer_class = EffectSerializer
     pagination_class = EffectPagination
     tag_tree = [None, None]
-    keywords = []
+    keywords = [[], [], []]
     tag_cooccur = [None, None]
     def get_serializer_class(self):
         serializer_class = EffectSerializer
