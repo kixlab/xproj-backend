@@ -107,7 +107,7 @@ def get_top_n_words_from_tfidf_kor(corpus, policy, n = 10):
         return []
     
     if vectorizer[policy] is None:
-        totalCorpus = list(Effect.filter(is_guess = False).values_list('description', flat=True))
+        totalCorpus = list(Effect.objects.filter(is_guess = False).values_list('description', flat=True))
         vectorizer[policy] = TfidfVectorizer(ngram_range=(1,1), stop_words = stopwords, max_features = 1000, analyzer = 'word', tokenizer = tokenize, max_df = 0.8).fit(totalCorpus)
     
     bag_of_words = vectorizer[policy].transform(corpus)
