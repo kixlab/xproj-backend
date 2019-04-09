@@ -20,24 +20,21 @@ stopwords += ['것', '수', '있', '같', '좋', '되', '하', '더', '보', '�
 stopwords = set(stopwords)
 
 words_freq_dict = {}
-
+vectorizer = [None, None]
 def tokenize(sent):
     return mecab.nouns(sent)
 
-def get_keywords(queryset, isPos): #TODO: Optimize more by storing keywords
+def get_keywords(queryset, policy, isPos): #TODO: Optimize more by storing keywords
     # Fetch keywords list
     corpus = list(queryset.values_list('description', flat=True))
-    query = queryset.query
-    keywords_all = get_top_n_words_from_tfidf_kor(corpus, query)
+    keywords_all = get_top_n_words_from_tfidf_kor(corpus, policy)
 
     corpus_pos = list(queryset.filter(isBenefit = 1).values_list('description', flat=True))
-    query_pos = queryset.filter(isBenefit = 1).query
-    keywords_pos = get_top_n_words_from_tfidf_kor(corpus_pos, query_pos)
+    keywords_pos = get_top_n_words_from_tfidf_kor(corpus_pos, policy)
     keywords_pos_txt = [k[0] for k in keywords_pos]
 
     corpus_neg = list(queryset.filter(isBenefit = 0).values_list('description', flat=True))
-    query_neg = queryset.filter(isBenefit = 0).query
-    keywords_neg = get_top_n_words_from_tfidf_kor(corpus_neg, query_neg)
+    keywords_neg = get_top_n_words_from_tfidf_kor(corpus_neg, policy)
     keywords_neg_txt = [k[0] for k in keywords_neg]
     
     annotated = []
@@ -89,18 +86,32 @@ def get_keywords(queryset, isPos): #TODO: Optimize more by storing keywords
     return annotated
 
 
-def get_top_n_words_from_tfidf_kor(corpus, query = None, n=10):
+# def get_top_n_words_from_tfidf_kor(corpus, query = None, n=10):
+#     if len(corpus) < 10:
+#         return []
+#     words_freq = words_freq_dict.get(query)
+#     if words_freq is None:
+#         vec = CountVectorizer(ngram_range=(1,1), stop_words = stopwords, max_features = 1000, analyzer = 'word', tokenizer = tokenize, max_df = 0.8).fit(corpus)
+#         bag_of_words = vec.transform(corpus)
+#         sum_words = bag_of_words.sum(axis=0)
+#         words_freq = [(word, sum_words[0, idx]) for word, idx in vec.vocabulary_.items()]
+#         words_freq.sort(key = lambda x: x[1], reverse = True)
+#         words_freq_dict[query] = words_freq[:10]
+#     #words_freq = sorted(words_freq, key = lambda x: x[1], reverse=True)
+#         return words_freq[:n]
+#     else:
+#         return words_freq
+
+def get_top_n_words_from_tfidf_kor(corpus, policy, n = 10):
     if len(corpus) < 10:
         return []
-    words_freq = words_freq_dict.get(query)
-    if words_freq is None:
-        vec = TfidfVectorizer(ngram_range=(1,1), stop_words = stopwords, max_features = 1000, analyzer = 'word', tokenizer = tokenize, max_df = 0.8).fit(corpus)
-        bag_of_words = vec.transform(corpus)
-        sum_words = bag_of_words.sum(axis=0)
-        words_freq = [(word, sum_words[0, idx]) for word, idx in vec.vocabulary_.items()]
-        words_freq.sort(key = lambda x: x[1], reverse = True)
-        words_freq_dict[query] = words_freq[:10]
-    #words_freq = sorted(words_freq, key = lambda x: x[1], reverse=True)
-        return words_freq[:n]
-    else:
-        return words_freq
+    
+    if vectorizer[policy] is None:
+        totalCorpus = list(Effect.filter(is_guess = False).values_list('description', flat=True))
+        vectorizer[policy] = TfidfVectorizer(ngram_range=(1,1), stop_words = stopwords, max_features = 1000, analyzer = 'word', tokenizer = tokenize, max_df = 0.8).fit(totalCorpus)
+    
+    bag_of_words = vectorizer[policy].transform(corpus)
+    sum_words = bag_of_words.sum(axis=0)
+    words_freq = [(word, sum_words[0, idx]) for word, idx in vectorizer[policy].vocabulary_.items()]
+    words_freq.sort(key = lambda x: x[1], reverse = True)
+    return words_freq[:n]

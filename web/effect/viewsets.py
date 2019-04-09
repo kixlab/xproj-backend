@@ -99,7 +99,7 @@ class EffectViewSet(viewsets.ModelViewSet):
         #     self.keywords = get_top_n_words_from_tfidf_kor(corpus, query, 10)
         # el
         if queryset.count() >= 10:
-            self.keywords = get_keywords(queryset, 'all')
+            self.keywords = get_keywords(queryset, policy, 'all')
 
         if isBenefit is not None:
             queryset = queryset.filter(isBenefit = isBenefit)
