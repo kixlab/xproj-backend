@@ -16,7 +16,7 @@ remove_quotes_map = dict([(ord(x), " ") for x in ".․,‘’´“”·‧<>「�
 stopwords = []
 # stopwords = "수 년 등 및 몇 중 네이버 뉴스".split()
 # stopwords += "공급 설치 조성 운영 실행 설립 확대 건설 제공 사업 실시 지원 검토 육성 추진 유치 강화 개선 구축 마련 확충 실시 개선 해소".split()
-stopwords += ['것', '수', '있', '같', '좋', '되', '하', '더', '보', '없', '받', '이', '생각', '대', '내', '결국', '과', '블라인드', '필요', '거', '때문', '때', '데', '경우', '취', '준', '나', '저']
+stopwords += ['것', '수', '있', '같', '좋', '되', '하', '더', '보', '없', '받', '이', '생각', '대', '내', '결국', '과', '블라인드', '필요', '거', '때문', '때', '데', '경우', '취', '준', '나', '저', '부분', '관', '혼', '런']
 stopwords = set(stopwords)
 
 words_freq_dict = {}
@@ -106,12 +106,12 @@ def get_top_n_words_from_tfidf_kor(corpus, policy, n = 10):
     if len(corpus) is 0:
         return []
     
-    if vectorizer[policy] is None:
+    if vectorizer[policy - 1] is None:
         totalCorpus = list(Effect.objects.filter(is_guess = False).values_list('description', flat=True))
-        vectorizer[policy] = TfidfVectorizer(ngram_range=(1,1), stop_words = stopwords, max_features = 1000, analyzer = 'word', tokenizer = tokenize).fit(totalCorpus)
+        vectorizer[policy - 1] = TfidfVectorizer(ngram_range=(1,1), stop_words = stopwords, max_features = 1000, analyzer = 'word', tokenizer = tokenize).fit(totalCorpus)
     
-    bag_of_words = vectorizer[policy].transform(corpus)
+    bag_of_words = vectorizer[policy - 1].transform(corpus)
     sum_words = bag_of_words.sum(axis=0)
-    words_freq = [(word, sum_words[0, idx]) for word, idx in vectorizer[policy].vocabulary_.items()]
+    words_freq = [(word, sum_words[0, idx]) for word, idx in vectorizer[policy - 1].vocabulary_.items()]
     words_freq.sort(key = lambda x: x[1], reverse = True)
     return words_freq[:n]
