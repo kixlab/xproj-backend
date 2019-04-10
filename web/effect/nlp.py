@@ -103,8 +103,8 @@ def get_keywords(queryset, policy, isPos): #TODO: Optimize more by storing keywo
 #         return words_freq
 
 def get_top_n_words_from_tfidf_kor(corpus, policy, n = 10):
-    # if len(corpus) < 10:
-    #     return []
+    if len(corpus) is 0:
+        return []
     
     if vectorizer[policy] is None:
         totalCorpus = list(Effect.objects.filter(is_guess = False).values_list('description', flat=True))
