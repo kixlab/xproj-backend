@@ -19,5 +19,12 @@ class UserPolicy(models.Model):
     identify_done = models.BooleanField(default = False)
     guessing_done = models.BooleanField(default = False)
 
+    initial_stance = models.IntegerField(default = 0)
+    initial_opinion = models.TextField(default = '')
+
+    final_stance = models.IntegerField(default = 0)
+    final_opinion = models.TextField(default = '')
+
+
     def __str__(self):
         return "%s-%s" % (self.user.email, self.policy.title)
