@@ -14,7 +14,7 @@ from django.db.models.functions import Length
 import random
 from effect.taghelpers import TagTree, TagTreeEncoder, TagCoOccur
 import json
-from .nlp import get_top_n_words_from_tfidf_kor, get_keywords
+from .nlp import get_top_n_words_from_tfidf_kor, get_keywords, get_words_from_queryset
 from django.http import HttpResponse
 # Create your views here.
 
@@ -23,12 +23,13 @@ class EffectPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     # max_page_size = 500
 
-    def get_paginated_response(self, data, keywords):
+    def get_paginated_response(self, data, words):
         return Response({
             'count': self.page.paginator.count,
             'next': self.get_next_link(),
             'prev': self.get_previous_link(),
-            'keywords': keywords,
+            # 'keywords': keywords,
+            'words': words
             'results': data
         })
     
@@ -40,6 +41,7 @@ class EffectViewSet(viewsets.ModelViewSet):
     pagination_class = EffectPagination
     tag_tree = [None, None]
     keywords = [[], [], []]
+    words = []
     tag_cooccur = [None, None]
     def get_serializer_class(self):
         serializer_class = EffectSerializer
@@ -99,7 +101,9 @@ class EffectViewSet(viewsets.ModelViewSet):
         #     self.keywords = get_top_n_words_from_tfidf_kor(corpus, query, 10)
         # el
         # if queryset.count() >= 10:
-        self.keywords = get_keywords(queryset, int(policy), 'all')
+
+        # self.keywords = get_keywords(queryset, int(policy), 'all')
+        self.words = get_words_from_queryset(queryset, int(policy))
 
         if isBenefit is not None:
             queryset = queryset.filter(isBenefit = isBenefit)
@@ -116,7 +120,7 @@ class EffectViewSet(viewsets.ModelViewSet):
         return queryset
 
     def get_paginated_response(self, data):
-        return self.paginator.get_paginated_response(data, self.keywords)
+        return self.paginator.get_paginated_response(data, self.words)
 
     @list_route(methods=['get'])
     def tag_list(self, request):
