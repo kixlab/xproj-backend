@@ -43,46 +43,46 @@ def get_keywords(queryset, policy, isPos): #TODO: Optimize more by storing keywo
     if isPos is None:
         for keyword in keywords_all:
             if keyword[0] in keywords_pos_txt and keyword[0] in keywords_neg_txt:
-                annotated.append((keyword[0], keyword[1], 'both'))
+                annotated.append((keyword[0], keyword[1], 'both', keyword[2]))
             elif keyword[0] in keywords_pos_txt:
-                annotated.append((keyword[0], keyword[1], 'pos'))
+                annotated.append((keyword[0], keyword[1], 'pos', keyword[2]))
             elif keyword[0] in keywords_neg_txt:
-                annotated.append((keyword[0], keyword[1], 'neg'))
+                annotated.append((keyword[0], keyword[1], 'neg', keyword[2]))
             else:
-                annotated.append((keyword[0], keyword[1], 'none'))
+                annotated.append((keyword[0], keyword[1], 'none', keyword[2]))
     elif isPos == '1':
         for keyword in keywords_pos:
             if keyword[0] in keywords_neg_txt:
-                annotated.append((keyword[0], keyword[1], 'both'))
+                annotated.append((keyword[0], keyword[1], 'both', keyword[2]))
             else:
-                annotated.append((keyword[0], keyword[1], 'pos'))
+                annotated.append((keyword[0], keyword[1], 'pos', keyword[2]))
     elif isPos == '0':
         for keyword in keywords_neg:
             if keyword[0] in keywords_pos_txt:
-                annotated.append((keyword[0], keyword[1], 'both'))
+                annotated.append((keyword[0], keyword[1], 'both', keyword[2]))
             else:
-                annotated.append((keyword[0], keyword[1], 'neg'))
+                annotated.append((keyword[0], keyword[1], 'neg', keyword[2]))
     elif isPos == 'all':
         annotated = [[], [], []]
         for keyword in keywords_neg:
             if keyword[0] in keywords_pos_txt:
-                annotated[2].append((keyword[0], keyword[1], 'both'))
+                annotated[2].append((keyword[0], keyword[1], 'both', keyword[2]))
             else:
-                annotated[2].append((keyword[0], keyword[1], 'neg'))
+                annotated[2].append((keyword[0], keyword[1], 'neg', keyword[2]))
         for keyword in keywords_pos:
             if keyword[0] in keywords_neg_txt:
-                annotated[1].append((keyword[0], keyword[1], 'both'))
+                annotated[1].append((keyword[0], keyword[1], 'both', keyword[2]))
             else:
-                annotated[1].append((keyword[0], keyword[1], 'pos'))
+                annotated[1].append((keyword[0], keyword[1], 'pos', keyword[2]))
         for keyword in keywords_all:
             if keyword[0] in keywords_pos_txt and keyword[0] in keywords_neg_txt:
-                annotated[0].append((keyword[0], keyword[1], 'both'))
+                annotated[0].append((keyword[0], keyword[1], 'both', keyword[2]))
             elif keyword[0] in keywords_pos_txt:
-                annotated[0].append((keyword[0], keyword[1], 'pos'))
+                annotated[0].append((keyword[0], keyword[1], 'pos', keyword[2]))
             elif keyword[0] in keywords_neg_txt:
-                annotated[0].append((keyword[0], keyword[1], 'neg'))
+                annotated[0].append((keyword[0], keyword[1], 'neg', keyword[2]))
             else:
-                annotated[0].append((keyword[0], keyword[1], 'none'))
+                annotated[0].append((keyword[0], keyword[1], 'none', keyword[2]))
 
     return annotated
 
@@ -133,6 +133,6 @@ def get_top_n_words_from_tfidf_kor(corpus, policy, n = 30):
     sum_words = bag_of_words.sum(axis=0)
     words_freq = [(word, sum_words[0, idx]) for word, idx in vectorizer[policy - 1].vocabulary_.items()]
 
-    words_freq_ratio = [(i[0], i[1]/j[1]) for i, j in zip(words_freq, words_freqs[policy - 1])]
+    words_freq_ratio = [(i[0], i[1], i[1]/j[1]) for i, j in zip(words_freq, words_freqs[policy - 1])]
     words_freq_ratio.sort(key = lambda x: x[1], reverse = True)
     return words_freq_ratio[:n]
