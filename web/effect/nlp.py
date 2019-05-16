@@ -102,13 +102,13 @@ def get_keywords(queryset, policy, isPos): #TODO: Optimize more by storing keywo
 #     else:
 #         return words_freq
 
-def get_top_n_words_from_tfidf_kor(corpus, policy, n = 10):
+def get_top_n_words_from_tfidf_kor(corpus, policy, n = 30):
     if len(corpus) is 0:
         return []
     
     if vectorizer[policy - 1] is None:
         totalCorpus = list(Effect.objects.filter(is_guess = False).values_list('description', flat=True))
-        vectorizer[policy - 1] = TfidfVectorizer(ngram_range=(2,2), stop_words = stopwords, max_features = 1000, analyzer = 'word', tokenizer = tokenize).fit(totalCorpus)
+        vectorizer[policy - 1] = CountVectorizer(ngram_range=(1, 1), stop_words = stopwords, max_features = 1000, analyzer = 'word', tokenizer = tokenize).fit(totalCorpus)
     
     bag_of_words = vectorizer[policy - 1].transform(corpus)
     sum_words = bag_of_words.sum(axis=0)
