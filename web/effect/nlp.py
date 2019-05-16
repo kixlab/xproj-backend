@@ -21,6 +21,7 @@ stopwords = set(stopwords)
 
 words_freq_dict = {}
 vectorizer = [None, None]
+words_freqs = [None, None]
 def tokenize(sent):
     return mecab.nouns(sent)
 
@@ -102,32 +103,36 @@ def get_keywords(queryset, policy, isPos): #TODO: Optimize more by storing keywo
 #     else:
 #         return words_freq
 
+# def get_top_n_words_from_tfidf_kor(corpus, policy, n = 30): Sum of TF-IDF score version
+#     if len(corpus) is 0:
+#         return []
+    
+#     if vectorizer[policy - 1] is None:
+#         totalCorpus = list(Effect.objects.filter(is_guess = False).values_list('description', flat=True))
+#         vectorizer[policy - 1] = CountVectorizer(ngram_range=(1, 1), stop_words = stopwords, max_features = 1000, analyzer = 'word', tokenizer = tokenize).fit(totalCorpus)
+    
+#     bag_of_words = vectorizer[policy - 1].transform(corpus)
+#     sum_words = bag_of_words.sum(axis=0)
+#     words_freq = [(word, sum_words[0, idx]) for word, idx in vectorizer[policy - 1].vocabulary_.items()]
+#     words_freq.sort(key = lambda x: x[1], reverse = True)
+#     return words_freq[:n]
+
 def get_top_n_words_from_tfidf_kor(corpus, policy, n = 30):
-    if len(corpus) is 0:
-        return []
-    
-    if vectorizer[policy - 1] is None:
-        totalCorpus = list(Effect.objects.filter(is_guess = False).values_list('description', flat=True))
-        vectorizer[policy - 1] = CountVectorizer(ngram_range=(1, 1), stop_words = stopwords, max_features = 1000, analyzer = 'word', tokenizer = tokenize).fit(totalCorpus)
-    
-    bag_of_words = vectorizer[policy - 1].transform(corpus)
-    sum_words = bag_of_words.sum(axis=0)
-    words_freq = [(word, sum_words[0, idx]) for word, idx in vectorizer[policy - 1].vocabulary_.items()]
-    words_freq.sort(key = lambda x: x[1], reverse = True)
-    return words_freq[:n]
-
-def get_words_from_queryset(queryset, policy):
-    corpus = list(queryset.values_list('description', flat=True))
-
     if len(corpus) < 10:
         return []
     
     if vectorizer[policy - 1] is None:
         totalCorpus = list(Effect.objects.filter(is_guess = False).values_list('description', flat=True))
         vectorizer[policy - 1] = CountVectorizer(ngram_range=(1,1), stop_words = stopwords, max_features = 1000, analyzer = 'word', tokenizer = tokenize).fit(totalCorpus)
-    
+        bow = vectorizer[policy - 1].transform(totalCorpus)
+        sum_words = bow.sum(axis=0)
+        words_freq = [(word, sum_words[0, idx]) for word, idx in vectorizer[policy - 1].vocabulary_.items()]
+        words_freqs[policy - 1] = words_freq
+        
     bag_of_words = vectorizer[policy - 1].transform(corpus)
     sum_words = bag_of_words.sum(axis=0)
     words_freq = [(word, sum_words[0, idx]) for word, idx in vectorizer[policy - 1].vocabulary_.items()]
-    words_freq.sort(key = lambda x: x[1], reverse = True)
+
+    words_freq_ratio = [(i[0], i[1]/j[1]) for i, j in zip(words_freq, words_freqs[policy - 1])]
+    words_freq_ratio.sort(key = lambda x: x[1], reverse = True)
     return words_freq
