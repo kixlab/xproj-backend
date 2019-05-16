@@ -135,4 +135,4 @@ def get_top_n_words_from_tfidf_kor(corpus, policy, n = 30):
 
     words_freq_ratio = [(i[0], i[1]/j[1]) for i, j in zip(words_freq, words_freqs[policy - 1])]
     words_freq_ratio.sort(key = lambda x: x[1], reverse = True)
-    return words_freq
+    return words_freq_ratio[:n]
