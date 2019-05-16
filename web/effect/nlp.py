@@ -125,9 +125,9 @@ def get_top_n_words_from_tfidf_kor(corpus, policy, n = 30):
         totalCorpus = list(Effect.objects.filter(is_guess = False).values_list('description', flat=True))
         vectorizer[policy - 1] = CountVectorizer(ngram_range=(1,1), stop_words = stopwords, max_features = 1000, analyzer = 'word', tokenizer = tokenize, min_df=5, max_df=0.8).fit(totalCorpus)
         bow = vectorizer[policy - 1].transform(totalCorpus)
-        sum_words = bow.sum(axis=0)
-        words_freq = [(word, sum_words[0, idx]) for word, idx in vectorizer[policy - 1].vocabulary_.items()]
-        words_freqs[policy - 1] = words_freq
+        sw = bow.sum(axis=0)
+        wf = [(word, sw[0, idx]) for word, idx in vectorizer[policy - 1].vocabulary_.items()]
+        words_freqs[policy - 1] = wf
         
     bag_of_words = vectorizer[policy - 1].transform(corpus)
     sum_words = bag_of_words.sum(axis=0)
