@@ -2,6 +2,7 @@ from django.db import models
 from accounts.models import User
 from policy.models import Policy
 from stakeholdergroup.models import StakeholderGroup
+from simple_history.models import HistoricalRecords
 # Create your models here.
 
 class UserPolicy(models.Model):
@@ -24,6 +25,8 @@ class UserPolicy(models.Model):
 
     final_stance = models.IntegerField(default = 0)
     final_opinion = models.TextField(default = '')
+
+    history = HistoricalRecords()
 
 
     def __str__(self):

@@ -63,7 +63,8 @@ THIRD_PARTY_APPS = [
     'prompt_responses',
     'sortedm2m',
     'taggit',
-    'taggit_serializer'
+    'taggit_serializer',
+    'simple_history'
 ]
 
 LOCAL_APPS = [
@@ -102,7 +103,8 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware'
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware'
 ]
 
 ROOT_URLCONF = 'config.urls'
