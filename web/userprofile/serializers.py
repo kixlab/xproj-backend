@@ -45,7 +45,7 @@ class UserSerializer(UserDetailsSerializer):
             return 6 + (obj.pk % 2)
         else:
             # return obj.pk % 6
-            return ((obj.pk % 4) + 3) % 6
+            return (obj.pk % 4) + 8
 
 # class NewUserSerializer(RegisterSerializer):
 #     is_participant = serializers.BooleanField(source = 'userprofile.is_participant')
