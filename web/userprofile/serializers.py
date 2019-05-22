@@ -81,4 +81,5 @@ class UserProfileSerializer(serializers.ModelSerializer):
         if (user_count < 10):
             return 7 + (obj.user.pk % 2)
         else:
-            return obj.user.pk % 6
+            return (obj.pk % 4) + 8
+            # return obj.user.pk % 6
