@@ -21,13 +21,13 @@ class UserPolicy(models.Model):
     identify_done = models.BooleanField(default = False)
     guessing_done = models.BooleanField(default = False)
 
-    initial_stance = models.IntegerField(default = 0)
-    initial_opinion = models.TextField(default = '')
+    initial_stance = models.IntegerField(default = 0, null = True)
+    initial_opinion = models.TextField(default = '', null = True, blank = True)
 
     final_stance = models.IntegerField(default = 0)
-    final_opinion = models.TextField(default = '')
+    final_opinion = models.TextField(default = '', null = True, blank = True)
 
-    fav_effects = models.ManyToManyField(Effect, related_name='favorite_userpolicy')
+    fav_effects = models.ManyToManyField(Effect, related_name='favorite_userpolicy', null = True, blank = True)
 
     history = HistoricalRecords()
 
