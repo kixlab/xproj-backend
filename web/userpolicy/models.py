@@ -3,7 +3,7 @@ from accounts.models import User
 from policy.models import Policy
 from stakeholdergroup.models import StakeholderGroup
 from simple_history.models import HistoricalRecords
-from effects.models import Effect
+from effect.models import Effect
 # Create your models here.
 
 class UserPolicy(models.Model):
