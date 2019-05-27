@@ -29,6 +29,7 @@ class Effect(models.Model):
     # tags = TaggableManager(through=NewTaggedEffect, related_name="newtags")
     confidence = models.IntegerField(default = 0)
     created = models.DateTimeField(auto_now_add=True)
+    effect_size = models.IntegerField(default = 0)
 
     is_guess = models.BooleanField(default=False)
 
