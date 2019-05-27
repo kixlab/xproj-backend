@@ -76,7 +76,14 @@ def get_keywords(queryset, policy, isPos): #TODO: Optimize more by storing keywo
                 annotated[1].append((keyword[0], keyword[1], 'pos', keyword[2]))
         for keyword in keywords_all:
             if keyword[0] in keywords_pos_txt and keyword[0] in keywords_neg_txt:
-                annotated[0].append((keyword[0], keyword[1], 'both', keyword[2]))
+                idx_pos = keywords_pos_txt.index(keyword[0])
+                idx_neg = keywords_neg_txt.index(keyword[0])
+                if idx_pos < idx_neg:
+                    annotated[0].append((keyword[0], keyword[1], 'pos', keyword[2]))
+                elif idx_pos > idx_neg:
+                    annotated[0].append((keyword[0], keyword[1], 'neg', keyword[2]))
+                else:
+                    annotated[0].append((keyword[0], keyword[1], 'both', keyword[2]))
             elif keyword[0] in keywords_pos_txt:
                 annotated[0].append((keyword[0], keyword[1], 'pos', keyword[2]))
             elif keyword[0] in keywords_neg_txt:
@@ -117,7 +124,7 @@ def get_keywords(queryset, policy, isPos): #TODO: Optimize more by storing keywo
 #     words_freq.sort(key = lambda x: x[1], reverse = True)
 #     return words_freq[:n]
 
-def get_top_n_words_from_tfidf_kor(corpus, policy, n = 30):
+def get_top_n_words_from_tfidf_kor(corpus, policy, n = 20):
     if len(corpus) < 10:
         return []
     
