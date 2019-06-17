@@ -125,7 +125,7 @@ def get_keywords(queryset, policy, isPos): #TODO: Optimize more by storing keywo
 #     return words_freq[:n]
 
 def get_top_n_words_from_tfidf_kor(corpus, policy, n = 20):
-    if len(corpus) < 10:
+    if len(corpus) < 5:
         return []
     
     if vectorizer[policy - 1] is None:
