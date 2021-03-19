@@ -1,7 +1,7 @@
 # api, authentication
 django-allauth==0.34.0
 django-rest-auth==0.9.1
-djangorestframework==3.6.3
+djangorestframework==3.11.2
 django-filter==1.0.4
 django-rest-swagger==2.1.2
 django-oauth-toolkit==1.0.0
