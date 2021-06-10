@@ -1,5 +1,5 @@
 # base
-Django==1.11.6
+Django==2.2.24
 gunicorn==19.7.1
 ## psycopg2 is installed through distro package in Dockerfile
 
